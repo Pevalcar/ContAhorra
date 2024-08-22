@@ -8,6 +8,7 @@ const buttons: TiposDeTransacciones[] = [
   "Ingreso",
   "Gasto",
   "Préstamo",
+
   "Transferencia",
 ];
 

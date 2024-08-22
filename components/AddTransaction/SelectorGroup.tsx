@@ -1,4 +1,3 @@
-import type { MyIconos } from "@/Types/Types";
 import React, { useState } from "react";
 import { MyIcon } from "../Icons";
 import {
@@ -10,10 +9,11 @@ import {
   ActionsheetItem,
   ActionsheetItemText,
   ActionsheetVirtualizedList,
-} from "../ui/actionsheet";
+} from "@/components/ui/actionsheet";
 import { HStack } from "../ui/hstack";
 import { Pressable } from "../ui/pressable";
 import { Text } from "../ui/text";
+import { type MyIconos } from "@/Types/types";
 
 interface Props {}
 export const SelectorGroup: React.FC<Props> = ({}) => {
@@ -36,8 +36,8 @@ interface SelectorProps {
   icon?: MyIconos;
   data?: any[];
 }
-//TODO agregar iconos y contenido de el cheet
 
+//TODO agregar iconos y contenido de el cheet
 const MySelector = ({ name, icon = "Plus", data }: SelectorProps) => {
   const [selecionado, setselecionado] = useState("sinelegir");
 

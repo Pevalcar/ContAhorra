@@ -1,4 +1,4 @@
-import type { Categoria, Cuenta, Transaccion } from "@/Types/Types";
+import type { Categoria, Cuenta, Transaccion } from "@/Types/types";
 
 const DB_Transacciones: Transaccion[] = [
   {
