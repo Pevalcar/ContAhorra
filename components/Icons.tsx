@@ -1,6 +1,7 @@
-import type { MyIconos } from "@/Types/Types";
+import type { MyIconos } from "@/Types/types";
 import {
   ClipboardList,
+  Delete,
   Disc2,
   FileEdit,
   Flashlight,
@@ -65,6 +66,8 @@ function getIcon(name: MyIconos) {
       return DarkModeIcon;
     case "Plus":
       return PlusIcon;
+    case "Delete":
+      return DeleteICon;
     default:
       return HomeIcon;
   }
@@ -179,4 +182,9 @@ export const DarkModeIcon = ({ variant, props, color, size = 24 }: Props) => {
   } else {
     return <Icon as={Moon} className={classColor} size={size} {...props} />;
   }
+};
+
+const DeleteICon = ({ props, color, size = 24 }: Props) => {
+  if (color) return <Delete color={color} size={size} {...props} />;
+  return <Icon as={Delete} className={classColor} size={size} {...props} />;
 };

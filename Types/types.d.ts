@@ -43,4 +43,5 @@ export type MyIconos =
   | "Shoping"
   | "Wallet"
   | "DarkMode"
-  | "Shoping";
+  | "Shoping"
+  | "Delete";
