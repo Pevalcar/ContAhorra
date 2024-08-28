@@ -1,5 +1,6 @@
 import { useCategoriaStore } from "../store/CategoriaStore";
 import { useCuentasStore } from "../store/CuentasStore";
+import { useTransaccionesStore } from "../store/TransaccionesStore";
 import { useTransactionToADDState } from "../store/TransactionToAddStore";
 import useDebuger from "./useDebuger";
 import type {
@@ -33,6 +34,9 @@ export const useTransactionToAdd = () => {
   const { setMessage } = useDebuger((state) => state);
   const categorias = useCategoriaStore((state) => state.categorias);
   const cuentas = useCuentasStore((state) => state.cuentas);
+  const agregarTransacciones = useTransaccionesStore(
+    (state) => state.addTransaccion,
+  );
   const {
     setCuentaId,
     setCategoriaId,
@@ -78,6 +82,7 @@ export const useTransactionToAdd = () => {
       title: description,
     };
     setMessage("Transaccion", JSON.stringify(transaccions));
+    agregarTransacciones(transaccions);
   }
 
   return {

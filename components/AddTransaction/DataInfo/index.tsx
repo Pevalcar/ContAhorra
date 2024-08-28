@@ -1,44 +1,11 @@
 import { Divider } from "@/components/ui/divider";
 import { HStack } from "@/components/ui/hstack";
 import { Text } from "@/components/ui/text";
-import { useTransactionToAdd } from "@/lib/Hooks/useTransactionToAdd";
-import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
-import React, { useEffect, useState } from "react";
+import { useDate } from "@/lib/Hooks/useDateInfo";
+import React from "react";
 import { Pressable } from "react-native";
 
 interface Props {}
-
-const useDate = () => {
-  const [date, setDate] = useState<Date>(new Date());
-  const { currentDate, onDateChange } = useTransactionToAdd();
-
-  const onChange = (_: any, selectedDate: any) => {
-    setDate(selectedDate);
-    onDateChange(selectedDate);
-  };
-  const showMode = (currentMode: any) => {
-    DateTimePickerAndroid.open({
-      value: date,
-      onChange,
-      mode: currentMode,
-      is24Hour: true,
-    });
-  };
-
-  const showDatepicker = () => {
-    showMode("date");
-  };
-
-  const showTimepicker = () => {
-    showMode("time");
-  };
-
-  useEffect(() => {
-    currentDate ? onChange("", currentDate) : onChange("", new Date());
-  }, []);
-
-  return { date, showDatepicker, showTimepicker };
-};
 
 export const DataInfo = ({}: Props) => {
   const { date, showDatepicker, showTimepicker } = useDate();

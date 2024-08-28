@@ -72,7 +72,7 @@ export const useTransaccionesStore = create<ITransaccionesStore>(
     transacciones: initialState,
     addTransaccion: (transaccion: Transaccion) => {
       const { transacciones } = get();
-      const newState = [...transacciones, transaccion];
+      const newState = [transaccion, ...transacciones];
       saveState(newState);
       set({ transacciones: newState });
     },
