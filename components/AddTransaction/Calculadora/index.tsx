@@ -1,8 +1,10 @@
+import { MyIcon } from "@/components/Icons";
+import { Button, ButtonText } from "@/components/ui/button";
+import { Heading } from "@/components/ui/heading";
+import { HStack } from "@/components/ui/hstack";
+import { Pressable } from "@/components/ui/pressable";
 import { useCalculadora } from "@/lib/Hooks/useCalculadora";
-import { Delete } from "lucide-react-native";
 import { View } from "react-native";
-import { Button, ButtonIcon, ButtonText } from "../ui/button";
-import { Text } from "../ui/text";
 
 interface Props {}
 
@@ -15,23 +17,28 @@ const botones = [
 
 export const Calculadora: React.FC<Props> = ({}) => {
   const { valuePantalla, setValuePantalla, reset } = useCalculadora();
-
+  //TODO estilar mejor la calcuiladora
   return (
-    <View className="grid w-[400px] grid-cols-4 justify-center gap-1">
+    <View className="w-full justify-center gap-1">
       <Pantalla onDeletePress={reset} className="col-span-4">
         {valuePantalla}
       </Pantalla>
-      {botones.map((row) =>
-        row.map((value, index) => (
-          <BotonCalculadoraResaltado
-            key={index}
-            onPress={() => setValuePantalla(value)}
-            variant={typeof value !== "number"}
-          >
-            {value}
-          </BotonCalculadoraResaltado>
-        )),
-      )}
+
+      {botones.map((row, index) => {
+        return (
+          <HStack key={index} className="justify-center gap-1">
+            {row.map((value, index) => (
+              <BotonCalculadoraResaltado
+                key={index}
+                onPress={() => setValuePantalla(value)}
+                variant={typeof value !== "number"}
+              >
+                {value}
+              </BotonCalculadoraResaltado>
+            ))}
+          </HStack>
+        );
+      })}
     </View>
   );
 };
@@ -50,17 +57,15 @@ const Pantalla: React.FC<PantallaProps> = ({
 }) => {
   return (
     <View
-      className={"h-14 w-full flex-row rounded-lg border " + className}
+      className={"flex h-14 w-full flex-row rounded-lg border " + className}
       {...props}
     >
-      <Text className="h-full flex-1 p-2 text-end text-3xl font-bold">
+      <Heading className="mr-1 h-full flex-1 text-right align-middle text-3xl">
         {children}
-      </Text>
-      <Button className="h-full w-14" variant="link" onPress={onDeletePress}>
-        <ButtonIcon as={Delete} className="text-center">
-          AC
-        </ButtonIcon>
-      </Button>
+      </Heading>
+      <Pressable className="h-full w-14 justify-center" onPress={onDeletePress}>
+        <MyIcon name="Delete" size={40} />
+      </Pressable>
     </View>
   );
 };
@@ -68,6 +73,7 @@ const Pantalla: React.FC<PantallaProps> = ({
 interface BotonProps {
   children?: React.ReactNode;
   variant?: boolean;
+  className?: string;
   onPress?: () => void;
 }
 
@@ -81,7 +87,7 @@ const BotonCalculadoraResaltado: React.FC<BotonProps> = ({
     <Button
       onPress={() => onPress()}
       variant={variant ? "solid" : "outline"}
-      className="hover:bg-gray-300"
+      className="h-16 flex-1 active:bg-secondary-200"
       {...props}
     >
       <ButtonText className="text-center">

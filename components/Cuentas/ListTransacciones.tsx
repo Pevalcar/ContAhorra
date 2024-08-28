@@ -1,23 +1,31 @@
-import { Avatar, AvatarFallbackText } from "@/components/ui/avatar";
-import { Heading } from "@/components/ui/heading";
-import { VStack } from "@/components/ui/vstack";
-
-import type { Transaccion } from "@/Types/Types";
-import React from "react";
-import { ScrollView } from "react-native";
 import { TextCurrency } from "../TextCurrency";
 import { Card } from "../ui/card";
 import { Text } from "../ui/text";
+import { type Transaccion } from "@/Types/types";
+import { Avatar, AvatarFallbackText } from "@/components/ui/avatar";
+import { Heading } from "@/components/ui/heading";
+import { VStack } from "@/components/ui/vstack";
+import { useTransaccionesStore } from "@/lib/store/TransaccionesStore";
+import React from "react";
+import { FlatList, Pressable, ScrollView } from "react-native";
+
 interface Props {
   list: Transaccion[];
 }
 export const ListTransacciones = ({ list }: Props) => {
   return (
-    <ScrollView style={{ flex: 1 }}>
-      {list.map((item, index) => (
-        <AccordingItem key={index} item={item} index={index} />
-      ))}
-    </ScrollView>
+    <FlatList
+      data={list}
+      renderItem={({ item, index }) => (
+        <>
+          {item.type === "Transferencia" && <Text>Transferencia</Text>}
+          {item.type === "Ingreso" && <Text>Ingreso</Text>}
+          {item.type === "Gasto" && <Text>Gasto</Text>}
+          <AccordingItem item={item} index={index} />
+        </>
+      )}
+      keyExtractor={(item) => item.id}
+    />
   );
 };
 interface ItemProps {
@@ -25,18 +33,28 @@ interface ItemProps {
   index: number;
 }
 const AccordingItem = ({ item, index }: ItemProps) => {
+  const deleteTransaccion = useTransaccionesStore(
+    (state) => state.deleteTransaccion,
+  );
   const bgColor = () => {
     switch (item.type) {
-      case "ingreso":
+      case "Ingreso":
         return "bg-green-500";
-      case "gasto":
+      case "Gasto":
         return "bg-red-500";
-      case "transferencia":
+      case "Transferencia":
         return "bg-yellow-500";
+      case "Préstamo":
+        return "bg-purple-500";
       default:
         return "bg-gray-500";
     }
   };
+
+  const onDelete = () => {
+    deleteTransaccion(item.id);
+  };
+
   return (
     <Card
       size="sm"
@@ -55,10 +73,13 @@ const AccordingItem = ({ item, index }: ItemProps) => {
       </VStack>
       <TextCurrency
         sign
-        negative={item.type === "gasto" || item.type === "transferencia"}
+        negative={item.type === "Gasto" || item.type === "Transferencia"}
         size="sm"
         value={item.balance}
       />
+      <Pressable className="mr-4" onPress={onDelete}>
+        <Text>Delete</Text>
+      </Pressable>
     </Card>
   );
 };

@@ -1,4 +1,8 @@
 {
-   "plugins": ["prettier-plugin-tailwindcss"],
-    "tailwindFunctions": ["tva"]
+  "plugins": [
+    "prettier-plugin-tailwindcss",
+    "prettier",
+    "@trivago/prettier-plugin-sort-imports"
+  ],
+  "tailwindFunctions": ["tva"]
 }

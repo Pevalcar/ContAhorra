@@ -1,4 +1,4 @@
-import useDarkModeStore from "@/lib/stores/ThemeDarkMode";
+import useDarkModeStore from "@/lib/store/ThemeDarkMode";
 import { Text, View } from "react-native";
 import { Pressable } from "./ui/pressable";
 import { DarkModeIcon } from "./Icons";

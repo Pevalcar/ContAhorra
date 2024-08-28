@@ -1,8 +1,8 @@
 export type Transaccion = {
-  readonly id?: string;
+  readonly id: string;
   readonly title: string;
   balance: number;
-  type: "gasto" | "ingreso" | "transferencia";
+  type: TiposDeTransacciones;
   date: string;
   description?: string;
   category?: string;

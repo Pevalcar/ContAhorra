@@ -5,21 +5,23 @@ import { Screen } from "@/components/Screen";
 import { Fab, FabIcon } from "@/components/ui/fab";
 import { Heading } from "@/components/ui/heading";
 import { VStack } from "@/components/ui/vstack";
-import { DB_Transacciones } from "@/lib/db/local/db_local";
+import { useFilterTrasaction } from "@/lib/Hooks/useFilterTrasaction";
 import { router } from "expo-router";
 import { PlusIcon } from "lucide-react-native";
 import React from "react";
 
 export default function index() {
+  const { filter, setSearch } = useFilterTrasaction();
+
   return (
     <Screen>
       <VStack className="flex-1">
         <SaldoHeading value={500000} />
-        <Filtros />
+        <Filtros setFliter={setSearch} />
         <Heading size="lg" className="my-4">
           Historial
         </Heading>
-        <ListTransacciones list={DB_Transacciones} />
+        <ListTransacciones list={filter} />
         <Fab
           size={"lg"}
           placement="bottom right"

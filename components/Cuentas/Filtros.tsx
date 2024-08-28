@@ -1,19 +1,41 @@
-import { Text, View } from "react-native";
-import { HStack } from "../ui/hstack";
 import { Button, ButtonText } from "../ui/button";
+import { HStack } from "../ui/hstack";
+import { TiposDeTransacciones } from "@/Types/types";
 import { useState } from "react";
+import { Text, View } from "react-native";
 
-interface Props {}
+interface Props {
+  setFliter: React.Dispatch<React.SetStateAction<TiposDeTransacciones | null>>;
+}
 
-export const Filtros = ({}: Props) => {
-  const [select, setSelect] = useState(0);
+export const Filtros: React.FC<Props> = ({ setFliter }) => {
+  const [select, setSelect] = useState(3);
 
   function handleClick(position: number) {
+    switch (position) {
+      case 0:
+        setFliter("Gasto");
+        break;
+      case 1:
+        setFliter("Ingreso");
+        break;
+      case 2:
+        setFliter("Transferencia");
+        break;
+      case 3:
+        setFliter(null);
+        break;
+      case 4:
+        setFliter("Préstamo");
+        break;
+      default:
+        break;
+    }
     setSelect(position);
   }
 
   return (
-    <HStack space="xs" className="mt-4">
+    <HStack space="xs" className="mt-4 flex-wrap">
       <MyButton
         bgColor="bg-blue-500 "
         isActive={select === 3}
@@ -34,6 +56,13 @@ export const Filtros = ({}: Props) => {
         onPress={() => handleClick(1)}
       >
         ingreso
+      </MyButton>
+      <MyButton
+        bgColor="bg-purple-500 "
+        isActive={select === 4}
+        onPress={() => handleClick(4)}
+      >
+        Prestamo
       </MyButton>
       <MyButton
         bgColor="bg-yellow-500 "

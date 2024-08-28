@@ -9,7 +9,7 @@ import {
   WalletIcon,
 } from "@/components/Icons";
 import "@/global.css";
-import useDarkModeStore from "@/lib/stores/ThemeDarkMode";
+import useDarkModeStore from "@/lib/store/ThemeDarkMode";
 import * as SplashScreen from "expo-splash-screen";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.

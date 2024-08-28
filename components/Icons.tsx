@@ -1,3 +1,4 @@
+import { Icon } from "./ui/icon";
 import type { MyIconos } from "@/Types/types";
 import {
   ClipboardList,
@@ -19,7 +20,6 @@ import {
   Wallet,
   X,
 } from "lucide-react-native";
-import { Icon } from "./ui/icon";
 
 export interface Props {
   variant?: boolean;
@@ -113,9 +113,7 @@ export const FileEditIcon = ({ props, color, size = 24 }: Props) => {
 export const PiggyBankIcon = ({ props, color, size = 24 }: Props) => {
   if (color) return <PiggyBank color={color} size={size} {...props} />;
 
-  return (
-    <PiggyBank as={FileEdit} className={classColor} size={size} {...props} />
-  );
+  return <Icon as={PiggyBank} className={classColor} size={size} {...props} />;
 };
 
 export const CameraFlipIcon = ({ props, color, size = 24 }: Props) => {
@@ -165,7 +163,7 @@ export const ShopingIcon = ({ props, color, size = 24 }: Props) => {
 export const WalletIcon = ({ props, color, size = 24 }: Props) => {
   if (color) return <Pocket color={color} size={size} {...props} />;
 
-  return <Pocket as={Wallet} className={classColor} size={size} {...props} />;
+  return <Icon as={Pocket} className={classColor} size={size} {...props} />;
 };
 
 export const DarkModeIcon = ({ variant, props, color, size = 24 }: Props) => {

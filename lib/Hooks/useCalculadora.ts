@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 
+//TODO usar useReducer para la calculadora
 export const useCalculadora = () => {
   const [valuePantalla, setValuePantalla] = useState("");
 

@@ -1,33 +1,66 @@
 import { Calculadora } from "@/components/AddTransaction/Calculadora";
 import { DataInfo } from "@/components/AddTransaction/DataInfo";
+import { DescripcionAddTr } from "@/components/AddTransaction/DescripcionAddTr";
 import { SelectorDeTipos } from "@/components/AddTransaction/SelectorDeTipos";
 import { SelectorGroup } from "@/components/AddTransaction/SelectorGroup";
 import { Screen } from "@/components/Screen";
 import { Button, ButtonText } from "@/components/ui/button";
 import { HStack } from "@/components/ui/hstack";
-import { Text } from "@/components/ui/text";
+import { useMediaQuery } from "@/components/ui/utils/use-media-query";
 import { VStack } from "@/components/ui/vstack";
-import { type TiposDeTransacciones } from "@/Types/types";
-import { useState } from "react";
+import { router } from "expo-router";
+import { ScrollView } from "react-native";
 
 export default function Add() {
-  const [setselection, setSetselection] =
-    useState<TiposDeTransacciones>("Gasto");
+  const [isMobile] = useMediaQuery([
+    {
+      maxWidth: 480,
+    },
+    {
+      minWidth: 481,
+      maxWidth: 768,
+    },
+    {
+      minWidth: 769,
+      maxWidth: 1440,
+    },
+    {
+      minWidth: 1441,
+    },
+  ]);
+
+  const onSave = () => {
+    console.log("save");
+  };
   return (
     <Screen>
-      <VStack className="items-center">
-        <SelectorDeTipos
-          slection={setselection}
-          setselection={setSetselection}
-        />
-        <SelectorGroup />
-        <Text>Descryption</Text>
-        <Calculadora />
-        <DataInfo />
-        <Button>
-          <ButtonText>Agregar Transacción</ButtonText>
+      <HStack className="w-full items-center justify-between p-2">
+        <Button
+          onPress={() => {
+            router.back();
+          }}
+        >
+          <ButtonText>Cancera</ButtonText>
         </Button>
-      </VStack>
+        <Button onPress={onSave}>
+          <ButtonText>Guardar</ButtonText>
+        </Button>
+      </HStack>
+      <ScrollView>
+        <VStack
+          className={
+            "mx-2 h-full items-center gap-1" +
+            (isMobile ? "w-full" : "w-[400px]")
+          }
+        >
+          <SelectorDeTipos />
+          <SelectorGroup />
+          <DescripcionAddTr />
+
+          <Calculadora />
+          <DataInfo />
+        </VStack>
+      </ScrollView>
     </Screen>
   );
 }

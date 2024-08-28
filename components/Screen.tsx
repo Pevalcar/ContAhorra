@@ -1,8 +1,10 @@
 import { SafeAreaView } from "@/components/ui/safe-area-view";
-import useDarkModeStore from "@/lib/stores/ThemeDarkMode";
+import useDarkModeStore from "@/lib/store/ThemeDarkMode";
 import React, { ReactNode } from "react";
 import { StatusBar } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Footer } from "./Footer";
+import { DEVELOPMENT } from "@/lib/config";
 
 interface Props {
   children: ReactNode;
@@ -20,6 +22,7 @@ export function Screen({ children }: Props) {
       <StatusBar barStyle={isDark ? "light-content" : "dark-content"} />
 
       {children}
+      {DEVELOPMENT && <Footer></Footer>}
     </SafeAreaView>
   );
 }

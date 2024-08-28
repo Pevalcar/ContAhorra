@@ -4,7 +4,7 @@ import { Drawer } from "expo-router/drawer";
 
 import "@/global.css";
 import { SessionProvider } from "@/lib/sesionprovider/ctx";
-import useDarkModeStore from "@/lib/stores/ThemeDarkMode";
+import useDarkModeStore from "@/lib/store/ThemeDarkMode";
 import {
   DarkTheme,
   DefaultTheme,
@@ -59,9 +59,7 @@ export default function RootLayout() {
 
           <Stack.Screen
             name="add_tansaction"
-            options={{
-              title: "Agregar transacción",
-            }}
+            options={{ headerShown: false }}
           />
         </Stack>
       </ThemeProvider>

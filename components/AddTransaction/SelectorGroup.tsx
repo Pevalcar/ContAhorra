@@ -1,63 +1,73 @@
-import React, { useState } from "react";
-import { MyIcon } from "../Icons";
+import { type MyIconos } from "@/Types/types";
 import {
   Actionsheet,
   ActionsheetBackdrop,
   ActionsheetContent,
   ActionsheetDragIndicator,
   ActionsheetDragIndicatorWrapper,
+  ActionsheetFlatList,
   ActionsheetItem,
   ActionsheetItemText,
-  ActionsheetVirtualizedList,
 } from "@/components/ui/actionsheet";
+import { useTransactionToAdd } from "@/lib/Hooks/useTransactionToAdd";
+import React from "react";
+import { MyIcon } from "../Icons";
 import { HStack } from "../ui/hstack";
 import { Pressable } from "../ui/pressable";
 import { Text } from "../ui/text";
-import { type MyIconos } from "@/Types/types";
 
 interface Props {}
-export const SelectorGroup: React.FC<Props> = ({}) => {
-  const data = React.useMemo(
-    () =>
-      Array(50)
-        .fill(0)
-        .map((_, index) => "Item " + index),
-    [],
-  );
+export const SelectorGroup: React.FC<Props> = () => {
+  const {
+    cuentaSelect,
+    categoriSelect,
+    cuentasData,
+    categoriasData,
+    onCategoriaChange,
+    onCuentaChange,
+  } = useTransactionToAdd();
+
   return (
-    <HStack space="4xl" className="justify-center">
-      <MySelector name="Cuenta" data={data} />
-      <MySelector name="Categoria" data={data} />
+    <HStack space="4xl" className="justify-center w-full ">
+      <MySelector
+        name="Cuenta"
+        data={cuentasData}
+        selected={cuentaSelect}
+        idSelected={onCuentaChange}
+      />
+      <MySelector
+        selected={categoriSelect}
+        name="Categoria"
+        data={categoriasData}
+        idSelected={onCategoriaChange}
+      />
     </HStack>
   );
 };
+
 interface SelectorProps {
   name: string;
-  icon?: MyIconos;
+  icons?: MyIconos;
   data?: any[];
+  selected?: any;
+  idSelected: (id: any) => void;
 }
 
-//TODO agregar iconos y contenido de el cheet
-const MySelector = ({ name, icon = "Plus", data }: SelectorProps) => {
-  const [selecionado, setselecionado] = useState("sinelegir");
-
+const MySelector = ({ name, data, idSelected, selected }: SelectorProps) => {
   const [showActionsheet, setShowActionsheet] = React.useState(false);
   const handleClose = () => setShowActionsheet(false);
 
-  const getItem = (_data: string[], index: number) => ({
-    id: Math.random().toString(12).substring(0),
-    title: _data[index],
-  });
-  const getItemCount = (_data: string[]) => _data.length;
   const Item = React.useCallback(
-    ({ title }: { title: string }) => (
+    ({ title }: { title: any }) => (
       <ActionsheetItem
         onPress={() => {
-          setselecionado(title);
+          idSelected(title);
           handleClose();
         }}
       >
-        <ActionsheetItemText>{title}</ActionsheetItemText>
+        <MyIcon name={title.icon} />
+        <ActionsheetItemText>{title.id}</ActionsheetItemText>
+        <ActionsheetItemText>{title.name}</ActionsheetItemText>
       </ActionsheetItem>
     ),
     [handleClose],
@@ -65,19 +75,20 @@ const MySelector = ({ name, icon = "Plus", data }: SelectorProps) => {
   return (
     <>
       <Pressable
-        className="items-center justify-center pb-1"
+        className="items-center justify-center pb-1 overflow-hidden"
         onPress={() => setShowActionsheet(true)}
       >
         <Text>{name}</Text>
         <HStack
           space="sm"
-          className="w-auto items-center justify-center rounded-md border-2 border-outline-400 p-4"
+          className="w-auto items-center justify-center rounded-md border-2 border-outline-400 p-4 overflow-clip"
         >
-          <MyIcon name={icon} color="black" />
-          <Text>{selecionado}</Text>
+          <MyIcon name={selected ? selected.icon : "Plus"} color="black" />
+          <Text className="overflow-hidden">
+            {selected ? selected.name : "Sin seleccionar"}
+          </Text>
         </HStack>
       </Pressable>
-
       <Actionsheet
         isOpen={showActionsheet}
         onClose={handleClose}
@@ -88,14 +99,11 @@ const MySelector = ({ name, icon = "Plus", data }: SelectorProps) => {
           <ActionsheetDragIndicatorWrapper>
             <ActionsheetDragIndicator />
           </ActionsheetDragIndicatorWrapper>
-          <ActionsheetVirtualizedList
-            h="$56"
+          <ActionsheetFlatList
             data={data}
-            initialNumToRender={5}
-            renderItem={({ item }) => <Item title={item.title} />}
-            keyExtractor={(item) => item.id}
-            getItemCount={getItemCount}
-            getItem={getItem}
+            initialNumToRender={9}
+            renderItem={({ item }) => <Item title={item} />}
+            keyExtractor={(item) => (item as any).id as string}
           />
         </ActionsheetContent>
       </Actionsheet>
