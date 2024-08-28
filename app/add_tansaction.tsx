@@ -8,30 +8,13 @@ import { Button, ButtonText } from "@/components/ui/button";
 import { HStack } from "@/components/ui/hstack";
 import { useMediaQuery } from "@/components/ui/utils/use-media-query";
 import { VStack } from "@/components/ui/vstack";
+import { useTransactionToAdd } from "@/lib/Hooks/useTransactionToAdd";
 import { router } from "expo-router";
 import { ScrollView } from "react-native";
 
 export default function Add() {
-  const [isMobile] = useMediaQuery([
-    {
-      maxWidth: 480,
-    },
-    {
-      minWidth: 481,
-      maxWidth: 768,
-    },
-    {
-      minWidth: 769,
-      maxWidth: 1440,
-    },
-    {
-      minWidth: 1441,
-    },
-  ]);
+  const { saveTransaction, isMobile } = useTransactionToAdd();
 
-  const onSave = () => {
-    console.log("save");
-  };
   return (
     <Screen>
       <HStack className="w-full items-center justify-between p-2">
@@ -42,7 +25,7 @@ export default function Add() {
         >
           <ButtonText>Cancera</ButtonText>
         </Button>
-        <Button onPress={onSave}>
+        <Button onPress={saveTransaction}>
           <ButtonText>Guardar</ButtonText>
         </Button>
       </HStack>

@@ -1,9 +1,4 @@
-import type {
-  Categoria,
-  Cuenta,
-  TiposDeTransacciones,
-  Transaccion,
-} from "@/Types/types";
+import type { Categoria, Cuenta, TiposDeTransacciones } from "@/Types/types";
 import * as Crypto from "expo-crypto";
 import { create } from "zustand";
 
@@ -12,10 +7,15 @@ interface ITransaccionSate {
   cuentaSelect: Cuenta | null;
   type: TiposDeTransacciones;
   description: string;
+  amount: number;
+  date: Date;
   setCategoriaId: (id: Categoria) => void;
   setCuentaId: (id: Cuenta) => void;
   setType: (type: TiposDeTransacciones) => void;
+  setAmount: (amount: number) => void;
   setDescription: (description: string) => void;
+  setDate: (date: Date) => void;
+  reset: () => void;
 }
 
 export const useTransactionToADDState = create<ITransaccionSate>((set) => ({
@@ -23,7 +23,8 @@ export const useTransactionToADDState = create<ITransaccionSate>((set) => ({
   cuentaSelect: null,
   type: "Gasto",
   description: "",
-
+  amount: 0,
+  date: new Date(),
   setCuentaId: (id: Cuenta) => {
     set({ cuentaSelect: id });
   },
@@ -37,46 +38,20 @@ export const useTransactionToADDState = create<ITransaccionSate>((set) => ({
   setDescription: (description: string) => {
     set({ description: description });
   },
-}));
-
-type ITransactionToAddStores = {
-  transacction: Transaccion;
-  setCategoriaId: (id: Categoria) => void;
-  setCuentaId: (id: Cuenta) => void;
-  setType: (type: TiposDeTransacciones) => void;
-  setDescription: (description: string) => void;
-  setAmount: (amount: number) => void;
-};
-
-export const useTransactionToAddStore = create<ITransactionToAddStores>(
-  (set, get) => ({
-    transacction: {
-      title: "",
-      account: "0",
-      category: "0",
+  setAmount: (amount: number) => {
+    set({ amount: amount });
+  },
+  setDate: (date: Date) => {
+    set({ date: date });
+  },
+  reset: () => {
+    set({
+      cuentaSelect: null,
+      categoriSelect: null,
       type: "Gasto",
       description: "",
-      balance: 0,
-      date: "",
-      id: Crypto.randomUUID(),
-    },
-    setCuentaId: (id: Cuenta) => {
-      set({ transacction: { ...get().transacction, account: id.id } });
-    },
-    setCategoriaId: (id: Categoria) => {
-      set({ transacction: { ...get().transacction, category: id.id } });
-    },
-    setType: (type: TiposDeTransacciones) => {
-      set({ transacction: { ...get().transacction, type: type } });
-    },
-
-    setDescription: (description: string) => {
-      set({
-        transacction: { ...get().transacction, description: description },
-      });
-    },
-    setAmount: (amount: number) => {
-      set({ transacction: { ...get().transacction, balance: amount } });
-    },
-  }),
-);
+      amount: 0,
+      date: new Date(),
+    });
+  },
+}));

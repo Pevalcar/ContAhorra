@@ -1,15 +1,70 @@
-import { useRef, useState } from "react";
+import { DEVELOPMENT } from "../config";
+import { useTransactionToADDState } from "../store/TransactionToAddStore";
+import { useTransactionToAdd } from "./useTransactionToAdd";
+import { useEffect, useRef, useState } from "react";
 
 //TODO usar useReducer para la calculadora
 export const useCalculadora = () => {
   const [valuePantalla, setValuePantalla] = useState("");
-
+  const sign = useRef("");
+  const firstValue = useRef("");
+  const secondValue = useRef("");
   const prevValue = useRef("");
   const resultDado = useRef(false);
+  const { setAmount, amount } = useTransactionToAdd();
+
+  useEffect(() => {
+    setAmount(parseFloat(valuePantalla));
+  }, [valuePantalla]);
+
+  useEffect(() => {
+    if (!amount) return;
+
+    setValuePantalla(amount.toString());
+  }, []);
+
+  // DEVELOPMENT
+  //   ? console.log(
+  //       " valuePantalla",
+  //       valuePantalla,
+  //       " firstValue",
+  //       firstValue.current,
+  //       " secondValue",
+  //       secondValue.current,
+  //       " sign",
+  //       sign.current,
+  //     )
+  //   : "";
+
+  function setSign(value: string) {
+    if (value === "=") {
+      calcular();
+      return;
+    }
+    if (firstValue.current === "") {
+      if (value === "-" || value === "+") {
+        setValuePantalla(value);
+        return;
+      }
+    } else if (secondValue.current === "") {
+      sign.current = value;
+      if (ifLastValueIsOperator(valuePantalla)) {
+        setValuePantalla((prevValue) => prevValue.slice(0, -1) + value);
+        return;
+      }
+      setValuePantalla((prevValue) => prevValue + value);
+      resultDado.current = false;
+      return;
+    }
+  }
 
   function reset() {
     setValuePantalla("");
     prevValue.current = "";
+    firstValue.current = "";
+    secondValue.current = "";
+    sign.current = "";
+    resultDado.current = false;
   }
 
   function calcular() {
@@ -17,8 +72,13 @@ export const useCalculadora = () => {
     if (valuePantalla === "Error") return;
     if (valuePantalla === prevValue.current) return;
     try {
-      setValuePantalla(eval(valuePantalla).toString());
-      prevValue.current = valuePantalla;
+      setValuePantalla((prev) => {
+        const lastValue = eval(prev).toString();
+        firstValue.current = lastValue;
+        secondValue.current = "";
+        prevValue.current = lastValue;
+        return lastValue;
+      });
       resultDado.current = true;
     } catch (error) {
       setValuePantalla("Error");
@@ -26,49 +86,41 @@ export const useCalculadora = () => {
       resultDado.current = true;
     }
   }
-  //TODO agregar soporte teclado para el desktop de la calculadora
-  //TODO si das + o - y luego * o / se borra el + o - y se reemplasa por * o / que esta mal
 
   function onHandlePress(value: string | number) {
     if (resultDado.current) {
-      resultDado.current = false;
-      if (isOperator(value)) {
-        setValuePantalla((prevValue) => prevValue + value);
-        return;
-      }
-      reset();
-      setValuePantalla(value.toString());
+      setValuePantalla(() => {
+        resultDado.current = false;
+        sign.current = "";
+        return value.toString();
+      });
       return;
     }
-    if (value === "=") {
-      calcular();
+    if (sign.current === "") {
+      setValuePantalla((prevValue) => {
+        const lastValue = prevValue + value;
+        firstValue.current = lastValue;
+        return lastValue;
+      });
+      return;
+    } else {
+      setValuePantalla((prevValue) => {
+        const lastValue = prevValue + value;
+        secondValue.current = lastValue;
+        return lastValue;
+      });
       return;
     }
-    if (isOperator(value)) {
-      if (entWithOperator(valuePantalla)) {
-        return setValuePantalla((prevValue) => prevValue.slice(0, -1) + value);
-      }
-    }
-    if (valuePantalla === "" && (value === "*" || value === "/")) {
-      return;
-    }
-
-    setValuePantalla((prevValue) => prevValue + value);
   }
-
   return {
     valuePantalla,
     setValuePantalla: onHandlePress,
     reset,
+    setSign,
   };
 };
 
-const isOperator = (value: string | number) => {
-  if (typeof value === "number") return false;
-  return ["+", "-", "*", "/"].includes(value);
-};
-
-const entWithOperator = (value: string) => {
+function ifLastValueIsOperator(value: string) {
   const lastValue = value.slice(-1);
-  return isOperator(lastValue);
-};
+  return ["+", "-", "*", "/"].includes(lastValue);
+}

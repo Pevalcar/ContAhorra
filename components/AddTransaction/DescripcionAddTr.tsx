@@ -10,10 +10,12 @@ export const DescripcionAddTr: React.FC<Props> = ({}) => {
     useTransactionToAdd();
 
   return (
-    <Input className="my-2 w-full sm:w-[400px] h-[80px]">
+    <Input className="my-2 w-full sm:w-[400px] h-[80px] text-sta">
       <InputField
+        className="w-full h-full"
         placeholder="Description"
         value={text}
+        multiline
         onChange={(e) => setText(e.nativeEvent.text)}
       />
     </Input>

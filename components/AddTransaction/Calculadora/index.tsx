@@ -8,37 +8,84 @@ import { View } from "react-native";
 
 interface Props {}
 
-const botones = [
-  ["+", 7, 8, 9],
-  ["-", 4, 5, 6],
-  ["*", 1, 2, 3],
-  ["/", 0, ".", "="],
-];
-
 export const Calculadora: React.FC<Props> = ({}) => {
-  const { valuePantalla, setValuePantalla, reset } = useCalculadora();
-  //TODO estilar mejor la calcuiladora
+  const { valuePantalla, setValuePantalla, reset, setSign } = useCalculadora();
+  // DEVELOPMENT
+  //   ? console.log(
+  //       " valuePantalla",
+  //       valuePantalla,
+  //       " firstValue",
+  //       firstValue.current,
+  //       " secondValue",
+  //       secondValue.current,
+  //       " sign",
+  //       sign.current,
+  //     )
+  //   : "";
+
   return (
     <View className="w-full justify-center gap-1">
       <Pantalla onDeletePress={reset} className="col-span-4">
         {valuePantalla}
       </Pantalla>
+      <HStack className="justify-center gap-1">
+        <BotonCalculadoraResaltado onPress={setSign} variant>
+          +
+        </BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={setValuePantalla}>
+          7
+        </BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={setValuePantalla}>
+          8
+        </BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={setValuePantalla}>
+          9
+        </BotonCalculadoraResaltado>
+      </HStack>
 
-      {botones.map((row, index) => {
-        return (
-          <HStack key={index} className="justify-center gap-1">
-            {row.map((value, index) => (
-              <BotonCalculadoraResaltado
-                key={index}
-                onPress={() => setValuePantalla(value)}
-                variant={typeof value !== "number"}
-              >
-                {value}
-              </BotonCalculadoraResaltado>
-            ))}
-          </HStack>
-        );
-      })}
+      <HStack className="justify-center gap-1">
+        <BotonCalculadoraResaltado onPress={setSign} variant>
+          -
+        </BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={setValuePantalla}>
+          4
+        </BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={setValuePantalla}>
+          5
+        </BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={setValuePantalla}>
+          6
+        </BotonCalculadoraResaltado>
+      </HStack>
+
+      <HStack className="justify-center gap-1">
+        <BotonCalculadoraResaltado onPress={setSign} variant>
+          *
+        </BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={setValuePantalla}>
+          1
+        </BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={setValuePantalla}>
+          2
+        </BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={setValuePantalla}>
+          3
+        </BotonCalculadoraResaltado>
+      </HStack>
+      <HStack className="justify-center gap-1">
+        <BotonCalculadoraResaltado onPress={setSign} variant>
+          /
+        </BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={setValuePantalla}>
+          0
+        </BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={setValuePantalla}>
+          .
+        </BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={setSign} variant>
+          =
+        </BotonCalculadoraResaltado>
+      </HStack>
     </View>
   );
 };
@@ -57,7 +104,7 @@ const Pantalla: React.FC<PantallaProps> = ({
 }) => {
   return (
     <View
-      className={"flex h-14 w-full flex-row rounded-lg border " + className}
+      className={"flex h-20 w-full flex-row rounded-lg border " + className}
       {...props}
     >
       <Heading className="mr-1 h-full flex-1 text-right align-middle text-3xl">
@@ -74,7 +121,7 @@ interface BotonProps {
   children?: React.ReactNode;
   variant?: boolean;
   className?: string;
-  onPress?: () => void;
+  onPress?: (value: string) => void;
 }
 
 const BotonCalculadoraResaltado: React.FC<BotonProps> = ({
@@ -85,9 +132,9 @@ const BotonCalculadoraResaltado: React.FC<BotonProps> = ({
 }) => {
   return (
     <Button
-      onPress={() => onPress()}
+      onPress={() => onPress(children?.toString() || "")}
       variant={variant ? "solid" : "outline"}
-      className="h-16 flex-1 active:bg-secondary-200"
+      className="h-20 flex-1 active:bg-secondary-200"
       {...props}
     >
       <ButtonText className="text-center">

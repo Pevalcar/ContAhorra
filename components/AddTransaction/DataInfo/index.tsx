@@ -1,24 +1,21 @@
 import { Divider } from "@/components/ui/divider";
 import { HStack } from "@/components/ui/hstack";
 import { Text } from "@/components/ui/text";
+import { useTransactionToAdd } from "@/lib/Hooks/useTransactionToAdd";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import React, { useEffect, useState } from "react";
 import { Pressable } from "react-native";
 
 interface Props {}
 
-export const DataInfo = ({}: Props) => {
-  const [date, setDate] = useState(new Date(1598051730000));
+const useDate = () => {
+  const [date, setDate] = useState<Date>(new Date());
+  const { currentDate, onDateChange } = useTransactionToAdd();
 
-  useEffect(() => {
-    setDate(new Date());
-  }, []);
-
-  const onChange = (event: any, selectedDate: any) => {
-    const currentDate = selectedDate;
-    setDate(currentDate);
+  const onChange = (_: any, selectedDate: any) => {
+    setDate(selectedDate);
+    onDateChange(selectedDate);
   };
-
   const showMode = (currentMode: any) => {
     DateTimePickerAndroid.open({
       value: date,
@@ -35,6 +32,16 @@ export const DataInfo = ({}: Props) => {
   const showTimepicker = () => {
     showMode("time");
   };
+
+  useEffect(() => {
+    currentDate ? onChange("", currentDate) : onChange("", new Date());
+  }, []);
+
+  return { date, showDatepicker, showTimepicker };
+};
+
+export const DataInfo = ({}: Props) => {
+  const { date, showDatepicker, showTimepicker } = useDate();
 
   return (
     <HStack className="w-full items-center justify-between p-2">

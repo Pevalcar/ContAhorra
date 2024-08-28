@@ -1,9 +1,9 @@
 export type Transaccion = {
   readonly id: string;
-  readonly title: string;
+  title?: string;
   balance: number;
   type: TiposDeTransacciones;
-  date: string;
+  date: number;
   description?: string;
   category?: string;
   account?: string;

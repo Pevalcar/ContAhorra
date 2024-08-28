@@ -3,15 +3,13 @@ import { create } from "zustand";
 interface DebugerProps {
   title?: string;
   message: string;
-  setTitle: (title: string) => void;
-  setMessage: (message: string) => void;
+  setMessage: (title: string, message: string) => void;
 }
 
 const useDebuger = create<DebugerProps>()((set) => ({
   message: "",
   title: "",
-  setTitle: (title: string) => set({ title }),
-  setMessage: (message: string) => set({ message }),
+  setMessage: (title: string, message: string) => set({ title, message }),
 }));
 
 export default useDebuger;
