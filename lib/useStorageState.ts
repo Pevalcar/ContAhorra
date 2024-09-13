@@ -1,4 +1,5 @@
 import { Transaccion } from "@/Types/types";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as SecureStore from "expo-secure-store";
 import * as React from "react";
 import { Platform } from "react-native";
@@ -69,3 +70,28 @@ export function useStorageState(key: string): UseStateHook<string> {
 
   return [state, setValue];
 }
+
+export const initialState = async (key: string, defaultValue: any) => {
+  try {
+    const value = await AsyncStorage.getItem(key);
+    return value ? JSON.parse(value) : defaultValue;
+  } catch (e) {
+    // handle error
+    return defaultValue;
+  }
+};
+
+export const storeData = async ({
+  key,
+  value,
+}: {
+  key: string;
+  value: any;
+}) => {
+  try {
+    const jsonValue = JSON.stringify(value);
+    await AsyncStorage.setItem(key, jsonValue);
+  } catch (e) {
+    // handle error
+  }
+};

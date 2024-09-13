@@ -1,8 +1,11 @@
+import { INITIALCATEGORY, INITIALCUENTA } from "../config";
 import { useCategoriaStore } from "../store/CategoriaStore";
 import { useCuentasStore } from "../store/CuentasStore";
 import { useTransaccionesStore } from "../store/TransaccionesStore";
 import { useTransactionToADDState } from "../store/TransactionToAddStore";
+import { initialState } from "../useStorageState";
 import useDebuger from "./useDebuger";
+import { useMyToast } from "./useToast";
 import type {
   Categoria,
   Cuenta,
@@ -52,6 +55,17 @@ export const useTransactionToAdd = () => {
     description,
     amount,
   } = useTransactionToADDState((state) => state);
+  const { handleToast } = useMyToast();
+
+  React.useEffect(() => {
+    const loadInitialData = async () => {
+      const initialCategory = await initialState(INITIALCATEGORY, null);
+      const initialCuenta = await initialState(INITIALCUENTA, null);
+      if (initialCategory) setCategoriaId(initialCategory);
+      if (initialCuenta) setCuentaId(initialCuenta);
+    };
+    loadInitialData();
+  }, [setCategoriaId, setCuentaId]);
 
   React.useEffect(() => {
     reset();
@@ -71,6 +85,14 @@ export const useTransactionToAdd = () => {
   const onAmountChange = (amount: number) => setAmount(amount);
 
   function saveTransaction() {
+    if (!amount) {
+      handleToast("Error de transacción", "Inserte una cantidad valida");
+      return;
+    }
+    if (!description) {
+      handleToast("Error de transacción", "Inserte una descripcion valida");
+      return;
+    }
     const transaccions: Transaccion = {
       account: cuentaSelect?.id,
       category: categoriSelect?.id,

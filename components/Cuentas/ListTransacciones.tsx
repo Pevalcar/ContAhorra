@@ -1,26 +1,38 @@
 import { TextCurrency } from "../TextCurrency";
 import { Card } from "../ui/card";
+import { Divider } from "../ui/divider";
 import { Text } from "../ui/text";
 import { type Transaccion } from "@/Types/types";
 import { Avatar, AvatarFallbackText } from "@/components/ui/avatar";
 import { Heading } from "@/components/ui/heading";
 import { VStack } from "@/components/ui/vstack";
 import { useTransaccionesStore } from "@/lib/store/TransaccionesStore";
-import React from "react";
+import React, { useRef, useState } from "react";
 import { FlatList, Pressable, ScrollView } from "react-native";
 
 interface Props {
   list: Transaccion[];
 }
 export const ListTransacciones = ({ list }: Props) => {
+  const lasDates = useRef<number>(0);
+
+  const isEqual = (date1: any, date2: any) => {
+    const newDate = new Date(date1);
+    const newDate2 = new Date(date2);
+    lasDates.current = newDate.getTime();
+    return newDate.getTime() === newDate2.getTime();
+  };
+
   return (
     <FlatList
       data={list}
       renderItem={({ item, index }) => (
         <>
-          {item.type === "Transferencia" && <Text>Transferencia</Text>}
-          {item.type === "Ingreso" && <Text>Ingreso</Text>}
-          {item.type === "Gasto" && <Text>Gasto</Text>}
+          {isEqual(item.date, lasDates.current) ? null : (
+            <DateHeader date={item.date} />
+          )}
+
+          <Divider />
           <AccordingItem item={item} index={index} />
         </>
       )}
@@ -28,6 +40,7 @@ export const ListTransacciones = ({ list }: Props) => {
     />
   );
 };
+
 interface ItemProps {
   item: Transaccion;
   index: number;
@@ -81,5 +94,17 @@ const AccordingItem = ({ item, index }: ItemProps) => {
         <Text>Delete</Text>
       </Pressable>
     </Card>
+  );
+};
+
+const DateHeader = ({ date }: { date: any }) => {
+  const newDate = new Date(date);
+  return (
+    <VStack className="flex-row items-center justify-between">
+      <Text className="text-typography-500">{newDate.getDate()}</Text>
+      <Text className="text-typography-500">
+        {newDate.toLocaleDateString().split("/")[1]}
+      </Text>
+    </VStack>
   );
 };

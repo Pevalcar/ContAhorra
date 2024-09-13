@@ -6,7 +6,6 @@ import { SelectorGroup } from "@/components/AddTransaction/SelectorGroup";
 import { Screen } from "@/components/Screen";
 import { Button, ButtonText } from "@/components/ui/button";
 import { HStack } from "@/components/ui/hstack";
-import { useMediaQuery } from "@/components/ui/utils/use-media-query";
 import { VStack } from "@/components/ui/vstack";
 import { useTransactionToAdd } from "@/lib/Hooks/useTransactionToAdd";
 import { router } from "expo-router";

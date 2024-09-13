@@ -3,12 +3,14 @@ import { Button, ButtonText } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { HStack } from "@/components/ui/hstack";
 import { Pressable } from "@/components/ui/pressable";
+import { Text } from "@/components/ui/text";
 import { useCalculadora } from "@/lib/Hooks/useCalculadora";
+import { useEffect } from "react";
 import { View } from "react-native";
 
 interface Props {}
 
-export const Calculadora: React.FC<Props> = ({}) => {
+export const Calculadora: React.FC<Props> = () => {
   const { valuePantalla, setValuePantalla, reset, setSign } = useCalculadora();
   // DEVELOPMENT
   //   ? console.log(
@@ -28,6 +30,7 @@ export const Calculadora: React.FC<Props> = ({}) => {
       <Pantalla onDeletePress={reset} className="col-span-4">
         {valuePantalla}
       </Pantalla>
+
       <HStack className="justify-center gap-1">
         <BotonCalculadoraResaltado onPress={setSign} variant>
           +
@@ -93,6 +96,7 @@ export const Calculadora: React.FC<Props> = ({}) => {
 type PantallaProps = {
   className?: string;
   children?: React.ReactNode;
+  isError?: boolean;
   onDeletePress?: () => void;
 };
 

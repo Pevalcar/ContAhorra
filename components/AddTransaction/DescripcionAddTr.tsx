@@ -5,7 +5,7 @@ import React from "react";
 
 interface Props {}
 
-export const DescripcionAddTr: React.FC<Props> = ({}) => {
+export const DescripcionAddTr: React.FC<Props> = () => {
   const { description: text, onDescriptionChange: setText } =
     useTransactionToAdd();
 

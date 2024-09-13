@@ -1,5 +1,6 @@
+import { INITIALCATEGORY, INITIALCUENTA } from "../config";
+import { storeData } from "../useStorageState";
 import type { Categoria, Cuenta, TiposDeTransacciones } from "@/Types/types";
-import * as Crypto from "expo-crypto";
 import { create } from "zustand";
 
 interface ITransaccionSate {
@@ -26,15 +27,16 @@ export const useTransactionToADDState = create<ITransaccionSate>((set) => ({
   amount: 0,
   date: new Date(),
   setCuentaId: (id: Cuenta) => {
+    storeData({ key: INITIALCUENTA, value: id });
     set({ cuentaSelect: id });
   },
   setCategoriaId: (id: Categoria) => {
+    storeData({ key: INITIALCATEGORY, value: id });
     set({ categoriSelect: id });
   },
   setType: (type: TiposDeTransacciones) => {
     set({ type: type });
   },
-
   setDescription: (description: string) => {
     set({ description: description });
   },

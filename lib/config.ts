@@ -13,3 +13,6 @@ export const LOCAL_DB_CATEGORIAS = "__categories__";
 export const DEFAULT_STATE: Transaccion[] = DB_Transacciones;
 export const DEFAULT_STATE_CATEGORIAS: Categoria[] = DB_Categorias;
 export const DEFAULT_STATE_CUENTAS: Cuenta[] = DB_Cuentas;
+
+export const INITIALCATEGORY = "INITIALCATEGORY";
+export const INITIALCUENTA = "INITIALCUENTA";
