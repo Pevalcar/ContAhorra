@@ -1,0 +1,98 @@
+{
+  "ABOUT": {
+    "DESCRIPTION": "Acerca de"
+  },
+  "about": {
+    "subtitle": "Acerca de",
+    "title": "Acerca de"
+  },
+  "blog": {
+    "description": "Blog",
+    "subtitle": "Blog",
+    "title": "Blog"
+  },
+  "change_language": "Cambiar idioma a: ",
+  "contact": {
+    "description": "Contacto",
+    "subtitle": "Contacto",
+    "title": "Contacto"
+  },
+  "faq": {
+    "description": "FAQ",
+    "subtitle": "FAQ",
+    "title": "FAQ"
+  },
+  "help": {
+    "description": "Ayuda",
+    "subtitle": "Ayuda",
+    "title": "Ayuda"
+  },
+  "home": {
+    "add_transaction": "Añadir transacción",
+    "description": "Inicio",
+    "history": "Historial",
+    "subtitle": "Inicio",
+    "title": "Inicio"
+  },
+  "HOME": {
+    "FILTRO": {
+      "GASTO": "Gasto",
+      "INGRESO": "Ingreso",
+      "PRESTAMO": "Prestamo",
+      "TRANSFERENCIA": "Transferencia"
+    },
+    "SALDO": "Saldo"
+  },
+  "logout": {
+    "description": "Cerrar sesión",
+    "subtitle": "Cerrar sesión",
+    "title": "Cerrar sesión"
+  },
+  "menu": {
+    "about": "Acerca de",
+    "blog": "Blog",
+    "contact": "Contacto",
+    "faq": "FAQ",
+    "help": "Ayuda",
+    "home": "Inicio",
+    "logout": "Cerrar sesión",
+    "privacy": "Privacidad",
+    "services": "Servicios",
+    "terms": "Términos"
+  },
+  "privacy": {
+    "description": "Privacidad",
+    "subtitle": "Privacidad",
+    "title": "Privacidad"
+  },
+  "services": {
+    "description": "Servicios",
+    "subtitle": "Servicios",
+    "title": "Servicios"
+  },
+  "terms": {
+    "description": "Términos",
+    "subtitle": "Términos",
+    "title": "Términos"
+  },
+  "FILTROTODO": "Todo",
+  "saldo": "Saldo",
+  "name": "Nombre",
+  "tell-a-friend": "Cuéntale a un amigo",
+  "sign-out": "Desconectar",
+  "cuentas": "Cuentas",
+  "pocket": "Bolsillo",
+  "reports": "Reportes",
+  "config": "Configuración",
+  "back": "Atrás",
+  "save": "Guardar",
+  "HOME.FILTRO.PRESTAMO": "Préstamo",
+  "HOME.FILTRO.INGRESO": "Ingreso",
+  "HOME.FILTRO.GASTO": "Gasto",
+  "HOME.FILTRO.TRANSFERENCIA": "Transferencia",
+  "cuenta": "Cuenta",
+  "categoria": "Categoría",
+  "description": "Description",
+  "modo-oscuro": "Modo oscuro",
+  "congiguracion": "Congiguracion"
+}

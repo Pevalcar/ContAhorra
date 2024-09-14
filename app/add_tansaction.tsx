@@ -9,11 +9,12 @@ import { HStack } from "@/components/ui/hstack";
 import { VStack } from "@/components/ui/vstack";
 import { useTransactionToAdd } from "@/lib/Hooks/useTransactionToAdd";
 import { router } from "expo-router";
+import { useTranslation } from "react-i18next";
 import { ScrollView } from "react-native";
 
 export default function Add() {
   const { saveTransaction, isMobile } = useTransactionToAdd();
-
+  const { t } = useTranslation();
   return (
     <Screen>
       <HStack className="w-full items-center justify-between p-2">
@@ -22,10 +23,10 @@ export default function Add() {
             router.back();
           }}
         >
-          <ButtonText>Cancera</ButtonText>
+          <ButtonText>{t("back")}</ButtonText>
         </Button>
         <Button onPress={saveTransaction}>
-          <ButtonText>Guardar</ButtonText>
+          <ButtonText>{t("save")}</ButtonText>
         </Button>
       </HStack>
       <ScrollView>

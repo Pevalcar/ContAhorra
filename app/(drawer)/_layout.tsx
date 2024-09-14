@@ -1,6 +1,3 @@
-import { Drawer } from "expo-router/drawer";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-
 import CustomDrawer from "@/components/CustomDrawer";
 import {
   ListIcon,
@@ -10,13 +7,18 @@ import {
 } from "@/components/Icons";
 import "@/global.css";
 import useDarkModeStore from "@/lib/store/ThemeDarkMode";
+import { Drawer } from "expo-router/drawer";
 import * as SplashScreen from "expo-splash-screen";
+import { useTranslation } from "react-i18next";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const darkMode = useDarkModeStore((state) => state.darkMode);
+  const { t } = useTranslation();
+  const indexTitle = t("cuentas") as string;
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -27,7 +29,7 @@ export default function RootLayout() {
         <Drawer.Screen
           name="index"
           options={{
-            title: "Cuentas",
+            title: indexTitle,
             drawerIcon: ({ color, size }) => (
               <PiggyBankIcon color={color} size={size} />
             ),
@@ -36,7 +38,7 @@ export default function RootLayout() {
         <Drawer.Screen
           name="bolsillo"
           options={{
-            title: "Bolsillos",
+            title: t("pocket"),
             drawerIcon: ({ color, size }) => (
               <WalletIcon color={color} size={size} />
             ),
@@ -45,7 +47,7 @@ export default function RootLayout() {
         <Drawer.Screen
           name="reports"
           options={{
-            title: "Reportes",
+            title: t("reports"),
             drawerIcon: ({ color, size }) => (
               <ListIcon color={color} size={size} />
             ),
@@ -54,7 +56,7 @@ export default function RootLayout() {
         <Drawer.Screen
           name="config"
           options={{
-            title: "Configuraciones",
+            title: t("config"),
             drawerIcon: ({ color, size }) => (
               <SettingsIcon color={color} size={size} />
             ),

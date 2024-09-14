@@ -2,7 +2,7 @@ import { Button, ButtonText } from "../ui/button";
 import { HStack } from "../ui/hstack";
 import { TiposDeTransacciones } from "@/Types/types";
 import { useState } from "react";
-import { Text, View } from "react-native";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   setFliter: React.Dispatch<React.SetStateAction<TiposDeTransacciones | null>>;
@@ -10,7 +10,7 @@ interface Props {
 
 export const Filtros: React.FC<Props> = ({ setFliter }) => {
   const [select, setSelect] = useState(3);
-
+  const { t } = useTranslation();
   function handleClick(position: number) {
     switch (position) {
       case 0:
@@ -41,35 +41,35 @@ export const Filtros: React.FC<Props> = ({ setFliter }) => {
         isActive={select === 3}
         onPress={() => handleClick(3)}
       >
-        Todo
+        {t("FILTROTODO")}
       </MyButton>
       <MyButton
         bgColor="bg-red-500 "
         isActive={select === 0}
         onPress={() => handleClick(0)}
       >
-        Gasto
+        {t("HOME.FILTRO.GASTO")}
       </MyButton>
       <MyButton
         bgColor="bg-green-500 "
         isActive={select === 1}
         onPress={() => handleClick(1)}
       >
-        ingreso
+        {t("HOME.FILTRO.INGRESO")}
       </MyButton>
       <MyButton
         bgColor="bg-purple-500 "
         isActive={select === 4}
         onPress={() => handleClick(4)}
       >
-        Prestamo
+        {t("HOME.FILTRO.PRESTAMO")}
       </MyButton>
       <MyButton
         bgColor="bg-yellow-500 "
         isActive={select === 2}
         onPress={() => handleClick(2)}
       >
-        Transferencia
+        {t("HOME.FILTRO.TRANSFERENCIA")}
       </MyButton>
     </HStack>
   );

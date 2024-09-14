@@ -1,0 +1,98 @@
+{
+  "ABOUT": {
+    "DESCRIPTION": "About me"
+  },
+  "about": {
+    "subtitle": "About",
+    "title": "About"
+  },
+  "blog": {
+    "description": "Blog",
+    "subtitle": "Blog",
+    "title": "Blog"
+  },
+  "change_language": "Change language to: ",
+  "contact": {
+    "description": "Contact",
+    "subtitle": "Contact",
+    "title": "Contact"
+  },
+  "faq": {
+    "description": "FAQ",
+    "subtitle": "FAQ",
+    "title": "FAQ"
+  },
+  "help": {
+    "description": "Help",
+    "subtitle": "Help",
+    "title": "Help"
+  },
+  "home": {
+    "add_transaction": "Add transaction",
+    "description": "Home",
+    "history": "History",
+    "subtitle": "Home",
+    "title": "Home"
+  },
+  "HOME": {
+    "FILTRO": {
+      "GASTO": "Spent",
+      "INGRESO": "Income",
+      "PRESTAMO": "Prepayment",
+      "TRANSFERENCIA": "Transfer"
+    },
+    "SALDO": "Balances"
+  },
+  "logout": {
+    "description": "Logout",
+    "subtitle": "Logout",
+    "title": "Logout"
+  },
+  "menu": {
+    "about": "About",
+    "blog": "Blog",
+    "contact": "Contact",
+    "faq": "FAQ",
+    "help": "Help",
+    "home": "Home",
+    "logout": "Logout",
+    "privacy": "Privacy",
+    "services": "Services",
+    "terms": "Terms"
+  },
+  "privacy": {
+    "description": "Privacy",
+    "subtitle": "Privacy",
+    "title": "Privacy"
+  },
+  "services": {
+    "description": "Services",
+    "subtitle": "Services",
+    "title": "Services"
+  },
+  "terms": {
+    "description": "Terms",
+    "subtitle": "Terms",
+    "title": "Terms"
+  },
+  "FILTROTODO": "All",
+  "saldo": "Balance",
+  "name": "Name",
+  "tell-a-friend": "Tell a Friend",
+  "sign-out": "Sign Out",
+  "cuentas": "Count",
+  "pocket": "Pocket",
+  "reports": "Reports",
+  "config": "Config",
+  "back": "Back",
+  "save": "Save",
+  "HOME.FILTRO.PRESTAMO": "Loan",
+  "HOME.FILTRO.INGRESO": "Income",
+  "HOME.FILTRO.GASTO": "Spent",
+  "HOME.FILTRO.TRANSFERENCIA": "Transfer",
+  "cuenta": "Account",
+  "categoria": "Category",
+  "description": "Description",
+  "congiguracion": "Congiguration",
+  "modo-oscuro": "Dark mode"
+}

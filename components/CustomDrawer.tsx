@@ -1,24 +1,48 @@
-import {
-  View,
-  Text,
-  ImageBackground,
-  Image,
-  TouchableOpacity,
-  StyleSheet,
-  Switch,
-} from "react-native";
+import { Button, ButtonText } from "./ui/button";
+import { Ionicons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   DrawerContentScrollView,
   DrawerItemList,
 } from "@react-navigation/drawer";
-
-import { Feather, Ionicons } from "@expo/vector-icons";
+import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import {
+  Image,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 interface Props {
   props?: any;
 }
 
+//TODO modificar y mejorar el dawler
+
 const CustomDrawer = ({ props }: Props) => {
+  const { i18n, t } = useTranslation();
+
+  useEffect(() => {
+    const loadLanguage = async () => {
+      const savedLanguage = await AsyncStorage.getItem("language");
+      if (savedLanguage) {
+        i18n.changeLanguage(savedLanguage);
+      }
+    };
+    loadLanguage();
+  }, [i18n]);
+  const handleLanguageChange = () => {
+    AsyncStorage.setItem("language", i18n.language);
+    if (i18n.language === "es-CO") {
+      i18n.changeLanguage("en-US");
+    } else {
+      i18n.changeLanguage("es-CO");
+    }
+  };
+
   return (
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView
@@ -45,7 +69,7 @@ const CustomDrawer = ({ props }: Props) => {
               marginBottom: 5,
             }}
           >
-            Name
+            {t("name")}
           </Text>
         </ImageBackground>
         <View style={{ flex: 1, backgroundColor: "#fff", paddingTop: 10 }}>
@@ -60,6 +84,9 @@ const CustomDrawer = ({ props }: Props) => {
         }}
       ></View>
       <View style={{ padding: 20, borderTopWidth: 1, borderTopColor: "#ccc" }}>
+        <Button onPress={handleLanguageChange}>
+          <ButtonText>{t("change_language")}</ButtonText>
+        </Button>
         <TouchableOpacity onPress={() => {}} style={{ paddingVertical: 15 }}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Ionicons name="share-social-outline" size={22} />
@@ -70,7 +97,7 @@ const CustomDrawer = ({ props }: Props) => {
                 marginLeft: 5,
               }}
             >
-              Tell a Friend
+              {t("tell-a-friend")}
             </Text>
           </View>
         </TouchableOpacity>
@@ -84,7 +111,7 @@ const CustomDrawer = ({ props }: Props) => {
                 marginLeft: 5,
               }}
             >
-              Sign Out
+              {t("sign-out")}{" "}
             </Text>
           </View>
         </TouchableOpacity>

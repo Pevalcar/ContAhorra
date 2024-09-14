@@ -1,3 +1,7 @@
+import { MyIcon } from "../Icons";
+import { HStack } from "../ui/hstack";
+import { Pressable } from "../ui/pressable";
+import { Text } from "../ui/text";
 import { type MyIconos } from "@/Types/types";
 import {
   Actionsheet,
@@ -11,13 +15,11 @@ import {
 } from "@/components/ui/actionsheet";
 import { useTransactionToAdd } from "@/lib/Hooks/useTransactionToAdd";
 import React from "react";
-import { MyIcon } from "../Icons";
-import { HStack } from "../ui/hstack";
-import { Pressable } from "../ui/pressable";
-import { Text } from "../ui/text";
+import { useTranslation } from "react-i18next";
 
 interface Props {}
 export const SelectorGroup: React.FC<Props> = () => {
+  const { t } = useTranslation();
   const {
     cuentaSelect,
     categoriSelect,
@@ -34,13 +36,17 @@ export const SelectorGroup: React.FC<Props> = () => {
         data={cuentasData}
         selected={cuentaSelect}
         idSelected={onCuentaChange}
-      />
+      >
+        {t("cuenta")}
+      </MySelector>
       <MySelector
         selected={categoriSelect}
         name="Categoria"
         data={categoriasData}
         idSelected={onCategoriaChange}
-      />
+      >
+        {t("categoria")}
+      </MySelector>
     </HStack>
   );
 };
@@ -51,9 +57,16 @@ interface SelectorProps {
   data?: any[];
   selected?: any;
   idSelected: (id: any) => void;
+  children?: React.ReactNode;
 }
 
-const MySelector = ({ name, data, idSelected, selected }: SelectorProps) => {
+const MySelector = ({
+  name,
+  data,
+  idSelected,
+  selected,
+  children,
+}: SelectorProps) => {
   const [showActionsheet, setShowActionsheet] = React.useState(false);
   const handleClose = () => setShowActionsheet(false);
 
@@ -78,7 +91,7 @@ const MySelector = ({ name, data, idSelected, selected }: SelectorProps) => {
         className="items-center justify-center pb-1 overflow-hidden"
         onPress={() => setShowActionsheet(true)}
       >
-        <Text>{name}</Text>
+        <Text>{children}</Text>
         <HStack
           space="sm"
           className="w-auto items-center justify-center rounded-md border-2 border-outline-400 p-4 overflow-clip"

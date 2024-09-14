@@ -1,9 +1,6 @@
 import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { Drawer } from "expo-router/drawer";
-
 import "@/global.css";
-import { SessionProvider } from "@/lib/sesionprovider/ctx";
+import "@/i18n";
 import useDarkModeStore from "@/lib/store/ThemeDarkMode";
 import {
   DarkTheme,
@@ -14,17 +11,6 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
-import { DarkModeButon } from "@/components/DarkModeButon";
-import { Text } from "@/components/ui/text";
-import {
-  ListIcon,
-  PiggyBankIcon,
-  SettingsIcon,
-  WalletIcon,
-} from "@/components/Icons";
-import { Icon } from "@/components/ui/icon";
-import { PiggyBank, View } from "lucide-react-native";
-import CustomDrawer from "@/components/CustomDrawer";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
