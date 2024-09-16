@@ -70,11 +70,16 @@ interface ITransaccionesStore {
 export const useTransaccionesStore = create<ITransaccionesStore>(
   (set, get) => ({
     transacciones: initialState,
-    addTransaccion: (transaccion: Transaccion) => {
-      const { transacciones } = get();
-      const newState = [transaccion, ...transacciones];
-      saveState(newState);
-      set({ transacciones: newState });
+    addTransaccion: async (transaccion: Transaccion) => {
+      try {
+        const { transacciones } = get();
+        const newState = [transaccion, ...transacciones];
+        saveState(newState);
+        set({ transacciones: newState });
+      } catch (e) {
+        console.error("Error al guardar la transacción:", e);
+        throw e;
+      }
     },
     deleteTransaccion: (id: string) => {
       const { transacciones } = get();

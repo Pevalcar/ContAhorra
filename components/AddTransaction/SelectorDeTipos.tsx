@@ -13,7 +13,6 @@ interface Props {}
 export const SelectorDeTipos = ({}: Props) => {
   const { type, onTypeChange } = useTransactionToAdd();
   const { t } = useTranslation();
-
   return (
     <View className="mb-8 w-full flex-row justify-between rounded-md bg-gray-300 p-2 px-5 sm:w-[400px]">
       <MyButton title="Ingreso" selection={type} onPress={onTypeChange}>

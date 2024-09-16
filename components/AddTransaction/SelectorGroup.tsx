@@ -20,6 +20,7 @@ import { useTranslation } from "react-i18next";
 interface Props {}
 export const SelectorGroup: React.FC<Props> = () => {
   const { t } = useTranslation();
+
   const {
     cuentaSelect,
     categoriSelect,

@@ -8,6 +8,7 @@ import { VStack } from "@/components/ui/vstack";
 import { useSorterAndAgroopList } from "@/lib/Hooks/useSorterAndAgroopList";
 import { useTransaccionesStore } from "@/lib/store/TransaccionesStore";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Pressable, SectionList } from "react-native";
 
 interface Props {
@@ -75,7 +76,11 @@ const AccordingItem = ({ item, index }: ItemProps) => {
       </VStack>
       <TextCurrency
         sign
-        negative={item.type === "Gasto" || item.type === "Transferencia"}
+        negative={
+          item.type === "Gasto" ||
+          item.type === "Transferencia" ||
+          item.type === "Préstamo"
+        }
         size="sm"
         value={item.balance}
       />
@@ -87,12 +92,25 @@ const AccordingItem = ({ item, index }: ItemProps) => {
 };
 
 const DateHeader = ({ date }: { date: any }) => {
-  const newDate = new Date(date);
   return (
     <VStack className="flex-row items-center justify-between">
-      <Text className="text-typography-500">
-        {newDate.toLocaleDateString()}
-      </Text>
+      <Text className="text-typography-500">{FormatedLocale({ date })}</Text>
     </VStack>
   );
+};
+
+const FormatedLocale = ({ date }: { date: any }) => {
+  const { i18n } = useTranslation();
+  const newDate = new Date(date);
+  // ejemplo formato de fecha: Abr 03, Martes
+  let formatMount = newDate.toLocaleString(i18n.language, { month: "short" });
+  let formatDayWeek = newDate.toLocaleString(i18n.language, {
+    weekday: "long",
+  });
+
+  formatMount = `${formatMount.charAt(0).toUpperCase()}${formatMount.slice(1)}`;
+  formatDayWeek = `${formatDayWeek.charAt(0).toUpperCase()}${formatDayWeek.slice(1)}`;
+
+  const formated = `${formatMount} ${newDate.toLocaleString(i18n.language, { day: "numeric" })}, ${formatDayWeek}`;
+  return formated;
 };

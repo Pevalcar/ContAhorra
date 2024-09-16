@@ -15,6 +15,11 @@ import { ScrollView } from "react-native";
 export default function Add() {
   const { saveTransaction, isMobile } = useTransactionToAdd();
   const { t } = useTranslation();
+
+  const onSaveTransaction = async () => {
+    await saveTransaction();
+    router.back();
+  };
   return (
     <Screen>
       <HStack className="w-full items-center justify-between p-2">
@@ -25,7 +30,7 @@ export default function Add() {
         >
           <ButtonText>{t("back")}</ButtonText>
         </Button>
-        <Button onPress={saveTransaction}>
+        <Button onPress={onSaveTransaction}>
           <ButtonText>{t("save")}</ButtonText>
         </Button>
       </HStack>
@@ -39,7 +44,6 @@ export default function Add() {
           <SelectorDeTipos />
           <SelectorGroup />
           <DescripcionAddTr />
-
           <Calculadora />
           <DataInfo />
         </VStack>

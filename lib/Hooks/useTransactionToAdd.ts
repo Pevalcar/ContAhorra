@@ -14,6 +14,8 @@ import type {
 } from "@/Types/types";
 import { useMediaQuery } from "@/components/ui/utils/use-media-query";
 import * as Crypto from "expo-crypto";
+import { t } from "i18next";
+import { Award } from "lucide-react-native";
 import React from "react";
 
 export const useTransactionToAdd = () => {
@@ -84,27 +86,35 @@ export const useTransactionToAdd = () => {
   const onDateChange = (date: Date) => setDate(date);
   const onAmountChange = (amount: number) => setAmount(amount);
 
-  function saveTransaction() {
-    if (!amount) {
-      handleToast("Error de transacción", "Inserte una cantidad valida");
-      return;
+  async function saveTransaction() {
+    try {
+      if (!amount) {
+        handleToast("Error de transacción", "Inserte una cantidad válida");
+        throw new Error("Error de transacción");
+      }
+      if (!description) {
+        handleToast("Error de transacción", "Inserte una descripción válida");
+        throw new Error("Error de transacción");
+      }
+
+      const transaccions: Transaccion = {
+        account: cuentaSelect?.id,
+        category: categoriSelect?.id,
+        type: type,
+        description: description,
+        balance: amount,
+        date: currentDate.getTime(),
+        id: Crypto.randomUUID(),
+        title: description,
+      };
+
+      setMessage("Transacción", JSON.stringify(transaccions));
+      await agregarTransacciones(transaccions);
+      handleToast("Transacción", "Transacción guardada");
+    } catch (error) {
+      console.error("Error al guardar la transacción:", error);
+      throw error;
     }
-    if (!description) {
-      handleToast("Error de transacción", "Inserte una descripcion valida");
-      return;
-    }
-    const transaccions: Transaccion = {
-      account: cuentaSelect?.id,
-      category: categoriSelect?.id,
-      type: type,
-      description: description,
-      balance: amount,
-      date: currentDate.getTime(),
-      id: Crypto.randomUUID(),
-      title: description,
-    };
-    setMessage("Transaccion", JSON.stringify(transaccions));
-    agregarTransacciones(transaccions);
   }
 
   return {
