@@ -45,5 +45,3 @@ export type MyIconos =
   | "DarkMode"
   | "Shoping"
   | "Delete";
-
-export type localization = "es" | "en";

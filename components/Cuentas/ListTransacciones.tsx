@@ -1,40 +1,27 @@
 import { TextCurrency } from "../TextCurrency";
 import { Card } from "../ui/card";
-import { Divider } from "../ui/divider";
 import { Text } from "../ui/text";
 import { type Transaccion } from "@/Types/types";
 import { Avatar, AvatarFallbackText } from "@/components/ui/avatar";
 import { Heading } from "@/components/ui/heading";
 import { VStack } from "@/components/ui/vstack";
+import { useSorterAndAgroopList } from "@/lib/Hooks/useSorterAndAgroopList";
 import { useTransaccionesStore } from "@/lib/store/TransaccionesStore";
-import React, { useRef, useState } from "react";
-import { FlatList, Pressable, ScrollView } from "react-native";
+import React, { useState } from "react";
+import { Pressable, SectionList } from "react-native";
 
 interface Props {
   list: Transaccion[];
 }
 export const ListTransacciones = ({ list }: Props) => {
-  const lasDates = useRef<number>(0);
-
-  const isEqual = (date1: any, date2: any) => {
-    const newDate = new Date(date1);
-    const newDate2 = new Date(date2);
-    lasDates.current = newDate.getTime();
-    return newDate.getTime() === newDate2.getTime();
-  };
+  const { lista } = useSorterAndAgroopList(list);
 
   return (
-    <FlatList
-      data={list}
-      renderItem={({ item, index }) => (
-        <>
-          {isEqual(item.date, lasDates.current) ? null : (
-            <DateHeader date={item.date} />
-          )}
-
-          <Divider />
-          <AccordingItem item={item} index={index} />
-        </>
+    <SectionList
+      sections={lista}
+      renderItem={({ item }) => <AccordingItem item={item} index={0} />}
+      renderSectionHeader={({ section: { title } }) => (
+        <DateHeader date={title} />
       )}
       keyExtractor={(item) => item.id}
     />
@@ -82,7 +69,9 @@ const AccordingItem = ({ item, index }: ItemProps) => {
       <VStack className="ml-4 flex-1">
         <Heading size="sm">{item.title}</Heading>
         <Text className="text-typography-500">{item.description}</Text>
-        <Text className="text-typography-500">{item.date}</Text>
+        <Text className="text-typography-500">
+          {new Date(item.date).toLocaleDateString()}
+        </Text>
       </VStack>
       <TextCurrency
         sign
@@ -101,9 +90,8 @@ const DateHeader = ({ date }: { date: any }) => {
   const newDate = new Date(date);
   return (
     <VStack className="flex-row items-center justify-between">
-      <Text className="text-typography-500">{newDate.getDate()}</Text>
       <Text className="text-typography-500">
-        {newDate.toLocaleDateString().split("/")[1]}
+        {newDate.toLocaleDateString()}
       </Text>
     </VStack>
   );

@@ -18,7 +18,6 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const darkMode = useDarkModeStore((state) => state.darkMode);
   const { t } = useTranslation();
-  const indexTitle = t("cuentas") as string;
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -29,7 +28,7 @@ export default function RootLayout() {
         <Drawer.Screen
           name="index"
           options={{
-            title: indexTitle,
+            title: t("cuentas"),
             drawerIcon: ({ color, size }) => (
               <PiggyBankIcon color={color} size={size} />
             ),

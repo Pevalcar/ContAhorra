@@ -36,9 +36,9 @@ async function saveState(state: Transaccion[], key = LOCAL_DB_TRANSACCIONES) {
   if (Platform.OS === "web") {
     try {
       if (state === null) {
-        localStorage.removeItem(LOCAL_DB_TRANSACCIONES);
+        localStorage.removeItem(key);
       } else {
-        localStorage.setItem(LOCAL_DB_TRANSACCIONES, JSON.stringify(state));
+        localStorage.setItem(key, JSON.stringify(state));
       }
     } catch (e) {
       console.error("Local storage is unavailable:", e);

@@ -17,7 +17,7 @@ export default function index() {
   return (
     <Screen>
       <VStack className="flex-1">
-        <SaldoHeading value={500000} />
+        <SaldoHeading />
         <Filtros setFliter={setSearch} />
         <Heading size="lg" className="my-4">
           {t("home.history")}
