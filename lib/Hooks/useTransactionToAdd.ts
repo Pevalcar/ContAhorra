@@ -96,7 +96,7 @@ export const useTransactionToAdd = () => {
     const transaccions: Transaccion = {
       account: cuentaSelect?.id,
       category: categoriSelect?.id,
-      type: "Gasto",
+      type: type,
       description: description,
       balance: amount,
       date: currentDate.getTime(),
