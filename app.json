@@ -19,7 +19,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.pevalcar.contahorra"
     },
     "web": {
       "bundler": "metro",
@@ -38,14 +39,14 @@
         "origin": false
       },
       "eas": {
-        "projectId": "2f45053e-e4a6-4598-b0bb-5b7a5024029d"
+        "projectId": "6e591dda-d45c-428f-b0df-e05941f564f4"
       }
     },
     "runtimeVersion": {
       "policy": "appVersion"
     },
     "updates": {
-      "url": "https://u.expo.dev/2f45053e-e4a6-4598-b0bb-5b7a5024029d"
+      "url": "https://u.expo.dev/6e591dda-d45c-428f-b0df-e05941f564f4"
     }
   }
 }

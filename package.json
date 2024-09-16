@@ -13,7 +13,10 @@
     "lint": "expo lint",
     "build:web": "expo export -p web",
     "serve:web": "npx serve dist",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "preinstall": "rm -rf patches",
+    "eas-build-pre-install": "rm -rf patches",
+    "eas-build-post-install": "rm -rf patches"
   },
   "jest": {
     "preset": "jest-expo"
