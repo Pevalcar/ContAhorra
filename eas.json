@@ -13,25 +13,9 @@
       "distribution": "internal",
       "channel": "preview"
     },
-    "preview2": {
-      "android": {
-        "buildType": "apk"
-      },
-      "channel": "preview2"
-    },
     "production": {
       "autoIncrement": true,
       "channel": "production"
-    },
-    "preview3": {
-      "android": {
-        "gradleCommand": ":app:assembleRelease"
-      },
-      "channel": "preview3"
-    },
-    "preview4": {
-      "developmentClient": true,
-      "channel": "preview4"
     }
   },
   "submit": {
