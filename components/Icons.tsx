@@ -17,10 +17,10 @@ import {
   ShoppingCart,
   Sun,
   SwitchCamera,
-  Wallet,
   X,
 } from "lucide-react-native";
 
+const classColor = "text-typography-500 dark:text-typography-400";
 export interface Props {
   variant?: boolean;
   props?: any;
@@ -35,7 +35,14 @@ interface MyIconProps extends Props {
 export function MyIcon({ name, props, color, size = 24 }: MyIconProps) {
   const Icon = getIcon(name);
   if (color) return <Icon color={color} size={size} {...props} />;
-  return <Icon className={classColor} size={size} {...props} />;
+
+  return (
+    <Icon
+      className="text-typography-500 dark:text-typography-400"
+      size={size}
+      {...props}
+    />
+  );
 }
 
 function getIcon(name: MyIconos) {
@@ -72,8 +79,6 @@ function getIcon(name: MyIconos) {
       return HomeIcon;
   }
 }
-
-const classColor = "text-typography-500 dark:text-typography-400";
 
 export const HomeIcon = ({ props, color, size = 24 }: Props) => {
   if (color) return <Home color={color} size={size} {...props} />;

@@ -79,7 +79,7 @@ const MySelector = ({
           handleClose();
         }}
       >
-        <MyIcon name={title.icon} />
+        <MyIcon name={title.icon} color={"black"} />
         <ActionsheetItemText>{title.id}</ActionsheetItemText>
         <ActionsheetItemText>{title.name}</ActionsheetItemText>
       </ActionsheetItem>

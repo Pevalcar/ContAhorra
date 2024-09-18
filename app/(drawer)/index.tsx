@@ -26,12 +26,12 @@ export default function index() {
         <Fab
           size={"lg"}
           placement="bottom right"
-          className="bg-green-500/55"
+          className="bg-green-500"
           onPress={() => {
             router.push("/add_tansaction");
           }}
         >
-          <FabIcon as={PlusIcon} />
+          <FabIcon as={PlusIcon} stroke="white" />
         </Fab>
       </VStack>
     </Screen>
