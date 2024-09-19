@@ -73,6 +73,8 @@ export const useCalculadora = () => {
     if (valuePantalla === prevValue.current) return;
     try {
       setValuePantalla((prev) => {
+        //TODO es importante saber de esto Intl.NumberFormat
+        if (secondValue.current === "") return; //TODO refactorizar la caluladora para dejar de usar eval
         const lastValue = eval(prev).toString();
         firstValue.current = lastValue;
         secondValue.current = "";
