@@ -31,7 +31,7 @@ export default function index() {
             router.push("/add_tansaction");
           }}
         >
-          <FabIcon as={PlusIcon} stroke="white" />
+          <FabIcon as={PlusIcon} stroke="white" size="xl" />
         </Fab>
       </VStack>
     </Screen>

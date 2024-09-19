@@ -1,5 +1,7 @@
 import { TextCurrency } from "../TextCurrency";
+import { Button, ButtonIcon, ButtonText } from "../ui/button";
 import { Card } from "../ui/card";
+import { HStack } from "../ui/hstack";
 import { Text } from "../ui/text";
 import { type Transaccion } from "@/Types/types";
 import { Avatar, AvatarFallbackText } from "@/components/ui/avatar";
@@ -7,6 +9,7 @@ import { Heading } from "@/components/ui/heading";
 import { VStack } from "@/components/ui/vstack";
 import { useSorterAndAgroopList } from "@/lib/Hooks/useSorterAndAgroopList";
 import { useTransaccionesStore } from "@/lib/store/TransaccionesStore";
+import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react-native";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, SectionList } from "react-native";
@@ -15,17 +18,29 @@ interface Props {
   list: Transaccion[];
 }
 export const ListTransacciones = ({ list }: Props) => {
-  const { lista } = useSorterAndAgroopList(list);
+  const { lista, month, siguienteMes, anteriorMEs } =
+    useSorterAndAgroopList(list);
 
   return (
-    <SectionList
-      sections={lista}
-      renderItem={({ item }) => <AccordingItem item={item} index={0} />}
-      renderSectionHeader={({ section: { title } }) => (
-        <DateHeader date={title} />
-      )}
-      keyExtractor={(item) => item.id}
-    />
+    <>
+      <HStack className="w-full items-center justify-between p-1">
+        <Button onPress={anteriorMEs}>
+          <ButtonIcon as={ArrowLeftIcon} stroke="white" size="xl" />
+        </Button>
+        <Heading>{month}</Heading>
+        <Button onPress={siguienteMes}>
+          <ButtonIcon as={ArrowRightIcon} stroke="white" size="xl" />
+        </Button>
+      </HStack>
+      <SectionList
+        sections={lista}
+        renderItem={({ item }) => <AccordingItem item={item} index={0} />}
+        renderSectionHeader={({ section: { title } }) => (
+          <DateHeader date={title} />
+        )}
+        keyExtractor={(item) => item.id}
+      />
+    </>
   );
 };
 

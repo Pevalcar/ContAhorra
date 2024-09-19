@@ -62,14 +62,35 @@ async function saveState(state: Transaccion[], key = LOCAL_DB_TRANSACCIONES) {
 
 interface ITransaccionesStore {
   transacciones: Transaccion[];
+  saldo: number;
+  setMes: (list: Transaccion[]) => void;
   addTransaccion: (transaccion: Transaccion) => void;
   deleteTransaccion: (id: string) => void;
   updateTransaccion: (transaccion: Transaccion) => void;
 }
 
+//TODO hay que agendar saldo de cada mes separado creo que juntaremos el saldo de cada mes en una sola lista
+
 export const useTransaccionesStore = create<ITransaccionesStore>(
   (set, get) => ({
     transacciones: initialState,
+    saldo: 0,
+    setMes: (list) => {
+      let saldo = 0;
+      list.forEach((transaccion) => {
+        if (
+          transaccion.type === "Transferencia" ||
+          transaccion.type === "Préstamo" ||
+          transaccion.type === "Gasto"
+        ) {
+          saldo -= transaccion.balance;
+        } else {
+          saldo += transaccion.balance;
+        }
+      });
+
+      set({ saldo: saldo });
+    },
     addTransaccion: async (transaccion: Transaccion) => {
       try {
         const { transacciones } = get();
