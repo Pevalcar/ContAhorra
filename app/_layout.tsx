@@ -1,6 +1,7 @@
 import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 import "@/global.css";
 import "@/i18n";
+import { SessionProvider } from "@/lib/sesionprovider/ctx";
 import useDarkModeStore from "@/lib/store/ThemeDarkMode";
 import { DarkTheme, DefaultTheme, ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
@@ -30,21 +31,24 @@ export default function RootLayout() {
   }
 
   return (
-    <GluestackUIProvider mode={darkMode ? "dark" : "light"}>
-      <ThemeProvider value={darkMode ? DarkTheme : DefaultTheme}>
-        <SafeAreaProvider>
-          <Stack>
-            <Stack.Screen
-              name="(drawer)"
-              options={{
-                headerShown: false,
-              }}
-            />
+    <SessionProvider>
+      <GluestackUIProvider mode={darkMode ? "dark" : "light"}>
+        <ThemeProvider value={darkMode ? DarkTheme : DefaultTheme}>
+          <SafeAreaProvider>
+            <Stack>
+              <Stack.Screen
+                name="(drawer)"
+                options={{
+                  headerShown: false,
+                }}
+              />
 
-            <Stack.Screen name="add_tansaction" options={{ headerShown: false }} />
-          </Stack>
-        </SafeAreaProvider>
-      </ThemeProvider>
-    </GluestackUIProvider>
+              <Stack.Screen name="add_tansaction" options={{ headerShown: false }} />
+              <Stack.Screen name="login" options={{ headerShown: false }} />
+            </Stack>
+          </SafeAreaProvider>
+        </ThemeProvider>
+      </GluestackUIProvider>
+    </SessionProvider>
   );
 }
