@@ -9,6 +9,7 @@ const initialState = (() => {
   if (Platform.OS === "web") {
     try {
       if (typeof localStorage !== "undefined") {
+        // eslint-disable-next-line no-undef
         const value = localStorage.getItem(LOCAL_DB_CUENTAS);
         if (value) {
           return JSON.parse(value);

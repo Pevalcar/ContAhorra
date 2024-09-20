@@ -26,8 +26,7 @@ export default function Add() {
         <Button
           onPress={() => {
             router.back();
-          }}
-        >
+          }}>
           <ButtonText>{t("back")}</ButtonText>
         </Button>
         <Button onPress={onSaveTransaction}>
@@ -35,12 +34,7 @@ export default function Add() {
         </Button>
       </HStack>
       <ScrollView>
-        <VStack
-          className={
-            "mx-2 h-full items-center gap-1" +
-            (isMobile ? "w-full" : "w-[400px]")
-          }
-        >
+        <VStack className={"mx-2 h-full items-center gap-1" + (isMobile ? "w-full" : "w-[400px]")}>
           <SelectorDeTipos />
           <SelectorGroup />
           <DescripcionAddTr />

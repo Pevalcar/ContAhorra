@@ -1,6 +1,6 @@
 import { useTransactionToAdd } from "./useTransactionToAdd";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export const useDate = () => {
   const [date, setDate] = useState<Date>(new Date());

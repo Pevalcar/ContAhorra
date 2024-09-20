@@ -1,4 +1,4 @@
-import { Transaccion } from "@/Types/types";
+/* eslint-disable no-undef */
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as SecureStore from "expo-secure-store";
 import * as React from "react";
@@ -6,14 +6,9 @@ import { Platform } from "react-native";
 
 type UseStateHook<T> = [[boolean, T | null], (value: T | null) => void];
 
-function useAsyncState<T>(
-  initialValue: [boolean, T | null] = [true, null],
-): UseStateHook<T> {
+function useAsyncState<T>(initialValue: [boolean, T | null] = [true, null]): UseStateHook<T> {
   return React.useReducer(
-    (
-      state: [boolean, T | null],
-      action: T | null = null,
-    ): [boolean, T | null] => [false, action],
+    (state: [boolean, T | null], action: T | null = null): [boolean, T | null] => [false, action],
     initialValue,
   ) as UseStateHook<T>;
 }
@@ -57,7 +52,7 @@ export function useStorageState(key: string): UseStateHook<string> {
         setState(value);
       });
     }
-  }, [key]);
+  }, [key, setState]);
 
   // Set
   const setValue = React.useCallback(
@@ -65,7 +60,7 @@ export function useStorageState(key: string): UseStateHook<string> {
       setState(value);
       setStorageItemAsync(key, value);
     },
-    [key],
+    [key, setState],
   );
 
   return [state, setValue];
@@ -75,23 +70,17 @@ export const initialState = async (key: string, defaultValue: any) => {
   try {
     const value = await AsyncStorage.getItem(key);
     return value ? JSON.parse(value) : defaultValue;
-  } catch (e) {
+  } catch {
     // handle error
     return defaultValue;
   }
 };
 
-export const storeData = async ({
-  key,
-  value,
-}: {
-  key: string;
-  value: any;
-}) => {
+export const storeData = async ({ key, value }: { key: string; value: any }) => {
   try {
     const jsonValue = JSON.stringify(value);
     await AsyncStorage.setItem(key, jsonValue);
-  } catch (e) {
+  } catch {
     // handle error
   }
 };

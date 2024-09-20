@@ -1,20 +1,10 @@
 import { Button, ButtonText } from "./ui/button";
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {
-  DrawerContentScrollView,
-  DrawerItemList,
-} from "@react-navigation/drawer";
+import { DrawerContentScrollView, DrawerItemList } from "@react-navigation/drawer";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  Image,
-  ImageBackground,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface Props {
   props?: any;
@@ -51,12 +41,8 @@ const CustomDrawer = ({ props }: Props) => {
           backgroundColor: "#9288F9",
           marginTop: -50,
           zIndex: 10,
-        }}
-      >
-        <ImageBackground
-          source={{ uri: "https://i.pravatar.cc" }}
-          style={{ padding: 20 }}
-        >
+        }}>
+        <ImageBackground source={{ uri: "https://i.pravatar.cc" }} style={{ padding: 20 }}>
           <Image
             alt="Not find"
             source={{ uri: "https://i.pravatar.cc" }}
@@ -67,8 +53,7 @@ const CustomDrawer = ({ props }: Props) => {
               color: "#fff",
               fontSize: 18,
               marginBottom: 5,
-            }}
-          >
+            }}>
             {t("name")}
           </Text>
         </ImageBackground>
@@ -81,8 +66,7 @@ const CustomDrawer = ({ props }: Props) => {
           borderTopWidth: 1,
           borderTopColor: "#ccc",
           // backgroundColor: colors.cardbackground,
-        }}
-      ></View>
+        }}></View>
       <View style={{ padding: 20, borderTopWidth: 1, borderTopColor: "#ccc" }}>
         <Button onPress={handleLanguageChange}>
           <ButtonText>{t("change_language")}</ButtonText>
@@ -95,8 +79,7 @@ const CustomDrawer = ({ props }: Props) => {
                 fontSize: 15,
 
                 marginLeft: 5,
-              }}
-            >
+              }}>
               {t("tell-a-friend")}
             </Text>
           </View>
@@ -109,8 +92,7 @@ const CustomDrawer = ({ props }: Props) => {
                 fontSize: 15,
 
                 marginLeft: 5,
-              }}
-            >
+              }}>
               {t("sign-out")}{" "}
             </Text>
           </View>

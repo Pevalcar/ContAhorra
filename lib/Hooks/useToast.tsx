@@ -1,9 +1,4 @@
-import {
-  Toast,
-  ToastDescription,
-  ToastTitle,
-  useToast,
-} from "@/components/ui/toast";
+import { Toast, ToastDescription, ToastTitle, useToast } from "@/components/ui/toast";
 import React from "react";
 import { Platform } from "react-native";
 

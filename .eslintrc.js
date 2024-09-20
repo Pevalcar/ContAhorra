@@ -1,12 +1,7 @@
 module.exports = {
-  extends: ["expo", "prettier", "react-app"],
-  plugins: [
-    "prettier",
-    require("prettier-plugin-tailwindcss"),
-    "@trivago/prettier-plugin-sort-imports",
-  ],
+  extends: ["expo", "prettier", "eslint:recommended"],
+  plugins: ["prettier"],
   rules: {
     "prettier/prettier": "error",
   },
-  tailwindFunctions: ["tva"],
 };

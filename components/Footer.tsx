@@ -1,10 +1,11 @@
-import useDebuger from "@/lib/Hooks/useDebuger";
-import { View } from "react-native";
 import { Text } from "./ui/text";
+import useDebuger from "@/lib/Hooks/useDebuger";
+import React from "react";
+import { View } from "react-native";
 
 interface Props {}
 
-export const Footer: React.FC<Props> = ({}) => {
+export const Footer: React.FC<Props> = () => {
   const title = useDebuger((state) => state.title);
   const message = useDebuger((state) => state.message);
   return (

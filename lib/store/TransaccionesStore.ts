@@ -1,6 +1,6 @@
+/* eslint-disable no-undef */
 import { DEFAULT_STATE, LOCAL_DB_TRANSACCIONES } from "../config";
 import { type Transaccion } from "@/Types/types";
-import * as SecureStore from "expo-secure-store";
 import { Platform } from "react-native";
 import { create } from "zustand";
 
@@ -71,52 +71,46 @@ interface ITransaccionesStore {
 
 //TODO hay que agendar saldo de cada mes separado creo que juntaremos el saldo de cada mes en una sola lista
 
-export const useTransaccionesStore = create<ITransaccionesStore>(
-  (set, get) => ({
-    transacciones: initialState,
-    saldo: 0,
-    setMes: (list) => {
-      let saldo = 0;
-      list.forEach((transaccion) => {
-        if (
-          transaccion.type === "Transferencia" ||
-          transaccion.type === "Préstamo" ||
-          transaccion.type === "Gasto"
-        ) {
-          saldo -= transaccion.balance;
-        } else {
-          saldo += transaccion.balance;
-        }
-      });
-
-      set({ saldo: saldo });
-    },
-    addTransaccion: async (transaccion: Transaccion) => {
-      try {
-        const { transacciones } = get();
-        const newState = [transaccion, ...transacciones];
-        saveState(newState);
-        set({ transacciones: newState });
-      } catch (e) {
-        console.error("Error al guardar la transacción:", e);
-        throw e;
+export const useTransaccionesStore = create<ITransaccionesStore>((set, get) => ({
+  transacciones: initialState,
+  saldo: 0,
+  setMes: (list) => {
+    let saldo = 0;
+    list.forEach((transaccion) => {
+      if (
+        transaccion.type === "Transferencia" ||
+        transaccion.type === "Préstamo" ||
+        transaccion.type === "Gasto"
+      ) {
+        saldo -= transaccion.balance;
+      } else {
+        saldo += transaccion.balance;
       }
-    },
-    deleteTransaccion: (id: string) => {
+    });
+
+    set({ saldo: saldo });
+  },
+  addTransaccion: async (transaccion: Transaccion) => {
+    try {
       const { transacciones } = get();
-      const newState = transacciones.filter(
-        (transaccion) => transaccion.id !== id,
-      );
+      const newState = [transaccion, ...transacciones];
       saveState(newState);
       set({ transacciones: newState });
-    },
-    updateTransaccion: (transaccion: Transaccion) => {
-      const { transacciones } = get();
-      const newState = transacciones.map((t) =>
-        t.id === transaccion.id ? transaccion : t,
-      );
-      saveState(newState);
-      set({ transacciones: newState });
-    },
-  }),
-);
+    } catch (e) {
+      console.error("Error al guardar la transacción:", e);
+      throw e;
+    }
+  },
+  deleteTransaccion: (id: string) => {
+    const { transacciones } = get();
+    const newState = transacciones.filter((transaccion) => transaccion.id !== id);
+    saveState(newState);
+    set({ transacciones: newState });
+  },
+  updateTransaccion: (transaccion: Transaccion) => {
+    const { transacciones } = get();
+    const newState = transacciones.map((t) => (t.id === transaccion.id ? transaccion : t));
+    saveState(newState);
+    set({ transacciones: newState });
+  },
+}));

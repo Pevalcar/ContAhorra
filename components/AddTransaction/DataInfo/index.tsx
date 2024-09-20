@@ -7,7 +7,7 @@ import { Pressable } from "react-native";
 
 interface Props {}
 
-export const DataInfo = ({}: Props) => {
+export const DataInfo: React.FC<Props> = () => {
   const { date, showDatepicker, showTimepicker } = useDate();
 
   return (
@@ -28,8 +28,7 @@ const MyButton: React.FC<PropsButton> = ({ onPress = () => {}, children }) => {
   return (
     <Pressable
       className="flex-1 rounded-md bg-secondary-200 p-2 active:bg-secondary-300"
-      onPress={onPress}
-    >
+      onPress={onPress}>
       <Text bold className="text-center">
         {children}
       </Text>

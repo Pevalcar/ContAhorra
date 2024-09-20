@@ -11,7 +11,7 @@ import { PlusIcon } from "lucide-react-native";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-export default function index() {
+export default function Index() {
   const { filter, setSearch } = useFilterTrasaction();
   const { t } = useTranslation();
   return (
@@ -29,8 +29,7 @@ export default function index() {
           className="bg-green-500"
           onPress={() => {
             router.push("/add_tansaction");
-          }}
-        >
+          }}>
           <FabIcon as={PlusIcon} stroke="white" size="xl" />
         </Fab>
       </VStack>

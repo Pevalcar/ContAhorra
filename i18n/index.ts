@@ -1,6 +1,5 @@
 import translationEn from "./locales/en.json";
 import trasnslationES from "./locales/es.json";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Localization from "expo-localization";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";

@@ -3,9 +3,8 @@ import { Button, ButtonText } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { HStack } from "@/components/ui/hstack";
 import { Pressable } from "@/components/ui/pressable";
-import { Text } from "@/components/ui/text";
 import { useCalculadora } from "@/lib/Hooks/useCalculadora";
-import { useEffect } from "react";
+import React from "react";
 import { View } from "react-native";
 
 interface Props {}
@@ -35,56 +34,34 @@ export const Calculadora: React.FC<Props> = () => {
         <BotonCalculadoraResaltado onPress={setSign} variant>
           +
         </BotonCalculadoraResaltado>
-        <BotonCalculadoraResaltado onPress={setValuePantalla}>
-          7
-        </BotonCalculadoraResaltado>
-        <BotonCalculadoraResaltado onPress={setValuePantalla}>
-          8
-        </BotonCalculadoraResaltado>
-        <BotonCalculadoraResaltado onPress={setValuePantalla}>
-          9
-        </BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={setValuePantalla}>7</BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={setValuePantalla}>8</BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={setValuePantalla}>9</BotonCalculadoraResaltado>
       </HStack>
 
       <HStack className="justify-center gap-1">
         <BotonCalculadoraResaltado onPress={setSign} variant>
           -
         </BotonCalculadoraResaltado>
-        <BotonCalculadoraResaltado onPress={setValuePantalla}>
-          4
-        </BotonCalculadoraResaltado>
-        <BotonCalculadoraResaltado onPress={setValuePantalla}>
-          5
-        </BotonCalculadoraResaltado>
-        <BotonCalculadoraResaltado onPress={setValuePantalla}>
-          6
-        </BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={setValuePantalla}>4</BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={setValuePantalla}>5</BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={setValuePantalla}>6</BotonCalculadoraResaltado>
       </HStack>
 
       <HStack className="justify-center gap-1">
         <BotonCalculadoraResaltado onPress={setSign} variant>
           *
         </BotonCalculadoraResaltado>
-        <BotonCalculadoraResaltado onPress={setValuePantalla}>
-          1
-        </BotonCalculadoraResaltado>
-        <BotonCalculadoraResaltado onPress={setValuePantalla}>
-          2
-        </BotonCalculadoraResaltado>
-        <BotonCalculadoraResaltado onPress={setValuePantalla}>
-          3
-        </BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={setValuePantalla}>1</BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={setValuePantalla}>2</BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={setValuePantalla}>3</BotonCalculadoraResaltado>
       </HStack>
       <HStack className="justify-center gap-1">
         <BotonCalculadoraResaltado onPress={setSign} variant>
           /
         </BotonCalculadoraResaltado>
-        <BotonCalculadoraResaltado onPress={setValuePantalla}>
-          0
-        </BotonCalculadoraResaltado>
-        <BotonCalculadoraResaltado onPress={setValuePantalla}>
-          .
-        </BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={setValuePantalla}>0</BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={setValuePantalla}>.</BotonCalculadoraResaltado>
         <BotonCalculadoraResaltado onPress={setSign} variant>
           =
         </BotonCalculadoraResaltado>
@@ -107,13 +84,8 @@ const Pantalla: React.FC<PantallaProps> = ({
   ...props
 }) => {
   return (
-    <View
-      className={"flex h-20 w-full flex-row rounded-lg border " + className}
-      {...props}
-    >
-      <Heading className="mr-1 h-full flex-1 text-right align-middle text-3xl">
-        {children}
-      </Heading>
+    <View className={"flex h-20 w-full flex-row rounded-lg border " + className} {...props}>
+      <Heading className="mr-1 h-full flex-1 text-right align-middle text-3xl">{children}</Heading>
       <Pressable className="h-full w-14 justify-center" onPress={onDeletePress}>
         <MyIcon name="Delete" size={40} />
       </Pressable>
@@ -139,8 +111,7 @@ const BotonCalculadoraResaltado: React.FC<BotonProps> = ({
       onPress={() => onPress(children?.toString() || "")}
       variant={variant ? "solid" : "outline"}
       className="h-20 flex-1 active:bg-secondary-200"
-      {...props}
-    >
+      {...props}>
       <ButtonText className="text-center">
         {children === "/" ? "÷" : children === "*" ? "x" : children}
       </ButtonText>

@@ -1,8 +1,13 @@
 {
-  "plugins": [
-    "prettier-plugin-tailwindcss",
-    "prettier",
-    "@trivago/prettier-plugin-sort-imports"
-  ],
-  "tailwindFunctions": ["tva"]
+  "plugins": ["prettier", "@trivago/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
+  "tailwindFunctions": ["tva"],
+  "printWidth": 100,
+  "tabWidth": 2,
+  "singleQuote": false,
+  "bracketSameLine": true,
+  "endOfLine": "auto",
+  "trailingComma": "all",
+  "semi": true,
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
 }

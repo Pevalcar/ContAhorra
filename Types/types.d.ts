@@ -15,11 +15,7 @@ export type Categoria = {
   icon: MyIconos;
 };
 
-export type TiposDeTransacciones =
-  | "Ingreso"
-  | "Gasto"
-  | "Préstamo"
-  | "Transferencia";
+export type TiposDeTransacciones = "Ingreso" | "Gasto" | "Préstamo" | "Transferencia";
 
 export type Cuenta = {
   readonly id?: string;

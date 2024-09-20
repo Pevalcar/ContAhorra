@@ -1,9 +1,5 @@
-import {
-  DB_Categorias,
-  DB_Cuentas,
-  DB_Transacciones,
-} from "./db/local/db_local";
-import { type Cuenta, type Categoria, type Transaccion } from "@/Types/types";
+import { DB_Categorias, DB_Cuentas, DB_Transacciones } from "./db/local/db_local";
+import { type Categoria, type Cuenta, type Transaccion } from "@/Types/types";
 
 export const DEVELOPMENT = process.env.NODE_ENV !== "production";
 

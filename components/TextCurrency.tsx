@@ -1,6 +1,5 @@
-import { formatValue } from "@/lib/Helpers/formaters";
-import { Text } from "./ui/text";
 import { Heading } from "./ui/heading";
+import { formatValue } from "@/lib/Helpers/formaters";
 
 interface Props {
   value: number;

@@ -36,13 +36,7 @@ export function MyIcon({ name, props, color, size = 24 }: MyIconProps) {
   const Icon = getIcon(name);
   if (color) return <Icon color={color} size={size} {...props} />;
 
-  return (
-    <Icon
-      className="text-typography-500 dark:text-typography-400"
-      size={size}
-      {...props}
-    />
-  );
+  return <Icon className="text-typography-500 dark:text-typography-400" size={size} {...props} />;
 }
 
 function getIcon(name: MyIconos) {
@@ -105,9 +99,7 @@ export const ListIcon = ({ props, color, size = 24 }: Props) => {
 export const ClipboardListICon = ({ props, color, size = 24 }: Props) => {
   if (color) return <ClipboardList color={color} size={size} {...props} />;
 
-  return (
-    <Icon as={ClipboardList} className={classColor} size={size} {...props} />
-  );
+  return <Icon as={ClipboardList} className={classColor} size={size} {...props} />;
 };
 
 export const FileEditIcon = ({ props, color, size = 24 }: Props) => {
@@ -124,9 +116,7 @@ export const PiggyBankIcon = ({ props, color, size = 24 }: Props) => {
 export const CameraFlipIcon = ({ props, color, size = 24 }: Props) => {
   if (color) return <SwitchCamera color={color} size={size} {...props} />;
 
-  return (
-    <Icon as={SwitchCamera} className={classColor} size={size} {...props} />
-  );
+  return <Icon as={SwitchCamera} className={classColor} size={size} {...props} />;
 };
 
 export const TorchIcon = ({ variant, props, color, size = 24 }: Props) => {
@@ -138,13 +128,9 @@ export const TorchIcon = ({ variant, props, color, size = 24 }: Props) => {
   }
 
   if (variant) {
-    return (
-      <Icon as={Flashlight} className={classColor} size={size} {...props} />
-    );
+    return <Icon as={Flashlight} className={classColor} size={size} {...props} />;
   }
-  return (
-    <Icon as={FlashlightOff} className={classColor} size={size} {...props} />
-  );
+  return <Icon as={FlashlightOff} className={classColor} size={size} {...props} />;
 };
 
 export const DiscIcon = ({ props, color, size = 24 }: Props) => {
@@ -161,9 +147,7 @@ export const CloseIcon = ({ props, color, size = 24 }: Props) => {
 export const ShopingIcon = ({ props, color, size = 24 }: Props) => {
   if (color) return <ShoppingCart color={color} size={size} {...props} />;
 
-  return (
-    <Icon as={ShoppingCart} className={classColor} size={size} {...props} />
-  );
+  return <Icon as={ShoppingCart} className={classColor} size={size} {...props} />;
 };
 export const WalletIcon = ({ props, color, size = 24 }: Props) => {
   if (color) return <Pocket color={color} size={size} {...props} />;

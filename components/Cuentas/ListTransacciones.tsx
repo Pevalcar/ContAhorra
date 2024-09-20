@@ -1,5 +1,5 @@
 import { TextCurrency } from "../TextCurrency";
-import { Button, ButtonIcon, ButtonText } from "../ui/button";
+import { Button, ButtonIcon } from "../ui/button";
 import { Card } from "../ui/card";
 import { HStack } from "../ui/hstack";
 import { Text } from "../ui/text";
@@ -10,7 +10,7 @@ import { VStack } from "@/components/ui/vstack";
 import { useSorterAndAgroopList } from "@/lib/Hooks/useSorterAndAgroopList";
 import { useTransaccionesStore } from "@/lib/store/TransaccionesStore";
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react-native";
-import React, { useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, SectionList } from "react-native";
 
@@ -18,8 +18,7 @@ interface Props {
   list: Transaccion[];
 }
 export const ListTransacciones = ({ list }: Props) => {
-  const { lista, month, siguienteMes, anteriorMEs } =
-    useSorterAndAgroopList(list);
+  const { lista, month, siguienteMes, anteriorMEs } = useSorterAndAgroopList(list);
 
   return (
     <>
@@ -35,9 +34,7 @@ export const ListTransacciones = ({ list }: Props) => {
       <SectionList
         sections={lista}
         renderItem={({ item }) => <AccordingItem item={item} index={0} />}
-        renderSectionHeader={({ section: { title } }) => (
-          <DateHeader date={title} />
-        )}
+        renderSectionHeader={({ section: { title } }) => <DateHeader date={title} />}
         keyExtractor={(item) => item.id}
       />
     </>
@@ -49,9 +46,7 @@ interface ItemProps {
   index: number;
 }
 const AccordingItem = ({ item, index }: ItemProps) => {
-  const deleteTransaccion = useTransaccionesStore(
-    (state) => state.deleteTransaccion,
-  );
+  const deleteTransaccion = useTransaccionesStore((state) => state.deleteTransaccion);
   const bgColor = () => {
     switch (item.type) {
       case "Ingreso":
@@ -72,29 +67,19 @@ const AccordingItem = ({ item, index }: ItemProps) => {
   };
 
   return (
-    <Card
-      size="sm"
-      variant="outline"
-      className="mb-4 flex-row items-center justify-between"
-    >
+    <Card size="sm" variant="outline" className="mb-4 flex-row items-center justify-between">
       <Avatar size="md" className={bgColor()}>
-        <AvatarFallbackText className="text-white">
-          {item.type}
-        </AvatarFallbackText>
+        <AvatarFallbackText className="text-white">{item.type}</AvatarFallbackText>
       </Avatar>
       <VStack className="ml-4 flex-1">
         <Heading size="sm">{item.title}</Heading>
         <Text className="text-typography-500">{item.description}</Text>
-        <Text className="text-typography-500">
-          {new Date(item.date).toLocaleDateString()}
-        </Text>
+        <Text className="text-typography-500">{new Date(item.date).toLocaleDateString()}</Text>
       </VStack>
       <TextCurrency
         sign
         negative={
-          item.type === "Gasto" ||
-          item.type === "Transferencia" ||
-          item.type === "Préstamo"
+          item.type === "Gasto" || item.type === "Transferencia" || item.type === "Préstamo"
         }
         size="sm"
         value={item.balance}

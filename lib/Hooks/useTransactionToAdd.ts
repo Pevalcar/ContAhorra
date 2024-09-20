@@ -6,16 +6,9 @@ import { useTransactionToADDState } from "../store/TransactionToAddStore";
 import { initialState } from "../useStorageState";
 import useDebuger from "./useDebuger";
 import { useMyToast } from "./useToast";
-import type {
-  Categoria,
-  Cuenta,
-  TiposDeTransacciones,
-  Transaccion,
-} from "@/Types/types";
+import type { Categoria, Cuenta, TiposDeTransacciones, Transaccion } from "@/Types/types";
 import { useMediaQuery } from "@/components/ui/utils/use-media-query";
 import * as Crypto from "expo-crypto";
-import { t } from "i18next";
-import { Award } from "lucide-react-native";
 import React from "react";
 
 export const useTransactionToAdd = () => {
@@ -39,9 +32,7 @@ export const useTransactionToAdd = () => {
   const { setMessage } = useDebuger((state) => state);
   const categorias = useCategoriaStore((state) => state.categorias);
   const cuentas = useCuentasStore((state) => state.cuentas);
-  const agregarTransacciones = useTransaccionesStore(
-    (state) => state.addTransaccion,
-  );
+  const agregarTransacciones = useTransaccionesStore((state) => state.addTransaccion);
   const {
     setCuentaId,
     setCategoriaId,
@@ -75,16 +66,15 @@ export const useTransactionToAdd = () => {
       setMessage("Transaccion", "");
       reset();
     };
-  }, []);
+  }, [reset, setMessage]);
 
   const onTypeChange = (index: TiposDeTransacciones) => setType(index);
 
   const onCategoriaChange = (id: Categoria) => setCategoriaId(id);
   const onCuentaChange = (id: Cuenta) => setCuentaId(id);
-  const onDescriptionChange = (description: string) =>
-    setDescription(description); //TODO validar la descripcion
+  const onDescriptionChange = (description: string) => setDescription(description); //TODO validar la descripcion
   const onDateChange = (date: Date) => setDate(date);
-  const onAmountChange = (amount: number) => setAmount(amount);
+  const onAmountChange = React.useCallback((amount: number) => setAmount(amount), [setAmount]);
 
   async function saveTransaction() {
     try {

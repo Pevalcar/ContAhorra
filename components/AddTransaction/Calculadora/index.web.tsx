@@ -1,12 +1,10 @@
-import { useCalculadora } from "@/lib/Hooks/useCalculadora";
-import { Delete } from "lucide-react-native";
-import { View } from "react-native";
-import { Button, ButtonIcon, ButtonText } from "@/components/ui/button";
-import { Text } from "@/components/ui/text";
-import { Pressable } from "@/components/ui/pressable";
 import { MyIcon } from "@/components/Icons";
-import useDebuger from "@/lib/Hooks/useDebuger";
-import { useEffect } from "react";
+import { Button, ButtonText } from "@/components/ui/button";
+import { Pressable } from "@/components/ui/pressable";
+import { Text } from "@/components/ui/text";
+import { useCalculadora } from "@/lib/Hooks/useCalculadora";
+import React from "react";
+import { View } from "react-native";
 
 interface Props {}
 
@@ -17,7 +15,7 @@ const botones = [
   ["/", 0, ".", "="],
 ];
 
-export const Calculadora: React.FC<Props> = ({}) => {
+export const Calculadora: React.FC<Props> = () => {
   const { valuePantalla, setValuePantalla, reset } = useCalculadora();
 
   return (
@@ -30,8 +28,7 @@ export const Calculadora: React.FC<Props> = ({}) => {
           <BotonCalculadoraResaltado
             key={index}
             onPress={() => setValuePantalla(value)}
-            variant={typeof value !== "number"}
-          >
+            variant={typeof value !== "number"}>
             {value}
           </BotonCalculadoraResaltado>
         )),
@@ -53,13 +50,8 @@ const Pantalla: React.FC<PantallaProps> = ({
   ...props
 }) => {
   return (
-    <View
-      className={"h-14 w-full flex-row rounded-lg border " + className}
-      {...props}
-    >
-      <Text className="h-full flex-1 p-2 text-end text-3xl font-bold">
-        {children}
-      </Text>
+    <View className={"h-14 w-full flex-row rounded-lg border " + className} {...props}>
+      <Text className="h-full flex-1 p-2 text-end text-3xl font-bold">{children}</Text>
       <Pressable className="h-full w-12 justify-center" onPress={onDeletePress}>
         <MyIcon name="Delete" size={40} />
       </Pressable>
@@ -86,8 +78,7 @@ const BotonCalculadoraResaltado: React.FC<BotonProps> = ({
       onPress={() => onPress()}
       variant={variant ? "solid" : "outline"}
       className={"hover:bg-gray-300 active:bg-secondary-200 " + className}
-      {...props}
-    >
+      {...props}>
       <ButtonText className="text-center">
         {children === "/" ? "÷" : children === "*" ? "x" : children}
       </ButtonText>

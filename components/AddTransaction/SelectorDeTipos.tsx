@@ -3,14 +3,13 @@ import { Pressable } from "../ui/pressable";
 import { Text } from "../ui/text";
 import type { TiposDeTransacciones } from "@/Types/types";
 import { useTransactionToAdd } from "@/lib/Hooks/useTransactionToAdd";
-import { useTransactionToADDState } from "@/lib/store/TransactionToAddStore";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 
 interface Props {}
 
-export const SelectorDeTipos = ({}: Props) => {
+export const SelectorDeTipos: React.FC<Props> = () => {
   const { type, onTypeChange } = useTransactionToAdd();
   const { t } = useTranslation();
   return (
@@ -38,18 +37,10 @@ interface MyButonProps {
   children?: React.ReactNode;
 }
 
-const MyButton = ({
-  title,
-  selection = "Gasto",
-  onPress = () => {},
-  children,
-}: MyButonProps) => {
+const MyButton = ({ title, selection = "Gasto", onPress = () => {}, children }: MyButonProps) => {
   if (selection === title) {
     return (
-      <Pressable
-        className="rounded-md bg-secondary-0 p-2 drop-shadow-md"
-        onPress={() => onPress}
-      >
+      <Pressable className="rounded-md bg-secondary-0 p-2 drop-shadow-md" onPress={() => onPress}>
         <Heading size="sm" bold>
           {children}
         </Heading>

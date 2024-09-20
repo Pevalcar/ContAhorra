@@ -1,5 +1,4 @@
 import { Input, InputField } from "../ui/input";
-import { Text } from "../ui/text";
 import { useTransactionToAdd } from "@/lib/Hooks/useTransactionToAdd";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -7,13 +6,12 @@ import { useTranslation } from "react-i18next";
 interface Props {}
 
 export const DescripcionAddTr: React.FC<Props> = () => {
-  const { description: text, onDescriptionChange: setText } =
-    useTransactionToAdd();
+  const { description: text, onDescriptionChange: setText } = useTransactionToAdd();
   const { t } = useTranslation();
   return (
-    <Input className="my-2 w-full sm:w-[400px] h-[80px] text-sta">
+    <Input className="text-sta my-2 h-[80px] w-full sm:w-[400px]">
       <InputField
-        className="w-full h-full"
+        className="h-full w-full"
         placeholder={t("description")}
         value={text}
         multiline

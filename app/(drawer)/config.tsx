@@ -4,7 +4,7 @@ import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
 import { useTranslation } from "react-i18next";
 
-export default function config() {
+export default function Config() {
   const { t } = useTranslation();
   return (
     <VStack space="lg">

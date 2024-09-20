@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useTransaccionesStore } from "../store/TransaccionesStore";
 import { Transaccion } from "@/Types/types";
 import React, { useRef, useState } from "react";
@@ -10,9 +11,7 @@ export const useSorterAndAgroopList = (list: any[]) => {
   let lasDates: string[] = [];
   const mes = useRef("");
   const [month, setMonth] = useState(new Date());
-  const [lista, setLista] = useState<
-    Array<{ title: number; data: Transaccion[] }>
-  >([]);
+  const [lista, setLista] = useState<{ title: number; data: Transaccion[] }[]>([]);
 
   const getMouth = React.useCallback(
     (date: Date) => {
@@ -25,7 +24,7 @@ export const useSorterAndAgroopList = (list: any[]) => {
 
   React.useEffect(() => {
     getMouth(new Date());
-  }, [transacciones]);
+  }, [getMouth, transacciones]);
 
   //Actualizar cuando el dimima cambie
   React.useEffect(() => {
@@ -34,7 +33,7 @@ export const useSorterAndAgroopList = (list: any[]) => {
 
   React.useEffect(() => {
     const sortedList = list.sort((a, b) => b.date - a.date);
-    let newList: Array<{ title: number; data: Transaccion[] }> = [];
+    let newList: { title: number; data: Transaccion[] }[] = [];
     let listanueva: Transaccion[] = [];
 
     sortedList.forEach((item) => {
@@ -50,10 +49,7 @@ export const useSorterAndAgroopList = (list: any[]) => {
         // la lista nueva se compondra por  [ { title: item.date, data: [item] } ]
         //busamos el indice de la fecha en lasDates
 
-        newList[lasDates.indexOf(date)].data = [
-          ...newList[lasDates.indexOf(date)].data,
-          item,
-        ];
+        newList[lasDates.indexOf(date)].data = [...newList[lasDates.indexOf(date)].data, item];
         return;
       }
       // la lista nueva se compondra por  [ { title: item.date, data: [item] } ]
@@ -78,10 +74,7 @@ export const useSorterAndAgroopList = (list: any[]) => {
 
 function getMes(date: Date, i18n: any) {
   const month =
-    date
-      .toLocaleString(i18n.language, { month: "long" })
-      .charAt(0)
-      .toUpperCase() +
+    date.toLocaleString(i18n.language, { month: "long" }).charAt(0).toUpperCase() +
     date.toLocaleString(i18n.language, { month: "long" }).slice(1);
   const formatMounthYear = `${month}, ${date.getFullYear()}`;
   return formatMounthYear;

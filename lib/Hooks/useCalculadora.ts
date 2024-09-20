@@ -1,5 +1,3 @@
-import { DEVELOPMENT } from "../config";
-import { useTransactionToADDState } from "../store/TransactionToAddStore";
 import { useTransactionToAdd } from "./useTransactionToAdd";
 import { useEffect, useRef, useState } from "react";
 
@@ -15,13 +13,12 @@ export const useCalculadora = () => {
 
   useEffect(() => {
     setAmount(parseFloat(valuePantalla));
-  }, [valuePantalla]);
+  }, [setAmount, valuePantalla]);
 
   useEffect(() => {
     if (!amount) return;
-
     setValuePantalla(amount.toString());
-  }, []);
+  }, [amount]);
 
   // DEVELOPMENT
   //   ? console.log(
@@ -82,8 +79,9 @@ export const useCalculadora = () => {
         return lastValue;
       });
       resultDado.current = true;
-    } catch (error) {
+    } catch {
       setValuePantalla("Error");
+
       prevValue.current = "Error";
       resultDado.current = true;
     }
