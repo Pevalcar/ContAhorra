@@ -7,6 +7,7 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -31,16 +32,18 @@ export default function RootLayout() {
   return (
     <GluestackUIProvider mode={darkMode ? "dark" : "light"}>
       <ThemeProvider value={darkMode ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen
-            name="(drawer)"
-            options={{
-              headerShown: false,
-            }}
-          />
+        <SafeAreaProvider>
+          <Stack>
+            <Stack.Screen
+              name="(drawer)"
+              options={{
+                headerShown: false,
+              }}
+            />
 
-          <Stack.Screen name="add_tansaction" options={{ headerShown: false }} />
-        </Stack>
+            <Stack.Screen name="add_tansaction" options={{ headerShown: false }} />
+          </Stack>
+        </SafeAreaProvider>
       </ThemeProvider>
     </GluestackUIProvider>
   );
