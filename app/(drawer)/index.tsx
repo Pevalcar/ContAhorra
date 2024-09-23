@@ -7,21 +7,20 @@ import { Fab, FabIcon } from "@/components/ui/fab";
 import { Heading } from "@/components/ui/heading";
 import { VStack } from "@/components/ui/vstack";
 import { useFilterTrasaction } from "@/lib/Hooks/useFilterTrasaction";
-import { useSession } from "@/lib/sesionprovider/ctx";
 import { router } from "expo-router";
+import { t } from "i18next";
 import { PlusIcon } from "lucide-react-native";
 import React from "react";
-import { useTranslation } from "react-i18next";
 
 export default function Index() {
   const { filter, setSearch } = useFilterTrasaction();
-  const { signOut } = useSession();
-  const { t } = useTranslation();
-
   return (
     <Screen>
-      <Button onPress={signOut}>
-        <ButtonText>{"Logout"}</ButtonText>
+      <Button
+        onPress={() => {
+          router.push("/login");
+        }}>
+        <ButtonText>{"login"}</ButtonText>
       </Button>
       <VStack className="flex-1">
         <SaldoHeading />

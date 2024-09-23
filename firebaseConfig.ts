@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { DEVELOPMENT } from "./lib/config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Analytics, getAnalytics, logEvent } from "firebase/analytics";
+import { Analytics, getAnalytics } from "firebase/analytics";
 import { FirebaseApp, getApp, getApps, initializeApp } from "firebase/app";
 import {
   Auth,
@@ -63,4 +63,4 @@ if (DEVELOPMENT) {
   connectFirestoreEmulator(dbFirestore, host, 8080);
 }
 
-export { app, auth, analytics, db, dbFirestore };
+export { analytics, app, auth, db, dbFirestore };

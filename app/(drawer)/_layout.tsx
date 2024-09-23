@@ -1,10 +1,6 @@
 import CustomDrawer from "@/components/CustomDrawer";
 import { ListIcon, PiggyBankIcon, SettingsIcon, WalletIcon } from "@/components/Icons";
-import { Text } from "@/components/ui/text";
-import "@/global.css";
-import { useSession } from "@/lib/sesionprovider/ctx";
 import useDarkModeStore from "@/lib/store/ThemeDarkMode";
-import { Redirect } from "expo-router";
 import { Drawer } from "expo-router/drawer";
 import * as SplashScreen from "expo-splash-screen";
 import React from "react";
@@ -16,16 +12,7 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const darkMode = useDarkModeStore((state) => state.darkMode);
   const { t } = useTranslation();
-  const { session, isLoading } = useSession();
 
-  if (isLoading) {
-    return <Text>Loading...</Text>;
-  }
-  if (!session) {
-    // On web, static rendering will stop here as the user is not authenticated
-    // in the headless Node process that the pages are rendered in.
-    return <Redirect href="/login" />;
-  }
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Drawer

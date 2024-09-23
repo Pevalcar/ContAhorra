@@ -15,7 +15,9 @@ export function Screen({ children }: Props) {
   const { top } = useSafeAreaInsets();
 
   return (
-    <SafeAreaView className="bg-primary ml-4 mr-4 flex-1" style={{ paddingTop: top }}>
+    <SafeAreaView
+      className="bg-primary ml-4 mr-4 flex-1"
+      style={{ paddingTop: top, paddingBottom: 15 }}>
       <StatusBar barStyle={isDark ? "light-content" : "dark-content"} />
 
       {children}

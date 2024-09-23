@@ -34,8 +34,8 @@ export const useMyToast = () => {
                   action={action}
                   variant="solid"
                   className="justify-between gap-6 border-error-500 p-4 shadow-hard-5">
-                  <ToastTitle>{tittle}</ToastTitle>
-                  <ToastDescription>{message}</ToastDescription>
+                  <ToastTitle className="text-white">{tittle}</ToastTitle>
+                  <ToastDescription className="text-white">{message}</ToastDescription>
                 </Toast>
               </SafeAreaView>
             );

@@ -3,7 +3,8 @@
   "i18n-ally.extract.ignored": ["bottom right", "Gasto", "Ingreso", "Transferencia", "Préstamo"],
   "i18n-ally.extract.ignoredByFiles": {
     "app\\(drawer)\\index.tsx": ["bottom right"],
-    "components\\CustomDrawer.tsx": ["Not find"]
+    "components\\CustomDrawer.tsx": ["Not find"],
+    "components\\Login\\LoginUI.tsx": ["\r\n                Desarrollo\r\n              "]
   },
   "i18n-ally.localesPaths": ["i18n/locales"],
   "i18n-ally.keystyle": "flat",
