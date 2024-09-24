@@ -1,60 +1,58 @@
-[debug] [2024-09-23T18:32:18.957Z] ----------------------------------------------------------------------
-[debug] [2024-09-23T18:32:18.960Z] Command:       D:\Programs\node\node.exe C:\Users\Andry Hernandez\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js emulators:start
-[debug] [2024-09-23T18:32:18.960Z] CLI Version:   13.18.0
-[debug] [2024-09-23T18:32:18.960Z] Platform:      win32
-[debug] [2024-09-23T18:32:18.961Z] Node Version:  v20.11.1
-[debug] [2024-09-23T18:32:18.961Z] Time:          Mon Sep 23 2024 13:32:18 GMT-0500 (hora estándar de Colombia)
-[debug] [2024-09-23T18:32:18.961Z] ----------------------------------------------------------------------
+[debug] [2024-09-24T01:38:41.745Z] ----------------------------------------------------------------------
+[debug] [2024-09-24T01:38:41.755Z] Command:       D:\Programs\node\node.exe C:\Users\Andry Hernandez\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js emulators:start
+[debug] [2024-09-24T01:38:41.756Z] CLI Version:   13.18.0
+[debug] [2024-09-24T01:38:41.756Z] Platform:      win32
+[debug] [2024-09-24T01:38:41.756Z] Node Version:  v20.11.1
+[debug] [2024-09-24T01:38:41.756Z] Time:          Mon Sep 23 2024 20:38:41 GMT-0500 (hora estándar de Colombia)
+[debug] [2024-09-24T01:38:41.756Z] ----------------------------------------------------------------------
 [debug] 
-[debug] [2024-09-23T18:32:18.974Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
-[debug] [2024-09-23T18:32:19.080Z] Object ".database" in "firebase.json" has unknown property: {"additionalProperty":"host"}
-[debug] [2024-09-23T18:32:19.081Z] Field ".database" in "firebase.json" is possibly invalid: should be array
-[debug] [2024-09-23T18:32:19.081Z] Field ".database" in "firebase.json" is possibly invalid: should match some schema in anyOf
-[debug] [2024-09-23T18:32:19.087Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
-[debug] [2024-09-23T18:32:19.088Z] > authorizing via signed-in user (geomemsoluciones@gmail.com)
-[debug] [2024-09-23T18:32:19.257Z] java version "20.0.1" 2023-04-18
-Java(TM) SE Runtime Environment (build 20.0.1+9-29)
+[debug] [2024-09-24T01:38:41.887Z] Object ".database" in "firebase.json" has unknown property: {"additionalProperty":"host"}
+[debug] [2024-09-24T01:38:41.888Z] Field ".database" in "firebase.json" is possibly invalid: should be array
+[debug] [2024-09-24T01:38:41.888Z] Field ".database" in "firebase.json" is possibly invalid: should match some schema in anyOf
+[debug] [2024-09-24T01:38:41.909Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-09-24T01:38:41.909Z] > authorizing via signed-in user (geomemsoluciones@gmail.com)
+[debug] [2024-09-24T01:38:42.164Z] java version "20.0.1" 2023-04-18
+
+[debug] [2024-09-24T01:38:42.165Z] Java(TM) SE Runtime Environment (build 20.0.1+9-29)
 Java HotSpot(TM) 64-Bit Server VM (build 20.0.1+9-29, mixed mode, sharing)
 
-[debug] [2024-09-23T18:32:19.272Z] Parsed Java major version: 20
+[debug] [2024-09-24T01:38:42.191Z] Parsed Java major version: 20
 [info] i  emulators: Starting emulators: auth, firestore, database {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: auth, firestore, database"}}
-[debug] [2024-09-23T18:32:19.283Z] [logging] Logging Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
-[debug] [2024-09-23T18:32:19.283Z] [database] Database Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
-[debug] [2024-09-23T18:32:19.283Z] assigned listening specs for emulators {"user":{"auth":[{"address":"0.0.0.0","family":"IPv4","port":9099}],"firestore":[{"address":"0.0.0.0","family":"IPv4","port":8080}],"firestore.websocket":[{"address":"0.0.0.0","family":"IPv4","port":9150}],"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"database":[{"address":"127.0.0.1","family":"IPv4","port":9000}]},"metadata":{"message":"assigned listening specs for emulators"}}
-[debug] [2024-09-23T18:32:19.288Z] [hub] writing locator at C:\Users\ANDRYH~1\AppData\Local\Temp\hub-contahorra.json
-[debug] [2024-09-23T18:32:19.303Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"firestore"},"message":"Ignoring unsupported arg: auto_download"}}
-[debug] [2024-09-23T18:32:19.303Z] Ignoring unsupported arg: single_project_mode_error {"metadata":{"emulator":{"name":"firestore"},"message":"Ignoring unsupported arg: single_project_mode_error"}}
-[debug] [2024-09-23T18:32:19.303Z] Starting Firestore Emulator with command {"binary":"java","args":["-Dgoogle.cloud_firestore.debug_log_level=FINE","-Duser.language=en","-jar","C:\\Users\\Andry Hernandez\\.cache\\firebase\\emulators\\cloud-firestore-emulator-v1.19.8.jar","--host","0.0.0.0","--port",8080,"--websocket_port",9150,"--project_id","contahorra","--rules","D:\\proyectos\\ContAhorra\\firestore.rules","--single_project_mode",true],"optionalArgs":["port","webchannel_port","host","rules","websocket_port","functions_emulator","seed_from_export","project_id","single_project_mode"],"joinArgs":false,"shell":false} {"metadata":{"emulator":{"name":"firestore"},"message":"Starting Firestore Emulator with command {\"binary\":\"java\",\"args\":[\"-Dgoogle.cloud_firestore.debug_log_level=FINE\",\"-Duser.language=en\",\"-jar\",\"C:\\\\Users\\\\Andry Hernandez\\\\.cache\\\\firebase\\\\emulators\\\\cloud-firestore-emulator-v1.19.8.jar\",\"--host\",\"0.0.0.0\",\"--port\",8080,\"--websocket_port\",9150,\"--project_id\",\"contahorra\",\"--rules\",\"D:\\\\proyectos\\\\ContAhorra\\\\firestore.rules\",\"--single_project_mode\",true],\"optionalArgs\":[\"port\",\"webchannel_port\",\"host\",\"rules\",\"websocket_port\",\"functions_emulator\",\"seed_from_export\",\"project_id\",\"single_project_mode\"],\"joinArgs\":false,\"shell\":false}"}}
+[debug] [2024-09-24T01:38:42.206Z] [logging] Logging Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2024-09-24T01:38:42.206Z] [database] Database Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2024-09-24T01:38:42.206Z] assigned listening specs for emulators {"user":{"auth":[{"address":"0.0.0.0","family":"IPv4","port":9099}],"firestore":[{"address":"0.0.0.0","family":"IPv4","port":8080}],"firestore.websocket":[{"address":"0.0.0.0","family":"IPv4","port":9150}],"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"database":[{"address":"127.0.0.1","family":"IPv4","port":9000}]},"metadata":{"message":"assigned listening specs for emulators"}}
+[debug] [2024-09-24T01:38:42.211Z] [hub] writing locator at C:\Users\ANDRYH~1\AppData\Local\Temp\hub-contahorra.json
+[debug] [2024-09-24T01:38:42.229Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"firestore"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2024-09-24T01:38:42.229Z] Ignoring unsupported arg: single_project_mode_error {"metadata":{"emulator":{"name":"firestore"},"message":"Ignoring unsupported arg: single_project_mode_error"}}
+[debug] [2024-09-24T01:38:42.229Z] Starting Firestore Emulator with command {"binary":"java","args":["-Dgoogle.cloud_firestore.debug_log_level=FINE","-Duser.language=en","-jar","C:\\Users\\Andry Hernandez\\.cache\\firebase\\emulators\\cloud-firestore-emulator-v1.19.8.jar","--host","0.0.0.0","--port",8080,"--websocket_port",9150,"--project_id","contahorra","--rules","D:\\proyectos\\ContAhorra\\firestore.rules","--single_project_mode",true],"optionalArgs":["port","webchannel_port","host","rules","websocket_port","functions_emulator","seed_from_export","project_id","single_project_mode"],"joinArgs":false,"shell":false} {"metadata":{"emulator":{"name":"firestore"},"message":"Starting Firestore Emulator with command {\"binary\":\"java\",\"args\":[\"-Dgoogle.cloud_firestore.debug_log_level=FINE\",\"-Duser.language=en\",\"-jar\",\"C:\\\\Users\\\\Andry Hernandez\\\\.cache\\\\firebase\\\\emulators\\\\cloud-firestore-emulator-v1.19.8.jar\",\"--host\",\"0.0.0.0\",\"--port\",8080,\"--websocket_port\",9150,\"--project_id\",\"contahorra\",\"--rules\",\"D:\\\\proyectos\\\\ContAhorra\\\\firestore.rules\",\"--single_project_mode\",true],\"optionalArgs\":[\"port\",\"webchannel_port\",\"host\",\"rules\",\"websocket_port\",\"functions_emulator\",\"seed_from_export\",\"project_id\",\"single_project_mode\"],\"joinArgs\":false,\"shell\":false}"}}
 [info] i  firestore: Firestore Emulator logging to firestore-debug.log {"metadata":{"emulator":{"name":"firestore"},"message":"Firestore Emulator logging to \u001b[1mfirestore-debug.log\u001b[22m"}}
-[debug] [2024-09-23T18:32:19.319Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
-[debug] [2024-09-23T18:32:19.319Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
 [info] +  firestore: Firestore Emulator UI websocket is running on 9150. {"metadata":{"emulator":{"name":"firestore"},"message":"Firestore Emulator UI websocket is running on 9150."}}
-[debug] [2024-09-23T18:32:21.857Z] > refreshing access token with scopes: []
-[debug] [2024-09-23T18:32:21.859Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
-[debug] [2024-09-23T18:32:21.859Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
-[debug] [2024-09-23T18:32:22.057Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
-[debug] [2024-09-23T18:32:22.057Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
-[debug] [2024-09-23T18:32:22.071Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/contahorra [none]
-[debug] [2024-09-23T18:32:22.572Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/contahorra 200
-[debug] [2024-09-23T18:32:22.572Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/contahorra {"projectId":"contahorra","projectNumber":"621813606140","displayName":"ContAhorra","name":"projects/contahorra","resources":{"hostingSite":"contahorra","realtimeDatabaseInstance":"contahorra-default-rtdb"},"state":"ACTIVE","etag":"1_0524f5a3-4913-4563-b855-13e43109a46a"}
-[debug] [2024-09-23T18:32:22.573Z] database rules config:  [{"instance":"contahorra-default-rtdb","rules":"D:\\proyectos\\ContAhorra\\database.rules.json"}]
-[debug] [2024-09-23T18:32:22.575Z] Ignoring unsupported arg: projectId {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: projectId"}}
-[debug] [2024-09-23T18:32:22.575Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: auto_download"}}
-[debug] [2024-09-23T18:32:22.575Z] Ignoring unsupported arg: rules {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: rules"}}
-[debug] [2024-09-23T18:32:22.575Z] Starting Database Emulator with command {"binary":"java","args":["-Duser.language=en","-jar","C:\\Users\\Andry Hernandez\\.cache\\firebase\\emulators\\firebase-database-emulator-v4.11.2.jar","--host","127.0.0.1","--port",9000,"--single_project_mode","Warning"],"optionalArgs":["port","host","functions_emulator_port","functions_emulator_host","single_project_mode"],"joinArgs":false,"shell":false} {"metadata":{"emulator":{"name":"database"},"message":"Starting Database Emulator with command {\"binary\":\"java\",\"args\":[\"-Duser.language=en\",\"-jar\",\"C:\\\\Users\\\\Andry Hernandez\\\\.cache\\\\firebase\\\\emulators\\\\firebase-database-emulator-v4.11.2.jar\",\"--host\",\"127.0.0.1\",\"--port\",9000,\"--single_project_mode\",\"Warning\"],\"optionalArgs\":[\"port\",\"host\",\"functions_emulator_port\",\"functions_emulator_host\",\"single_project_mode\"],\"joinArgs\":false,\"shell\":false}"}}
+[debug] [2024-09-24T01:38:45.413Z] > refreshing access token with scopes: []
+[debug] [2024-09-24T01:38:45.415Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2024-09-24T01:38:45.416Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-09-24T01:38:45.583Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2024-09-24T01:38:45.583Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2024-09-24T01:38:45.607Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/contahorra [none]
+[debug] [2024-09-24T01:38:46.052Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/contahorra 200
+[debug] [2024-09-24T01:38:46.052Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/contahorra {"projectId":"contahorra","projectNumber":"621813606140","displayName":"ContAhorra","name":"projects/contahorra","resources":{"hostingSite":"contahorra","realtimeDatabaseInstance":"contahorra-default-rtdb"},"state":"ACTIVE","etag":"1_0524f5a3-4913-4563-b855-13e43109a46a"}
+[debug] [2024-09-24T01:38:46.053Z] database rules config:  [{"instance":"contahorra-default-rtdb","rules":"D:\\proyectos\\ContAhorra\\database.rules.json"}]
+[debug] [2024-09-24T01:38:46.058Z] Ignoring unsupported arg: projectId {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: projectId"}}
+[debug] [2024-09-24T01:38:46.058Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2024-09-24T01:38:46.058Z] Ignoring unsupported arg: rules {"metadata":{"emulator":{"name":"database"},"message":"Ignoring unsupported arg: rules"}}
+[debug] [2024-09-24T01:38:46.058Z] Starting Database Emulator with command {"binary":"java","args":["-Duser.language=en","-jar","C:\\Users\\Andry Hernandez\\.cache\\firebase\\emulators\\firebase-database-emulator-v4.11.2.jar","--host","127.0.0.1","--port",9000,"--single_project_mode","Warning"],"optionalArgs":["port","host","functions_emulator_port","functions_emulator_host","single_project_mode"],"joinArgs":false,"shell":false} {"metadata":{"emulator":{"name":"database"},"message":"Starting Database Emulator with command {\"binary\":\"java\",\"args\":[\"-Duser.language=en\",\"-jar\",\"C:\\\\Users\\\\Andry Hernandez\\\\.cache\\\\firebase\\\\emulators\\\\firebase-database-emulator-v4.11.2.jar\",\"--host\",\"127.0.0.1\",\"--port\",9000,\"--single_project_mode\",\"Warning\"],\"optionalArgs\":[\"port\",\"host\",\"functions_emulator_port\",\"functions_emulator_host\",\"single_project_mode\"],\"joinArgs\":false,\"shell\":false}"}}
 [info] i  database: Database Emulator logging to database-debug.log {"metadata":{"emulator":{"name":"database"},"message":"Database Emulator logging to \u001b[1mdatabase-debug.log\u001b[22m"}}
-[debug] [2024-09-23T18:32:30.678Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: auto_download"}}
-[debug] [2024-09-23T18:32:30.678Z] Ignoring unsupported arg: port {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: port"}}
-[debug] [2024-09-23T18:32:30.678Z] Starting Emulator UI with command {"binary":"node","args":["C:\\Users\\Andry Hernandez\\.cache\\firebase\\emulators\\ui-v1.13.0\\server\\server.mjs"],"optionalArgs":[],"joinArgs":false,"shell":false} {"metadata":{"emulator":{"name":"ui"},"message":"Starting Emulator UI with command {\"binary\":\"node\",\"args\":[\"C:\\\\Users\\\\Andry Hernandez\\\\.cache\\\\firebase\\\\emulators\\\\ui-v1.13.0\\\\server\\\\server.mjs\"],\"optionalArgs\":[],\"joinArgs\":false,\"shell\":false}"}}
+[debug] [2024-09-24T01:38:55.908Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2024-09-24T01:38:55.909Z] Ignoring unsupported arg: port {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: port"}}
+[debug] [2024-09-24T01:38:55.909Z] Starting Emulator UI with command {"binary":"node","args":["C:\\Users\\Andry Hernandez\\.cache\\firebase\\emulators\\ui-v1.13.0\\server\\server.mjs"],"optionalArgs":[],"joinArgs":false,"shell":false} {"metadata":{"emulator":{"name":"ui"},"message":"Starting Emulator UI with command {\"binary\":\"node\",\"args\":[\"C:\\\\Users\\\\Andry Hernandez\\\\.cache\\\\firebase\\\\emulators\\\\ui-v1.13.0\\\\server\\\\server.mjs\"],\"optionalArgs\":[],\"joinArgs\":false,\"shell\":false}"}}
 [info] i  ui: Emulator UI logging to ui-debug.log {"metadata":{"emulator":{"name":"ui"},"message":"Emulator UI logging to \u001b[1mui-debug.log\u001b[22m"}}
-[debug] [2024-09-23T18:32:30.954Z] Web / API server started at 127.0.0.1:4000
+[debug] [2024-09-24T01:38:56.164Z] Web / API server started at 127.0.0.1:4000
  {"metadata":{"emulator":{"name":"ui"},"message":"Web / API server started at 127.0.0.1:4000\n"}}
-[debug] [2024-09-23T18:32:30.955Z] Web / API server started at ::1:4000
+[debug] [2024-09-24T01:38:56.165Z] Web / API server started at ::1:4000
  {"metadata":{"emulator":{"name":"ui"},"message":"Web / API server started at ::1:4000\n"}}
-[debug] [2024-09-23T18:32:31.141Z] >>> [apiv2][query] PUT http://127.0.0.1:9000/.settings/rules.json ns=contahorra-default-rtdb
-[debug] [2024-09-23T18:32:31.141Z] >>> [apiv2][body] PUT http://127.0.0.1:9000/.settings/rules.json "{\r\n  /* Visit https://firebase.google.com/docs/database/security to learn more about security rules. */\r\n  \"rules\": {\r\n    \".read\": false,\r\n    \".write\": false\r\n  }\r\n}"
-[debug] [2024-09-23T18:32:31.722Z] <<< [apiv2][status] PUT http://127.0.0.1:9000/.settings/rules.json 200
-[debug] [2024-09-23T18:32:31.722Z] <<< [apiv2][body] PUT http://127.0.0.1:9000/.settings/rules.json {"status":"ok"}
+[debug] [2024-09-24T01:38:56.347Z] >>> [apiv2][query] PUT http://127.0.0.1:9000/.settings/rules.json ns=contahorra-default-rtdb
+[debug] [2024-09-24T01:38:56.348Z] >>> [apiv2][body] PUT http://127.0.0.1:9000/.settings/rules.json "{\r\n  /* Visit https://firebase.google.com/docs/database/security to learn more about security rules. */\r\n  \"rules\": {\r\n    \".read\": false,\r\n    \".write\": false\r\n  }\r\n}"
+[debug] [2024-09-24T01:38:56.908Z] <<< [apiv2][status] PUT http://127.0.0.1:9000/.settings/rules.json 200
+[debug] [2024-09-24T01:38:56.908Z] <<< [apiv2][body] PUT http://127.0.0.1:9000/.settings/rules.json {"status":"ok"}
 [info] 
 ┌─────────────────────────────────────────────────────────────┐
 │ ✔  All emulators ready! It is now safe to connect your app. │
@@ -75,3 +73,4 @@ Java HotSpot(TM) 64-Bit Server VM (build 20.0.1+9-29, mixed mode, sharing)
 
 Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
  
+[info] i  To verify the email address test@test.com, follow this link: http://127.0.0.1:9099/emulator/action?mode=verifyEmail&lang=en&oobCode=W4qG0BT8wI2k5CYA_w61gDO5q_vv5Z4Lt5622FolX5sSKVU-KCJKRP&apiKey=fake-api-key {"metadata":{"emulator":{"name":"auth"},"message":"To verify the email address test@test.com, follow this link: http://127.0.0.1:9099/emulator/action?mode=verifyEmail&lang=en&oobCode=W4qG0BT8wI2k5CYA_w61gDO5q_vv5Z4Lt5622FolX5sSKVU-KCJKRP&apiKey=fake-api-key"}}
