@@ -44,7 +44,7 @@ export const PerfilUI: React.FC<PerfilProps> = () => {
         <ModalContent>
           <ModalHeader>
             <Heading size="md" className="text-typography-950">
-              Invite your team
+              Elije un avatar
             </Heading>
           </ModalHeader>
           <ModalBody>
