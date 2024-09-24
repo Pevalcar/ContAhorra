@@ -12,3 +12,5 @@ export const DEFAULT_STATE_CUENTAS: Cuenta[] = DB_Cuentas;
 
 export const INITIALCATEGORY = "INITIALCATEGORY";
 export const INITIALCUENTA = "INITIALCUENTA";
+
+export const AVATAR_API_URL = "https://i.pravatar.cc";

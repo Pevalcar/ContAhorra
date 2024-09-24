@@ -10,6 +10,7 @@ import {
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   updatePassword,
+  updateProfile,
 } from "firebase/auth";
 import React, { type PropsWithChildren, createContext, useContext, useState } from "react";
 
@@ -20,6 +21,7 @@ const AuthContext = createContext<{
   recoverPassword: (email: string) => void;
   sendEmailVerification: () => void;
   updatePassword: (password: string, newPassword: string) => void;
+  updateProfile: (displayName: string, photoURL: string) => void;
   session?: string | null;
   isLoading: boolean;
   error: FirebaseError | { code: string } | null;
@@ -30,6 +32,7 @@ const AuthContext = createContext<{
   recoverPassword: (email: string) => null,
   sendEmailVerification: () => null,
   updatePassword: (password: string, newPassword: string) => null,
+  updateProfile: (displayName: string | null, photoURL: string | null) => null,
   session: null,
   isLoading: false,
   error: null,
@@ -47,6 +50,7 @@ export function useSession() {
   return value;
 }
 
+//TODO extraer logica a un servicio de sesion y usar hook
 export function SessionProvider({ children }: PropsWithChildren) {
   const [[isLoading, session], setSession] = useStorageState("session");
   const [error, setError] = useState<FirebaseError | { code: string } | null>(null);
@@ -133,7 +137,24 @@ export function SessionProvider({ children }: PropsWithChildren) {
             setError(error as FirebaseError);
             throw error;
           }
-          //TODO verificar que esto funcione
+        },
+        updateProfile: async (displayName: string, photoURL: string) => {
+          setError(null);
+          if (!auth.currentUser) {
+            return;
+          }
+
+          updateProfile(auth.currentUser, {
+            displayName,
+            photoURL,
+          })
+            .then(() => {
+              setError({ code: "success-update-profile" });
+            })
+            .catch((error: FirebaseError) => {
+              setError(error);
+              throw error;
+            });
         },
         session,
         isLoading,
