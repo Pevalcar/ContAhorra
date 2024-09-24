@@ -8,74 +8,11 @@ import { Modal, ModalBackdrop, ModalBody, ModalContent, ModalHeader } from "@/co
 import { Pressable } from "@/components/ui/pressable";
 import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
-import { useMyToast } from "@/lib/Hooks/useToast";
-import { useSession } from "@/lib/sesionprovider/ctx";
-import { useConstsStore } from "@/lib/store/ConstsStore";
+import { useProfile } from "@/lib/Hooks/useProfile";
 import { useAssets } from "expo-asset";
 import { MailCheck } from "lucide-react-native";
 import React from "react";
 import { View } from "react-native";
-
-const useProfile = () => {
-  const { fetchUser, user } = useConstsStore((state) => state);
-
-  const { handleToast } = useMyToast();
-  const [emailSend, setEmailSend] = React.useState(false);
-  const [displayName, setDisplayName] = React.useState<string | null>(null);
-  const [photoURL, setPhotoURL] = React.useState<string>();
-  const { updateProfile, error } = useSession();
-  const [showModal, setShowModal] = React.useState(false);
-  const ref = React.useRef(null);
-
-  React.useEffect(() => {
-    fetchUser();
-  }, []);
-  const { sendEmailVerification } = useSession();
-
-  const handleUpdateProfile = () => {
-    updateProfile(displayName ?? "", photoURL ?? "1");
-  };
-  React.useEffect(() => {
-    console.log(error);
-    switch (error?.code) {
-      case "success-update-profile":
-        handleToast("Perfecto", "tu perfil se actualizó correctamente", "success");
-        break;
-      default:
-        break;
-    }
-  }, [error]);
-
-  React.useEffect(() => {
-    setDisplayName(user?.displayName ?? null);
-    setPhotoURL(user?.photoURL ?? "");
-  }, [user]);
-
-  async function enviaremailVerificacion() {
-    await sendEmailVerification();
-    handleToast(
-      "Verificación enviada",
-      "Revísala en tu bandeja de entrada, verifica y vuelve a iniciar sesión",
-      "info",
-    );
-    setEmailSend(true);
-  }
-
-  return {
-    handleUpdateProfile,
-    enviaremailVerificacion,
-    displayName,
-    photoURL,
-    showModal,
-    setShowModal,
-    ref,
-    emailSend,
-    setEmailSend,
-    setPhotoURL,
-    user,
-    setDisplayName,
-  };
-};
 
 interface PerfilProps {}
 export const PerfilUI: React.FC<PerfilProps> = () => {
