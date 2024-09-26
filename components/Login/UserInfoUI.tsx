@@ -20,7 +20,9 @@ export const UserInfoUI: React.FC<Props> = () => {
       <Button variant="outline" onPress={() => router.back()}>
         <ButtonText>{t("back")}</ButtonText>
       </Button>
-      <Text className="text-center text-gray-500 dark:text-gray-400">Ya Iniciaste sesión</Text>
+      <Text className="text-center text-gray-500 dark:text-gray-400">
+        {t("ya-iniciaste-sesion")}
+      </Text>
       <MyButtonGroup selected={selected} setSelected={setSelected} />
       <Card variant="outline" className="gap-5">
         {selected === 0 && <PerfilUI />}
@@ -46,10 +48,10 @@ const MyButtonGroup: React.FC<ButtonGroupProps> = ({ selected, setSelected }) =>
   return (
     <Card className="flex-row gap-2 p-3" size="sm">
       <Button onPress={() => handlePress(0)} variant={selected === 0 ? "solid" : "outline"}>
-        <ButtonText>Perfil</ButtonText>
+        <ButtonText>{t("perfil")}</ButtonText>
       </Button>
       <Button onPress={() => handlePress(1)} variant={selected === 1 ? "solid" : "outline"}>
-        <ButtonText>Seguridad</ButtonText>
+        <ButtonText>{t("seguridad")}</ButtonText>
       </Button>
     </Card>
   );

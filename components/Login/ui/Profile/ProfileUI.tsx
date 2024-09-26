@@ -10,6 +10,7 @@ import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
 import { useProfile } from "@/lib/Hooks/useProfile";
 import { useAssets } from "expo-asset";
+import { t } from "i18next";
 import { MailCheck } from "lucide-react-native";
 import React from "react";
 import { View } from "react-native";
@@ -32,7 +33,7 @@ export const PerfilUI: React.FC<PerfilProps> = () => {
 
   return (
     <>
-      <Heading size="2xl">Información del Perfil</Heading>
+      <Heading size="2xl">{t("informacion-del-perfil")}</Heading>
       <Modal
         isOpen={showModal}
         onClose={() => {
@@ -44,7 +45,7 @@ export const PerfilUI: React.FC<PerfilProps> = () => {
         <ModalContent>
           <ModalHeader>
             <Heading size="md" className="text-typography-950">
-              Elije un avatar
+              {t("elije-un-avatar")}{" "}
             </Heading>
           </ModalHeader>
           <ModalBody>
@@ -58,32 +59,32 @@ export const PerfilUI: React.FC<PerfilProps> = () => {
         </ModalContent>
       </Modal>
       <VStack className="items-center gap-3">
-        <Text> Actualizar información del perfil</Text>
+        <Text>{t("actualizar-informacion-del-perfil")}</Text>
         <Avatar size="2xl">
-          <AvatarFallbackText>{displayName ?? "Añadir foto"}</AvatarFallbackText>
+          <AvatarFallbackText>{displayName ?? t("anadir-foto")}</AvatarFallbackText>
           <AvatarImage source={{ uri: photoURL }} />
         </Avatar>
         <Button variant="outline" className="gap-2" onPress={() => setShowModal(true)}>
-          <ButtonText>Cambiar avatar</ButtonText>
+          <ButtonText>{t("cambiar-avatar")}</ButtonText>
         </Button>
       </VStack>
-      <Text>Nombre de usuario</Text>
+      <Text>{t("nombre-de-usuario")}</Text>
       <Input>
         <InputField value={displayName ?? ""} onChangeText={setDisplayName} />
       </Input>
       <VStack className="items-start gap-2">
-        <Text>Correo electrónico</Text>
+        <Text>{t("correo-electronico")}</Text>
         <HStack className="gap-3">
           <Input className="flex-1" isReadOnly>
             <InputField value={user?.email ?? ""} />
           </Input>
           {user?.emailVerified ? (
             <Badge action="success">
-              <BadgeText>Verificado</BadgeText>
+              <BadgeText>{t("verificado")}</BadgeText>
             </Badge>
           ) : (
             <Badge action="error">
-              <BadgeText>No verificado</BadgeText>
+              <BadgeText>{t("no-verificado")}</BadgeText>
             </Badge>
           )}
         </HStack>
@@ -99,7 +100,7 @@ export const PerfilUI: React.FC<PerfilProps> = () => {
         )}
       </VStack>
       <Button onPress={handleUpdateProfile}>
-        <ButtonText>Guardar cambios</ButtonText>
+        <ButtonText>{t("guardar-cambios")}</ButtonText>
       </Button>
     </>
   );

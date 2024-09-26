@@ -3,6 +3,7 @@ import { Heading } from "@/components/ui/heading";
 import { Input, InputField } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
 import { useSecureSecion } from "@/lib/Hooks/useSecure";
+import { t } from "i18next";
 import React from "react";
 
 export const SeguridadUI = () => {
@@ -17,22 +18,22 @@ export const SeguridadUI = () => {
   } = useSecureSecion();
   return (
     <>
-      <Heading size="2xl">Configuracion de Seguridad</Heading>
-      <Text>Administrar tu contraseña y opciones de seguridad.</Text>
-      <Text>Contraseña actual</Text>
+      <Heading size="2xl">{t("configuracion-de-seguridad")}</Heading>
+      <Text>{t("administrar-tu-contrasena-y-opciones-de-seguridad")}</Text>
+      <Text>{t("contrasena-actual")}</Text>
       <Input>
         <InputField value={currentPassword} onChangeText={setCurrentPassword} />
       </Input>
-      <Text>Nueva Contraseña</Text>
+      <Text>{t("nueva-contrasena")}</Text>
       <Input>
         <InputField value={password} onChangeText={setPassword} />
       </Input>
-      <Text>Confirmar contraseña</Text>
+      <Text>{t("confirmar-contrasena-0")}</Text>
       <Input>
         <InputField value={confirmPassword} onChangeText={setConfirmPassword} />
       </Input>
       <Button onPress={() => handleUpdatePassword()}>
-        <ButtonText>Cambiar contraseña</ButtonText>
+        <ButtonText>{t("cambiar-contrasena")}</ButtonText>
       </Button>
     </>
   );
