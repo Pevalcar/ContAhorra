@@ -10,7 +10,6 @@ import { t } from "i18next";
 import React from "react";
 
 interface Props {}
-//TODO implementar i18n
 export const UserInfoUI: React.FC<Props> = () => {
   const { signOut } = useSession();
   const [selected, setSelected] = React.useState(0);
