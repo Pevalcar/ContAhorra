@@ -62,6 +62,7 @@ export const useLogin = () => {
 
   function handleSubmit() {
     setLoagin(true);
+    DEVELOPMENT && console.log("enviando a " + email + " con contraseña " + password);
     signIn(email, password);
   }
   function setRegisters() {
@@ -77,6 +78,14 @@ export const useLogin = () => {
       return;
     }
     setLoagin(true);
+    console.log(
+      "registrando a " +
+        email +
+        " con contraseña " +
+        password +
+        " y confirmación " +
+        confimPassword,
+    );
     registrar(email, password);
   }
   function handleRecoverPassword() {

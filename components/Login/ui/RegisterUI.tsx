@@ -10,24 +10,16 @@ import {
 import { Input, InputField } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
+import { useLogin } from "@/lib/Hooks/useLogin";
 import { t } from "i18next";
 import React from "react";
 
 interface PropsRegister {
-  setConfirmPassword: React.Dispatch<React.SetStateAction<string>>;
-  setPassword: React.Dispatch<React.SetStateAction<string>>;
-  setEmail: React.Dispatch<React.SetStateAction<string>>;
-  handleRegister: () => void;
   setRegister: () => void;
 }
 
-export const RegisterUI: React.FC<PropsRegister> = ({
-  setConfirmPassword,
-  setPassword,
-  setEmail,
-  handleRegister,
-  setRegister,
-}) => {
+export const RegisterUI: React.FC<PropsRegister> = ({ setRegister }) => {
+  const { setEmail, setPassword, handleRegister, setConfirmPassword } = useLogin();
   return (
     <>
       <Text className="text-center text-gray-500 dark:text-gray-400">{t("registro")}</Text>

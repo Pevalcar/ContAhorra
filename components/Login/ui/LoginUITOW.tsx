@@ -8,24 +8,17 @@ import {
 import { Input, InputField } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
+import { useLogin } from "@/lib/Hooks/useLogin";
 import { t } from "i18next";
 import React from "react";
 
 interface PropsUITO {
-  setPassword: React.Dispatch<React.SetStateAction<string>>;
-  setEmail: React.Dispatch<React.SetStateAction<string>>;
   setRegister: () => void;
-  handleSubmit: () => void;
   onRecoverPassword: () => void;
 }
 
-export const LoginUITow: React.FC<PropsUITO> = ({
-  setPassword,
-  setEmail,
-  setRegister,
-  handleSubmit,
-  onRecoverPassword,
-}) => {
+export const LoginUITow: React.FC<PropsUITO> = ({ onRecoverPassword, setRegister }) => {
+  const { setEmail, setPassword, handleSubmit } = useLogin();
   return (
     <>
       <Text className="text-center text-gray-500 dark:text-gray-400">

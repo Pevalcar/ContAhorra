@@ -80,7 +80,6 @@ export function SessionProvider({ children }: PropsWithChildren) {
         },
         registrar: async (email: string = "test@test.com", password: string = "123456") => {
           setError(null);
-
           await createUserWithEmailAndPassword(auth, email, password)
             .then((result) => {
               setSession(result.user.email);
@@ -88,6 +87,8 @@ export function SessionProvider({ children }: PropsWithChildren) {
             })
             .catch((error: FirebaseError) => {
               setError(error);
+              console.log(error);
+
               throw error;
             });
         },

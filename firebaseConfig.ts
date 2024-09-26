@@ -46,21 +46,24 @@ if (getApps().length < 1) {
       persistence: getReactNativePersistence(AsyncStorage),
     });
   }
-  analytics = getAnalytics(app);
+  // analytics = getAnalytics(app);
   db = getDatabase(app);
   dbFirestore = getFirestore(app);
+  console.log("Firebase App initialized");
 } else {
   app = getApp();
   auth = getAuth();
-  analytics = getAnalytics();
+  // analytics = getAnalytics();
   db = getDatabase();
   dbFirestore = getFirestore();
+  console.log("Firebase App already initialized");
 }
-if (DEVELOPMENT) {
-  const host = "192.168.1.4";
-  connectAuthEmulator(auth, `http://${host}:9099`);
-  connectDatabaseEmulator(db, host, 9000);
-  connectFirestoreEmulator(dbFirestore, host, 8080);
-}
+// if (DEVELOPMENT) {
+//   const host = "192.168.1.3";
+//   connectAuthEmulator(auth, `http://${host}:9099`);
+//   connectDatabaseEmulator(db, host, 9000);
+//   connectFirestoreEmulator(dbFirestore, host, 8080);
+//   console.log("Connected to Firebase Emulators");
+// }
 
 export { analytics, app, auth, db, dbFirestore };

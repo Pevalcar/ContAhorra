@@ -25,16 +25,10 @@ export const LoginUI: React.FC<Props> = () => {
     error,
     register,
     recorePassword,
-    setEmail,
-    setPassword,
-    handleSubmit,
     setRegister,
-    handleRegister,
-    setConfirmPassword,
     crearUsuarioTest,
     iniciarSesionTest,
     setRecoverPasswords,
-    handleRecoverPassword,
   } = useLogin();
   const UI = React.useMemo(() => {
     if (loagin) {
@@ -47,34 +41,12 @@ export const LoginUI: React.FC<Props> = () => {
       );
     }
     if (register) {
-      return (
-        <RegisterUI
-          setConfirmPassword={setConfirmPassword}
-          setPassword={setPassword}
-          setEmail={setEmail}
-          handleRegister={handleRegister}
-          setRegister={setRegister}
-        />
-      );
+      return <RegisterUI setRegister={setRegister} />;
     }
     if (recorePassword) {
-      return (
-        <ForgotPas
-          setEmail={setEmail}
-          handleRecoverPassword={handleRecoverPassword}
-          setRecoverPasswords={setRecoverPasswords}
-        />
-      );
+      return <ForgotPas setRecoverPasswords={setRecoverPasswords} />;
     }
-    return (
-      <LoginUITow
-        onRecoverPassword={setRecoverPasswords}
-        setPassword={setPassword}
-        setEmail={setEmail}
-        handleSubmit={handleSubmit}
-        setRegister={setRegister}
-      />
-    );
+    return <LoginUITow onRecoverPassword={setRecoverPasswords} setRegister={setRegister} />;
   }, [register, recorePassword]);
   return (
     <View>
