@@ -1,6 +1,6 @@
+import { auth } from "../configs/firebaseConfig";
 import { useConstsStore } from "../store/ConstsStore";
-import { useStorageState } from "../useStorageState";
-import { auth } from "@/firebaseConfig";
+import { useStorageState } from "../store/useStorageState";
 import { FirebaseError } from "firebase/app";
 import {
   EmailAuthProvider,

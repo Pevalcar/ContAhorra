@@ -1,4 +1,4 @@
-import { DEFAULT_STATE_CATEGORIAS, LOCAL_DB_CATEGORIAS } from "../config";
+import { DEFAULT_STATE_CATEGORIAS, LOCAL_DB_CATEGORIAS } from "../configs/config";
 import { Categoria } from "@/Types/types";
 import { Platform } from "react-native";
 import { create } from "zustand";

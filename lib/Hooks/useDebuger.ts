@@ -6,10 +6,8 @@ interface DebugerProps {
   setMessage: (title: string, message: string) => void;
 }
 
-const useDebuger = create<DebugerProps>()((set) => ({
+export const useDebuger = create<DebugerProps>()((set) => ({
   message: "",
   title: "",
   setMessage: (title: string, message: string) => set({ title, message }),
 }));
-
-export default useDebuger;

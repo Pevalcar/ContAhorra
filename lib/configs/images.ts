@@ -1,0 +1,15 @@
+export const avatars = [
+  require("@/assets/images/avatars/avatar-1.jpg"),
+  require("@/assets/images/avatars/avatar-2.jpg"),
+  require("@/assets/images/avatars/avatar-3.jpg"),
+  require("@/assets/images/avatars/avatar-4.jpg"),
+  require("@/assets/images/avatars/avatar-5.jpg"),
+  require("@/assets/images/avatars/avatar-6.jpg"),
+  require("@/assets/images/avatars/avatar-7.jpg"),
+  require("@/assets/images/avatars/avatar-8.jpg"),
+  require("@/assets/images/avatars/avatar-9.jpg"),
+  require("@/assets/images/avatars/avatar-10.jpg"),
+  require("@/assets/images/avatars/avatar-11.jpg"),
+  require("@/assets/images/avatars/avatar-12.jpg"),
+  require("@/assets/images/avatars/avatar-13.jpg"),
+];

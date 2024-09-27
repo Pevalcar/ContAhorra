@@ -1,4 +1,4 @@
-import { DEFAULT_STATE_CUENTAS } from "../config";
+import { DEFAULT_STATE_CUENTAS } from "../configs/config";
 import { type Cuenta } from "@/Types/types";
 import { Platform } from "react-native";
 import { create } from "zustand";

@@ -1,4 +1,4 @@
-import { auth } from "@/firebaseConfig";
+import { auth } from "../configs/firebaseConfig";
 import { User } from "firebase/auth";
 import { create } from "zustand";
 

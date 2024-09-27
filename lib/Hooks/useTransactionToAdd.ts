@@ -1,9 +1,9 @@
-import { INITIALCATEGORY, INITIALCUENTA } from "../config";
+import { INITIALCATEGORY, INITIALCUENTA } from "../configs/config";
 import { useCategoriaStore } from "../store/CategoriaStore";
 import { useCuentasStore } from "../store/CuentasStore";
 import { useTransaccionesStore } from "../store/TransaccionesStore";
 import { useTransactionToADDState } from "../store/TransactionToAddStore";
-import { initialState } from "../useStorageState";
+import { initialState } from "../store/useStorageState";
 import useDebuger from "./useDebuger";
 import { useMyToast } from "./useToast";
 import type { Categoria, Cuenta, TiposDeTransacciones, Transaccion } from "@/Types/types";

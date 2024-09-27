@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import { DEFAULT_STATE, LOCAL_DB_TRANSACCIONES } from "../config";
+import { DEFAULT_STATE, LOCAL_DB_TRANSACCIONES } from "../configs/config";
 import { type Transaccion } from "@/Types/types";
 import { Platform } from "react-native";
 import { create } from "zustand";

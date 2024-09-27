@@ -1,11 +1,13 @@
+import { avatars } from "../configs/images";
 import { useSession } from "../sesionprovider/ctx";
 import { useConstsStore } from "../store/ConstsStore";
 import { useMyToast } from "./useToast";
+import { useAssets } from "expo-asset";
 import React from "react";
 
 export const useProfile = () => {
   const { fetchUser, user } = useConstsStore((state) => state);
-
+  const [avatarts] = useAssets(avatars);
   const { handleToast } = useMyToast();
   const [emailSend, setEmailSend] = React.useState(false);
   const [displayName, setDisplayName] = React.useState<string | null>(null);
@@ -35,7 +37,9 @@ export const useProfile = () => {
 
   React.useEffect(() => {
     setDisplayName(user?.displayName ?? null);
-    setPhotoURL(user?.photoURL ?? "");
+    if (avatarts) {
+      setPhotoURL(user?.photoURL ?? avatarts[0]?.uri);
+    }
   }, [user]);
 
   async function enviaremailVerificacion() {

@@ -1,4 +1,4 @@
-import { DEVELOPMENT } from "../config";
+import { DEVELOPMENT } from "../configs/config";
 import { useSession } from "../sesionprovider/ctx";
 import { useMyToast } from "./useToast";
 import React from "react";

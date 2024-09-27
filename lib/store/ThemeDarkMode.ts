@@ -6,11 +6,9 @@ interface DarkModeState {
   toggleDarkMode: () => void;
 }
 
-const useDarkModeStore = create<DarkModeState>()(
+export const useDarkModeStore = create<DarkModeState>()(
   devtools((set) => ({
     darkMode: false,
     toggleDarkMode: () => set((state) => ({ darkMode: !state.darkMode })),
   })),
 );
-
-export default useDarkModeStore;

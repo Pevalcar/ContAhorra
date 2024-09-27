@@ -1,4 +1,4 @@
-import { DB_Categorias, DB_Cuentas, DB_Transacciones } from "./db/local/db_local";
+import { DB_Categorias, DB_Cuentas, DB_Transacciones } from "../db/local/db_local";
 import { type Categoria, type Cuenta, type Transaccion } from "@/Types/types";
 
 export const DEVELOPMENT = process.env.NODE_ENV !== "production";

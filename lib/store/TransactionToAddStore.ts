@@ -1,5 +1,5 @@
-import { INITIALCATEGORY, INITIALCUENTA } from "../config";
-import { storeData } from "../useStorageState";
+import { INITIALCATEGORY, INITIALCUENTA } from "../configs/config";
+import { storeData } from "./useStorageState";
 import type { Categoria, Cuenta, TiposDeTransacciones } from "@/Types/types";
 import { create } from "zustand";
 
