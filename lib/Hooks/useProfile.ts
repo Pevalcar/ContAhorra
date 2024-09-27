@@ -1,12 +1,13 @@
 import { avatars } from "../configs/images";
-import { useSession } from "../sesionprovider/ctx";
+import { useSession } from "../providers/ctx";
 import { useConstsStore } from "../store/ConstsStore";
 import { useMyToast } from "./useToast";
 import { useAssets } from "expo-asset";
 import React from "react";
 
 export const useProfile = () => {
-  const { fetchUser, user } = useConstsStore((state) => state);
+  const fetchUser = useConstsStore((state) => state.fetchUser);
+  const user = useConstsStore((state) => state.user);
   const [avatarts] = useAssets(avatars);
   const { handleToast } = useMyToast();
   const [emailSend, setEmailSend] = React.useState(false);
@@ -17,15 +18,25 @@ export const useProfile = () => {
   const ref = React.useRef(null);
 
   React.useEffect(() => {
-    fetchUser();
-  }, []);
+    const fetchAndSetUser = async () => {
+      await fetchUser();
+      if (user) {
+        setDisplayName(user?.displayName ?? null);
+        if (avatarts) {
+          setPhotoURL(user?.photoURL ?? avatarts[0]?.uri);
+        }
+      }
+    };
+
+    fetchAndSetUser();
+  }, [avatarts]);
   const { sendEmailVerification } = useSession();
 
   const handleUpdateProfile = () => {
     updateProfile(displayName ?? "", photoURL ?? "1");
   };
   React.useEffect(() => {
-    console.log(error);
+    console.log("error de firebase", error);
     switch (error?.code) {
       case "success-update-profile":
         handleToast("Perfecto", "tu perfil se actualizó correctamente", "success");
