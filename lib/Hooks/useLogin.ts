@@ -1,5 +1,5 @@
 import { DEVELOPMENT } from "../configs/config";
-import { useSession } from "../sesionprovider/ctx";
+import { useSession } from "../providers/ctx";
 import { useMyToast } from "./useToast";
 import React from "react";
 import { useTranslation } from "react-i18next";

@@ -1,4 +1,5 @@
 import { auth } from "../configs/firebaseConfig";
+import { loginUseCase } from "../core/di/Container";
 import { useConstsStore } from "../store/ConstsStore";
 import { useStorageState } from "../store/useStorageState";
 import { FirebaseError } from "firebase/app";
@@ -62,6 +63,14 @@ export function SessionProvider({ children }: PropsWithChildren) {
         signIn: async (email: string = "test@test.com", password: string = "123456") => {
           setError(null);
 
+          try {
+            const user = await loginUseCase.execute(email, password);
+            setSession(user.email);
+            setError({ code: "success-login" });
+          } catch (error) {
+            setError(error);
+            throw error;
+          }
           await signInWithEmailAndPassword(auth, email, password)
             .then((result) => {
               setSession(result.user.email);

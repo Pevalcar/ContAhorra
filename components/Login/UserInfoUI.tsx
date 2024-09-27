@@ -4,7 +4,7 @@ import { Text } from "../ui/text";
 import { VStack } from "../ui/vstack";
 import { PerfilUI } from "./ui/Profile/ProfileUI";
 import { SeguridadUI } from "./ui/Secure/SecureUI";
-import { useSession } from "@/lib/sesionprovider/ctx";
+import { useSession } from "@/lib/providers/ctx";
 import { router } from "expo-router";
 import { t } from "i18next";
 import React from "react";
