@@ -10,7 +10,7 @@ import { ForgotPas } from "./ui/ForgotPas";
 import { LoginUITow } from "./ui/LoginUITOW";
 import { RegisterUI } from "./ui/RegisterUI";
 import { useLogin } from "@/lib/Hooks/useLogin";
-import { DEVELOPMENT } from "@/lib/config";
+import { DEVELOPMENT } from "@/lib/configs/config";
 import { router } from "expo-router";
 import { t } from "i18next";
 import { Box, Facebook, Github, Twitter } from "lucide-react-native";

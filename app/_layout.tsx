@@ -2,7 +2,7 @@ import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 import "@/global.css";
 import "@/i18n";
 import { SessionProvider } from "@/lib/sesionprovider/ctx";
-import useDarkModeStore from "@/lib/store/ThemeDarkMode";
+import { useDarkModeStore } from "@/lib/store/ThemeDarkMode";
 import { DarkTheme, DefaultTheme, ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";

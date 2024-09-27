@@ -1,5 +1,5 @@
 import { Button, ButtonText } from "./ui/button";
-import { AVATAR_API_URL, DEVELOPMENT } from "@/lib/config";
+import { AVATAR_API_URL, DEVELOPMENT } from "@/lib/configs/config";
 import { useConstsStore } from "@/lib/store/ConstsStore";
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";

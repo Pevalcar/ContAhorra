@@ -1,6 +1,6 @@
 import CustomDrawer from "@/components/CustomDrawer";
 import { ListIcon, PiggyBankIcon, SettingsIcon, WalletIcon } from "@/components/Icons";
-import useDarkModeStore from "@/lib/store/ThemeDarkMode";
+import { useDarkModeStore } from "@/lib/store/ThemeDarkMode";
 import { Drawer } from "expo-router/drawer";
 import * as SplashScreen from "expo-splash-screen";
 import React from "react";

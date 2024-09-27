@@ -9,6 +9,7 @@ import { Pressable } from "@/components/ui/pressable";
 import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
 import { useProfile } from "@/lib/Hooks/useProfile";
+import { avatars } from "@/lib/configs/images";
 import { useAssets } from "expo-asset";
 import { t } from "i18next";
 import { MailCheck } from "lucide-react-native";
@@ -111,21 +112,7 @@ interface gridItemProps {
 }
 
 const GridItemUI: React.FC<gridItemProps> = ({ onPress }) => {
-  const [avatarts] = useAssets([
-    require("@/assets/images/avatars/avatar-1.jpg"),
-    require("@/assets/images/avatars/avatar-2.jpg"),
-    require("@/assets/images/avatars/avatar-3.jpg"),
-    require("@/assets/images/avatars/avatar-4.jpg"),
-    require("@/assets/images/avatars/avatar-5.jpg"),
-    require("@/assets/images/avatars/avatar-6.jpg"),
-    require("@/assets/images/avatars/avatar-7.jpg"),
-    require("@/assets/images/avatars/avatar-8.jpg"),
-    require("@/assets/images/avatars/avatar-9.jpg"),
-    require("@/assets/images/avatars/avatar-10.jpg"),
-    require("@/assets/images/avatars/avatar-11.jpg"),
-    require("@/assets/images/avatars/avatar-12.jpg"),
-    require("@/assets/images/avatars/avatar-13.jpg"),
-  ]);
+  const [avatarts] = useAssets(avatars);
 
   const onPressAvatar = (index: number) => {
     if (avatarts) {

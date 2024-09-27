@@ -1,7 +1,7 @@
 import { Footer } from "./Footer";
 import { SafeAreaView } from "@/components/ui/safe-area-view";
-import { DEVELOPMENT } from "@/lib/config";
-import useDarkModeStore from "@/lib/store/ThemeDarkMode";
+import { DEVELOPMENT } from "@/lib/configs/config";
+import { useDarkModeStore } from "@/lib/store/ThemeDarkMode";
 import React, { ReactNode } from "react";
 import { StatusBar } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
