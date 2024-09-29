@@ -7,6 +7,7 @@ import {
   isErrorWithCode,
   statusCodes,
 } from "@react-native-google-signin/google-signin";
+import Constants from "expo-constants";
 import { FirebaseError } from "firebase/app";
 import {
   EmailAuthProvider,
@@ -100,7 +101,7 @@ export default class FirebaseAuthRepository extends AuthRepositoryI {
 
   async signInWhitGoogle() {
     GoogleSignin.configure({
-      webClientId: process.env.GOOGLE_WEB_CLIENT_ID,
+      webClientId: Constants.expoConfig?.extra?.google.webClientId,
       offlineAccess: true,
     });
     try {
