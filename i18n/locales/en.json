@@ -136,5 +136,11 @@
   "perfil": "Profile",
   "seguridad": "Security",
   "verificado": "Verified",
-  "ya-iniciaste-sesion": "You are already logged in"
+  "ya-iniciaste-sesion": "You are already logged in",
+  "error-credenciales-invalidos": "Error Verify your Email or Phone and Password",
+  "Cancelled": "Start of section Canceled",
+  "In progress": "Section in Progress",
+  "Play services not available": "Play Services not found",
+  "Some other error": "Some Error Happened",
+  "success-google-auth": "Google Session Start"
 }

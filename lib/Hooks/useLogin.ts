@@ -26,15 +26,6 @@ export const useLogin = () => {
       setMyError(true);
 
       switch (error.message) {
-        case "error-usuario-no-encontrado":
-          handleToast(t("error"), t("error-usuario-no-encontrado"), "error");
-          break;
-        case "error-contrasena":
-          handleToast(t("error"), t("error-contrasena"), "error");
-          break;
-        case "error-email":
-          handleToast(t("error"), t("error-email"), "error");
-          break;
         case "success-login": {
           handleToast(t("success"), t("success-login"), "success");
           setMyError(false);
@@ -46,16 +37,40 @@ export const useLogin = () => {
           setMyError(false);
           break;
         }
-        case "email-ya-esta-en-uso":
-          handleToast(t("error"), t("email-ya-esta-en-uso"), "info");
-          break;
-        case "correo-no-encontrado":
-          handleToast(t("error"), t("correo-no-encontrado"), "error");
-          break;
         case "success-google-auth":
           handleToast(t("success"), t("success-google-auth"), "success");
           setLoagin(false);
           setMyError(false);
+          break;
+        case "email-ya-esta-en-uso":
+          handleToast(t("error"), t("email-ya-esta-en-uso"), "info");
+          break;
+        case "error-usuario-no-encontrado":
+          handleToast(t("error"), t("error-usuario-no-encontrado"), "error");
+          break;
+        case "error-contrasena":
+          handleToast(t("error"), t("error-contrasena"), "error");
+          break;
+        case "error-email":
+          handleToast(t("error"), t("error-email"), "error");
+          break;
+        case "correo-no-encontrado":
+          handleToast(t("error"), t("correo-no-encontrado"), "error");
+          break;
+        case "error-credenciales-invalidos":
+          handleToast(t("error"), t("error-credenciales-invalidos"), "error");
+          break;
+        case "Cancelled":
+          handleToast(t("error"), t("Cancelled"), "error");
+          break;
+        case "In progress":
+          handleToast(t("error"), t("In progress"), "error");
+          break;
+        case "Play services not available":
+          handleToast(t("error"), t("Play services not available"), "error");
+          break;
+        case "Some other error":
+          handleToast(t("error"), t("Some other error"), "error");
           break;
         default:
           handleToast(t("error"), error.message, "error");

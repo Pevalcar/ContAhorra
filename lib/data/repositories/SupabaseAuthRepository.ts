@@ -1,5 +1,6 @@
 import { supabase } from "@/lib/configs/supabase";
 import User from "@/lib/domain/entities/User";
+import { SupaBaseControlError } from "@/lib/domain/error/SupaBaseControlError";
 import AuthRepositoryI from "@/lib/domain/repositories/AuthRepositoryI";
 import { GoogleSignin, statusCodes } from "@react-native-google-signin/google-signin";
 import Constants from "expo-constants";
@@ -20,7 +21,7 @@ export default class SupabaseAuthRepository extends AuthRepositoryI {
       password: password,
     });
     if (error) {
-      throw error;
+      throw SupaBaseControlError.getError(error.message);
     }
 
     if (!data.session) throw new Error("No user on the session!");
@@ -30,11 +31,10 @@ export default class SupabaseAuthRepository extends AuthRepositoryI {
       status,
     } = await supabase.from("profiles").select("*").eq("id", data.session.user.id);
     if (errors && status !== 406) {
-      throw errors;
+      throw SupaBaseControlError.getError(errors.message);
     }
     if (datas) {
       const user = User.fromSupabaseUser(data.user, datas[0]);
-      console.log(user);
 
       return user;
     }
@@ -55,8 +55,20 @@ export default class SupabaseAuthRepository extends AuthRepositoryI {
     if (error) {
       throw error;
     }
-    if (data) {
-      console.log(data);
+    if (data.user) {
+      const {
+        data: datas,
+        error: errors,
+        status,
+      } = await supabase.from("profiles").select("*").eq("id", data.user.id);
+      if (errors && status !== 406) {
+        throw SupaBaseControlError.getError(errors.message);
+      }
+      if (datas) {
+        const user = User.fromSupabaseUser(data.user, datas[0]);
+
+        return user;
+      }
     }
     return null;
   }
@@ -81,7 +93,6 @@ export default class SupabaseAuthRepository extends AuthRepositoryI {
     }
     if (datas) {
       const user = User.fromSupabaseUser(session.user, datas[0]);
-      console.log(user);
 
       return user;
     }
@@ -111,7 +122,7 @@ export default class SupabaseAuthRepository extends AuthRepositoryI {
       .select();
     if (errorUpdate) {
       console.log(" error en  updateProfile Supabase" + errorUpdate);
-      throw error;
+      throw SupaBaseControlError.getError(errorUpdate.message);
     }
   }
   async recoverPassword(email: string): Promise<void> {
@@ -160,8 +171,6 @@ export default class SupabaseAuthRepository extends AuthRepositoryI {
           }
           if (datas) {
             const user = User.fromSupabaseUser(data.user, datas[0]);
-            console.log(user);
-
             return user;
           }
         }
@@ -169,15 +178,14 @@ export default class SupabaseAuthRepository extends AuthRepositoryI {
         throw new Error("no ID token present!");
       }
     } catch (error: any) {
-      console.log(error);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        // user cancelled the login flow
+        throw SupaBaseControlError.getError("Cancelled");
       } else if (error.code === statusCodes.IN_PROGRESS) {
-        // operation (e.g. sign in) is in progress already
+        throw SupaBaseControlError.getError("In progress");
       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        // play services not available or outdated
+        throw SupaBaseControlError.getError("Play services not available");
       } else {
-        // some other error happened
+        throw SupaBaseControlError.getError("Some other error");
       }
     }
     return null;
