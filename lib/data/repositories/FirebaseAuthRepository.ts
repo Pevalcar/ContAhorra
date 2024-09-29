@@ -136,4 +136,14 @@ export default class FirebaseAuthRepository extends AuthRepositoryI {
     }
     return null;
   }
+
+  async fetchUser(): Promise<User | null> {
+    const credentials = auth.currentUser;
+    if (credentials) {
+      const user = User.fromFirebaseUser(credentials);
+      return user;
+    } else {
+      return null;
+    }
+  }
 }

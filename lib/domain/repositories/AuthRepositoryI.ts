@@ -30,4 +30,7 @@ export default class AuthRepositoryI {
   signInWhitGoogle(): Promise<User | null> {
     throw new Error("Method not implemented.");
   }
+  fetchUser(): Promise<User | null> {
+    throw new Error("Method not implemented.");
+  }
 }

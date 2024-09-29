@@ -1,4 +1,5 @@
 import { avatars } from "../configs/images";
+import "../domain/entities/User";
 import { useSession } from "../providers/ctx";
 import { useConstsStore } from "../store/ConstsStore";
 import { useMyToast } from "./useToast";
@@ -19,12 +20,17 @@ export const useProfile = () => {
 
   React.useEffect(() => {
     const fetchAndSetUser = async () => {
-      await fetchUser();
-      if (user) {
-        setDisplayName(user?.name ?? null);
-        if (avatarts) {
-          setPhotoURL(user?.photoURL ?? avatarts[0]?.uri);
+      try {
+        await fetchUser();
+
+        if (user) {
+          setDisplayName(user?.name ?? null);
+          if (avatarts) {
+            setPhotoURL(user?.photoURL ?? avatarts[0]?.uri);
+          }
         }
+      } catch (error) {
+        console.log(error);
       }
     };
 

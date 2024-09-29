@@ -93,11 +93,11 @@ export const useLogin = () => {
   }
   function crearUsuarioTest() {
     setLoagin(true);
-    registrar("test@test.com", "123456");
+    registrar("perroaa94@gmail.com", "123456");
   }
   function iniciarSesionTest() {
     setLoagin(true);
-    signIn("test@test.com", "123456");
+    signIn("perroaa94@gmail.com", "123456");
   }
 
   if (DEVELOPMENT) {

@@ -1,5 +1,6 @@
-import FirebaseAuthRepository from "../../data/repositories/FirebaseAuthRepository";
+import SupabaseAuthRepository from "@/lib/data/repositories/SupabaseAuthRepository";
 import {
+  FetchUserUseCase,
   GoogleAuthUseCase,
   LoginUseCase,
   RecoverUseCase,
@@ -10,7 +11,7 @@ import {
   VerificationUseCase,
 } from "@/lib/domain/usecases/Auth";
 
-const AuthRepository = new FirebaseAuthRepository();
+const AuthRepository = new SupabaseAuthRepository();
 
 const loginUseCase = new LoginUseCase(AuthRepository);
 
@@ -28,13 +29,16 @@ const updateProfileUseCase = new UpdateProfileUseCase(AuthRepository);
 
 const googleAuthUseCase = new GoogleAuthUseCase(AuthRepository);
 
+const fetchUser = new FetchUserUseCase(AuthRepository);
+
 export {
+  googleAuthUseCase,
   loginUseCase,
-  singOutUseCase,
-  registerUseCase,
   recoverUseCase,
-  verificationUseCase,
+  registerUseCase,
+  singOutUseCase,
   updatePasswordUseCase,
   updateProfileUseCase,
-  googleAuthUseCase,
+  verificationUseCase,
+  fetchUser,
 };
