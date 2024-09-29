@@ -2,13 +2,20 @@ import { auth } from "@/lib/configs/firebaseConfig";
 import User from "@/lib/domain/entities/User";
 import { FirebaseControlErrors } from "@/lib/domain/error/FirebaseControErrors";
 import AuthRepositoryI from "@/lib/domain/repositories/AuthRepositoryI";
+import {
+  GoogleSignin,
+  isErrorWithCode,
+  statusCodes,
+} from "@react-native-google-signin/google-signin";
 import { FirebaseError } from "firebase/app";
 import {
   EmailAuthProvider,
+  GoogleAuthProvider,
   createUserWithEmailAndPassword,
   reauthenticateWithCredential,
   sendEmailVerification,
   sendPasswordResetEmail,
+  signInWithCredential,
   signInWithEmailAndPassword,
   signOut,
   updatePassword,
@@ -88,5 +95,44 @@ export default class FirebaseAuthRepository extends AuthRepositoryI {
   }
   async logout() {
     await signOut(auth);
+    await GoogleSignin.signOut();
+  }
+
+  async signInWhitIdToken() {
+    GoogleSignin.configure({
+      webClientId: "621813606140-kuob128bgtfpk9uceebimp9ndvom76ok.apps.googleusercontent.com",
+      offlineAccess: true,
+    });
+    try {
+      await GoogleSignin.hasPlayServices();
+      const response = await GoogleSignin.signIn();
+      if (response.data?.idToken) {
+        const tokes = await GoogleSignin.getTokens();
+        const credentials = GoogleAuthProvider.credential(tokes.idToken, tokes.accessToken);
+        const currentUser = await signInWithCredential(auth, credentials);
+        if (currentUser) {
+          const user = User.fromFirebaseUser(currentUser.user);
+          return user;
+        }
+      }
+    } catch (error) {
+      if (isErrorWithCode(error)) {
+        console.log("error" + error.code);
+
+        switch (error.code) {
+          case statusCodes.IN_PROGRESS:
+            // operation (eg. sign in) already in progress
+            break;
+          case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
+            // Android only, play services not available or outdated
+            break;
+          default:
+          // some other error happened
+        }
+      } else {
+        // an error that's not related to google sign in occurred
+      }
+    }
+    return null;
   }
 }

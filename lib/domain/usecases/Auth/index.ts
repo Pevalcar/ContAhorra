@@ -1,3 +1,4 @@
+export * from "./GoogleAuthUseCase";
 export * from "./LoginUseCase";
 export * from "./RecoverUseCase";
 export * from "./RegisterUseCase";

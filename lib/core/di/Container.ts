@@ -1,5 +1,6 @@
 import FirebaseAuthRepository from "../../data/repositories/FirebaseAuthRepository";
 import {
+  GoogleAuthUseCase,
   LoginUseCase,
   RecoverUseCase,
   RegisterUseCase,
@@ -25,6 +26,8 @@ const updatePasswordUseCase = new UpdatePassword(AuthRepository);
 
 const updateProfileUseCase = new UpdateProfileUseCase(AuthRepository);
 
+const googleAuthUseCase = new GoogleAuthUseCase(AuthRepository);
+
 export {
   loginUseCase,
   singOutUseCase,
@@ -33,4 +36,5 @@ export {
   verificationUseCase,
   updatePasswordUseCase,
   updateProfileUseCase,
+  googleAuthUseCase,
 };

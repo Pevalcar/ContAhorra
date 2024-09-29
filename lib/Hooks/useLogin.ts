@@ -5,7 +5,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 export const useLogin = () => {
-  const { error, signIn, registrar, recoverPassword } = useSession();
+  const { error, signIn, registrar, recoverPassword, getGoogleCredential } = useSession();
   const [loagin, setLoagin] = React.useState(false);
   const [confimPassword, setConfirmPassword] = React.useState("");
   const [registerUi, setRegisterUi] = React.useState(false);
@@ -51,6 +51,11 @@ export const useLogin = () => {
           break;
         case "correo-no-encontrado":
           handleToast(t("error"), t("correo-no-encontrado"), "error");
+          break;
+        case "success-google-auth":
+          handleToast(t("success"), t("success-google-auth"), "success");
+          setLoagin(false);
+          setMyError(false);
           break;
         default:
           handleToast(t("error"), error.message, "error");
@@ -111,6 +116,7 @@ export const useLogin = () => {
       setRecoverPasswords,
       iniciarSesionTest,
       handleRecoverPassword,
+      getGoogleCredential,
     };
   }
 
@@ -127,5 +133,6 @@ export const useLogin = () => {
     setConfirmPassword,
     handleRecoverPassword,
     setRecoverPasswords,
+    getGoogleCredential,
   };
 };

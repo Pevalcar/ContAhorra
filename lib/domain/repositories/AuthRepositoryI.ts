@@ -26,4 +26,8 @@ export default class AuthRepositoryI {
   updateProfile(displayName: string, photoURL: string): Promise<void> {
     throw new Error("Method not implemented.");
   }
+
+  signInWhitIdToken(): Promise<User | null> {
+    throw new Error("Method not implemented.");
+  }
 }

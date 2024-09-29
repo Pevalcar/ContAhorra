@@ -23,13 +23,25 @@ export default {
         backgroundColor: "#ffffff",
       },
       package: "com.pevalcar.contahorra",
+      googleServicesFile: process.env.GOOGLE_SERVICES_JSON,
     },
     web: {
       bundler: "metro",
       output: "static",
       favicon: "./assets/images/favicon.png",
     },
-    plugins: ["expo-router", "expo-localization", "expo-asset"],
+    plugins: [
+      "@react-native-google-signin/google-signin",
+      "expo-router",
+      "expo-localization",
+      "expo-asset",
+      [
+        "expo-dev-launcher",
+        {
+          launchMode: "most-recent",
+        },
+      ],
+    ],
     experiments: {
       typedRoutes: true,
     },

@@ -29,6 +29,7 @@ export const LoginUI: React.FC<Props> = () => {
     crearUsuarioTest,
     iniciarSesionTest,
     setRecoverPasswords,
+    getGoogleCredential,
   } = useLogin();
   const UI = React.useMemo(() => {
     if (loagin) {
@@ -81,7 +82,7 @@ export const LoginUI: React.FC<Props> = () => {
             </VStack>
           </VStack>
           <View className="mt-4 flex-row items-center justify-center gap-3">
-            <Button variant="outline">
+            <Button variant="outline" onPress={getGoogleCredential}>
               <ButtonIcon as={GoogleIcon} className="h-4 w-4" />
             </Button>
             <Button variant="outline">

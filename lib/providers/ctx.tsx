@@ -1,4 +1,5 @@
 import {
+  googleAuthUseCase,
   loginUseCase,
   recoverUseCase,
   registerUseCase,
@@ -19,6 +20,7 @@ const AuthContext = createContext<{
   sendEmailVerification: () => void;
   updatePassword: (password: string, newPassword: string) => void;
   updateProfile: (displayName: string, photoURL: string) => void;
+  getGoogleCredential: () => void;
   session?: string | null;
   isLoading: boolean;
   error: Error | null;
@@ -30,6 +32,7 @@ const AuthContext = createContext<{
   sendEmailVerification: () => null,
   updatePassword: (password: string, newPassword: string) => null,
   updateProfile: (displayName: string | null, photoURL: string | null) => null,
+  getGoogleCredential: () => null,
   session: null,
   isLoading: false,
   error: null,
@@ -126,6 +129,19 @@ export function SessionProvider({ children }: PropsWithChildren) {
           try {
             await updateProfileUseCase.execute(displayName, photoURL);
             setError(new Error("success-update-profile"));
+          } catch (error) {
+            setError(error as Error);
+            throw error;
+          }
+        },
+        getGoogleCredential: async () => {
+          setError(null);
+          try {
+            const response = await googleAuthUseCase.execute();
+            setError(new Error("success-google-auth"));
+            if (response) {
+              setSession(response.email);
+            }
           } catch (error) {
             setError(error as Error);
             throw error;
