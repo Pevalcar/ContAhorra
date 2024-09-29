@@ -61,6 +61,9 @@ export default {
         appId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID,
         measurementId: process.env.EXPO_PUBLIC_FIREBASE_MEASUREMENT_ID,
       },
+      google: {
+        webClientId: process.env.GOOGLE_WEB_CLIENT_ID,
+      },
     },
     runtimeVersion: {
       policy: "appVersion",

@@ -58,12 +58,12 @@ if (getApps().length < 1) {
   dbFirestore = getFirestore();
   console.log("Firebase App already initialized");
 }
-// if (DEVELOPMENT) {
-//   const host = "192.168.1.2";
-//   connectAuthEmulator(auth, `http://${host}:9099`);
-//   connectDatabaseEmulator(db, host, 9000);
-//   connectFirestoreEmulator(dbFirestore, host, 8080);
-//   console.log("Connected to Firebase Emulators");
-// }
+if (DEVELOPMENT) {
+  const host = "192.168.1.2";
+  connectAuthEmulator(auth, `http://${host}:9099`);
+  connectDatabaseEmulator(db, host, 9000);
+  connectFirestoreEmulator(dbFirestore, host, 8080);
+  console.log("Connected to Firebase Emulators");
+}
 
 export { analytics, app, auth, db, dbFirestore };

@@ -7,6 +7,6 @@ export class GoogleAuthUseCase {
   }
 
   async execute() {
-    return await this.authRepository.signInWhitIdToken("token");
+    return await this.authRepository.signInWhitGoogle();
   }
 }

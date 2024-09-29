@@ -98,9 +98,9 @@ export default class FirebaseAuthRepository extends AuthRepositoryI {
     await GoogleSignin.signOut();
   }
 
-  async signInWhitIdToken() {
+  async signInWhitGoogle() {
     GoogleSignin.configure({
-      webClientId: "621813606140-kuob128bgtfpk9uceebimp9ndvom76ok.apps.googleusercontent.com",
+      webClientId: process.env.GOOGLE_WEB_CLIENT_ID,
       offlineAccess: true,
     });
     try {

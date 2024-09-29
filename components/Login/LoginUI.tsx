@@ -2,7 +2,6 @@ import { Button, ButtonIcon, ButtonText } from "../ui/button";
 import { Center } from "../ui/center";
 import { FormControl } from "../ui/form-control";
 import { Heading } from "../ui/heading";
-import { GoogleIcon } from "../ui/icon";
 import { Spinner } from "../ui/spinner";
 import { Text } from "../ui/text";
 import { VStack } from "../ui/vstack";
@@ -11,6 +10,7 @@ import { LoginUITow } from "./ui/LoginUITOW";
 import { RegisterUI } from "./ui/RegisterUI";
 import { useLogin } from "@/lib/Hooks/useLogin";
 import { DEVELOPMENT } from "@/lib/configs/config";
+import { GoogleSigninButton } from "@react-native-google-signin/google-signin";
 import { router } from "expo-router";
 import { t } from "i18next";
 import { Box, Facebook, Github, Twitter } from "lucide-react-native";
@@ -82,9 +82,7 @@ export const LoginUI: React.FC<Props> = () => {
             </VStack>
           </VStack>
           <View className="mt-4 flex-row items-center justify-center gap-3">
-            <Button variant="outline" onPress={getGoogleCredential}>
-              <ButtonIcon as={GoogleIcon} className="h-4 w-4" />
-            </Button>
+            <GoogleSigninButton size={GoogleSigninButton.Size.Icon} onPress={getGoogleCredential} />
             <Button variant="outline">
               <ButtonIcon as={Facebook} className="h-4 w-4" />
             </Button>

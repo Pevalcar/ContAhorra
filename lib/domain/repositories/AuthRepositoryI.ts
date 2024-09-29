@@ -27,7 +27,7 @@ export default class AuthRepositoryI {
     throw new Error("Method not implemented.");
   }
 
-  signInWhitIdToken(): Promise<User | null> {
+  signInWhitGoogle(): Promise<User | null> {
     throw new Error("Method not implemented.");
   }
 }
