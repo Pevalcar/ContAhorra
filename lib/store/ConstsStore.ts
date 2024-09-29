@@ -1,5 +1,5 @@
 import { auth } from "../configs/firebaseConfig";
-import { User } from "firebase/auth";
+import User from "../domain/entities/User";
 import { create } from "zustand";
 
 interface ConstsStore {
@@ -15,10 +15,11 @@ export const useConstsStore = create<ConstsStore>((set) => ({
   user: null,
   admin: false,
   fetchUser: async () => {
-    const user = auth.currentUser;
-    if (user) {
-      const admin = await user.getIdTokenResult();
+    const credentials = auth.currentUser;
+    if (credentials) {
+      const admin = await credentials.getIdTokenResult();
       const isAdmin = admin?.claims.role === "ADMIN";
+      const user = User.fromFirebaseUser(credentials);
       set({ useRegister: true, admin: isAdmin, user });
       return user;
     } else {

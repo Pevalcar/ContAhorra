@@ -10,9 +10,8 @@ export const useSecureSecion = () => {
   const { updatePassword, error } = useSession();
 
   React.useEffect(() => {
-    console.log(error);
-    switch (error?.code) {
-      case "auth/wrong-password":
+    switch (error?.message) {
+      case "error-contrasena":
         handleToast("Contraseña actual", "Verifica que la contraseña actual sea correcta", "error");
         break;
       case "success-update-password": {
@@ -38,6 +37,22 @@ export const useSecureSecion = () => {
     }
     if (password !== confirmPassword) {
       handleToast("Contraseña no coincide", "Verifica que los campos coincidan", "error");
+      return;
+    }
+    if (password.length < 6) {
+      handleToast(
+        "Contraseña demasiado corta",
+        "La contraseña debe tener al menos 6 caracteres",
+        "info",
+      );
+      return;
+    }
+    if (password === currentPassword) {
+      handleToast(
+        "Contraseña igual a la actual",
+        "Verifica que la contraseña no sea igual a la actual",
+        "info",
+      );
       return;
     }
     updatePassword(currentPassword, password);

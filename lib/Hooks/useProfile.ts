@@ -21,7 +21,7 @@ export const useProfile = () => {
     const fetchAndSetUser = async () => {
       await fetchUser();
       if (user) {
-        setDisplayName(user?.displayName ?? null);
+        setDisplayName(user?.name ?? null);
         if (avatarts) {
           setPhotoURL(user?.photoURL ?? avatarts[0]?.uri);
         }
@@ -36,8 +36,7 @@ export const useProfile = () => {
     updateProfile(displayName ?? "", photoURL ?? "1");
   };
   React.useEffect(() => {
-    console.log("error de firebase", error);
-    switch (error?.code) {
+    switch (error?.message) {
       case "success-update-profile":
         handleToast("Perfecto", "tu perfil se actualizó correctamente", "success");
         break;
@@ -47,7 +46,7 @@ export const useProfile = () => {
   }, [error]);
 
   React.useEffect(() => {
-    setDisplayName(user?.displayName ?? null);
+    setDisplayName(user?.name ?? null);
     if (avatarts) {
       setPhotoURL(user?.photoURL ?? avatarts[0]?.uri);
     }

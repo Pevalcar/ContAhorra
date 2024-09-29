@@ -1,18 +1,14 @@
-import { auth } from "../configs/firebaseConfig";
-import { loginUseCase } from "../core/di/Container";
+import {
+  loginUseCase,
+  recoverUseCase,
+  registerUseCase,
+  singOutUseCase,
+  updatePasswordUseCase,
+  updateProfileUseCase,
+  verificationUseCase,
+} from "../core/di/Container";
 import { useConstsStore } from "../store/ConstsStore";
 import { useStorageState } from "../store/useStorageState";
-import { FirebaseError } from "firebase/app";
-import {
-  EmailAuthProvider,
-  createUserWithEmailAndPassword,
-  reauthenticateWithCredential,
-  sendEmailVerification,
-  sendPasswordResetEmail,
-  signInWithEmailAndPassword,
-  updatePassword,
-  updateProfile,
-} from "firebase/auth";
 import React, { type PropsWithChildren, createContext, useContext, useState } from "react";
 
 const AuthContext = createContext<{
@@ -25,7 +21,7 @@ const AuthContext = createContext<{
   updateProfile: (displayName: string, photoURL: string) => void;
   session?: string | null;
   isLoading: boolean;
-  error: FirebaseError | { code: string } | null;
+  error: Error | null;
 }>({
   signIn: (email: string, password: string) => null,
   signOut: () => null,
@@ -54,7 +50,7 @@ export function useSession() {
 //TODO extraer logica a un servicio de sesion y usar hook
 export function SessionProvider({ children }: PropsWithChildren) {
   const [[isLoading, session], setSession] = useStorageState("session");
-  const [error, setError] = useState<FirebaseError | { code: string } | null>(null);
+  const [error, setError] = useState<Error | null>(null);
   const cerrarSesion = useConstsStore((state) => state.SingOut);
 
   return (
@@ -65,106 +61,75 @@ export function SessionProvider({ children }: PropsWithChildren) {
 
           try {
             const user = await loginUseCase.execute(email, password);
-            setSession(user.email);
-            setError({ code: "success-login" });
+            if (user) {
+              setError(new Error("success-login"));
+              setSession(user.email);
+            }
           } catch (error) {
-            setError(error);
+            setError(error as Error);
             throw error;
           }
-          await signInWithEmailAndPassword(auth, email, password)
-            .then((result) => {
-              setSession(result.user.email);
-              setError({ code: "success-login" });
-            })
-            .catch((error: FirebaseError) => {
-              setError(error);
-              throw error;
-            });
         },
-        signOut: () => {
-          auth.signOut();
+        signOut: async () => {
+          await singOutUseCase.execute();
           setError(null);
-          cerrarSesion();
+          cerrarSesion(); //TODO ver si se puede hacer en signOut
           setSession(null);
         },
         registrar: async (email: string = "test@test.com", password: string = "123456") => {
           setError(null);
-          await createUserWithEmailAndPassword(auth, email, password)
-            .then((result) => {
-              setSession(result.user.email);
-              setError({ code: "success-register" });
-            })
-            .catch((error: FirebaseError) => {
-              setError(error);
-              console.log(error);
-
-              throw error;
-            });
+          try {
+            const user = await registerUseCase.execute(email, password);
+            if (user) {
+              setError(new Error("success-register"));
+              setSession(user.email);
+            }
+          } catch (error) {
+            setError(error as Error);
+            throw error;
+          }
         },
         recoverPassword: async (email: string) => {
           setError(null);
-
-          await sendPasswordResetEmail(auth, email)
-            .then(() => {
-              setError({ code: "success-recover" });
-            })
-            .catch((error: FirebaseError) => {
-              setError(error);
-              throw error;
-            });
+          try {
+            await recoverUseCase.execute(email);
+            setError(new Error("success-recover"));
+          } catch (error) {
+            setError(error as Error);
+            throw error;
+          }
         },
         sendEmailVerification: async () => {
           setError(null);
-          if (!auth.currentUser) {
-            return;
+          try {
+            await verificationUseCase.execute();
+            setError(new Error("success-verification"));
+          } catch (error) {
+            setError(error as Error);
+            throw error;
           }
-          await sendEmailVerification(auth.currentUser)
-            .then(() => {
-              setError({ code: "success-verification" });
-            })
-            .catch((error: FirebaseError) => {
-              setError(error);
-              throw error;
-            });
         },
         updatePassword: async (password: string, newPassword: string) => {
           setError(null);
 
-          if (!auth.currentUser) {
-            return;
-          }
           try {
-            const userCredential = await EmailAuthProvider.credential(
-              auth.currentUser?.email ?? "",
-              password,
-            );
-            const result = await reauthenticateWithCredential(auth.currentUser, userCredential);
-            if (result.user) {
-              await updatePassword(result.user, newPassword);
-              setError({ code: "success-update-password" });
-            }
+            await updatePasswordUseCase.execute(password, newPassword);
+            setError(new Error("success-update-password"));
           } catch (error) {
-            setError(error as FirebaseError);
+            setError(error as Error);
             throw error;
           }
         },
         updateProfile: async (displayName: string, photoURL: string) => {
           setError(null);
-          if (!auth.currentUser) {
-            return;
-          }
 
-          updateProfile(auth.currentUser, {
-            displayName,
-            photoURL,
-          })
-            .then(() => {
-              setError({ code: "success-update-profile" });
-            })
-            .catch((error: FirebaseError) => {
-              setError(error);
-              throw error;
-            });
+          try {
+            await updateProfileUseCase.execute(displayName, photoURL);
+            setError(new Error("success-update-profile"));
+          } catch (error) {
+            setError(error as Error);
+            throw error;
+          }
         },
         session,
         isLoading,

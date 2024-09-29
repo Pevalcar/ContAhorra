@@ -22,18 +22,17 @@ export const useLogin = () => {
 
   React.useEffect(() => {
     if (error) {
-      console.log(error.code);
       setLoagin(false);
       setMyError(true);
 
-      switch (error.code) {
-        case "auth/user-not-found":
+      switch (error.message) {
+        case "error-usuario-no-encontrado":
           handleToast(t("error"), t("error-usuario-no-encontrado"), "error");
           break;
-        case "auth/wrong-password":
+        case "error-contrasena":
           handleToast(t("error"), t("error-contrasena"), "error");
           break;
-        case "auth/invalid-email":
+        case "error-email":
           handleToast(t("error"), t("error-email"), "error");
           break;
         case "success-login": {
@@ -47,14 +46,14 @@ export const useLogin = () => {
           setMyError(false);
           break;
         }
-        case "auth/email-already-in-use":
+        case "email-ya-esta-en-uso":
           handleToast(t("error"), t("email-ya-esta-en-uso"), "info");
           break;
-        case "auth/missing-email":
+        case "correo-no-encontrado":
           handleToast(t("error"), t("correo-no-encontrado"), "error");
           break;
         default:
-          handleToast(t("error"), t("error-de-validacion"), "error");
+          handleToast(t("error"), error.message, "error");
           break;
       }
     }
@@ -78,14 +77,6 @@ export const useLogin = () => {
       return;
     }
     setLoagin(true);
-    console.log(
-      "registrando a " +
-        email +
-        " con contraseña " +
-        password +
-        " y confirmación " +
-        confimPassword,
-    );
     registrar(email, password);
   }
   function handleRecoverPassword() {

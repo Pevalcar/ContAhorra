@@ -1,8 +1,36 @@
 import FirebaseAuthRepository from "../../data/repositories/FirebaseAuthRepository";
-import LoginUseCase from "@/lib/usecases/LoginUseCase";
+import {
+  LoginUseCase,
+  RecoverUseCase,
+  RegisterUseCase,
+  SingOutUseCase,
+  UpdatePassword,
+  UpdateProfileUseCase,
+  VerificationUseCase,
+} from "@/lib/domain/usecases/Auth";
 
-const firebaseAuthRepository = new FirebaseAuthRepository();
+const AuthRepository = new FirebaseAuthRepository();
 
-const loginUseCase = new LoginUseCase(firebaseAuthRepository);
+const loginUseCase = new LoginUseCase(AuthRepository);
 
-export { loginUseCase };
+const singOutUseCase = new SingOutUseCase(AuthRepository);
+
+const registerUseCase = new RegisterUseCase(AuthRepository);
+
+const recoverUseCase = new RecoverUseCase(AuthRepository);
+
+const verificationUseCase = new VerificationUseCase(AuthRepository);
+
+const updatePasswordUseCase = new UpdatePassword(AuthRepository);
+
+const updateProfileUseCase = new UpdateProfileUseCase(AuthRepository);
+
+export {
+  loginUseCase,
+  singOutUseCase,
+  registerUseCase,
+  recoverUseCase,
+  verificationUseCase,
+  updatePasswordUseCase,
+  updateProfileUseCase,
+};
