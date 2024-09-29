@@ -1,4 +1,5 @@
-import { Button, ButtonIcon, ButtonText } from "../ui/button";
+import { Box } from "../ui/box";
+import { Button, ButtonText } from "../ui/button";
 import { Center } from "../ui/center";
 import { FormControl } from "../ui/form-control";
 import { Heading } from "../ui/heading";
@@ -13,7 +14,6 @@ import { DEVELOPMENT } from "@/lib/configs/config";
 import { GoogleSigninButton } from "@react-native-google-signin/google-signin";
 import { router } from "expo-router";
 import { t } from "i18next";
-import { Box, Facebook, Github, Twitter } from "lucide-react-native";
 import React from "react";
 import { View } from "react-native";
 
@@ -83,15 +83,18 @@ export const LoginUI: React.FC<Props> = () => {
           </VStack>
           <View className="mt-4 flex-row items-center justify-center gap-3">
             <GoogleSigninButton size={GoogleSigninButton.Size.Icon} onPress={getGoogleCredential} />
+            {/* 
+            
+            // TODO: añadir los botones de redes sociales
             <Button variant="outline">
               <ButtonIcon as={Facebook} className="h-4 w-4" />
-            </Button>
+          </Button>  
             <Button variant="outline">
               <ButtonIcon as={Twitter} className="h-4 w-4" />
             </Button>
             <Button variant="outline">
               <ButtonIcon as={Github} className="h-4 w-4" />
-            </Button>
+            </Button> */}
           </View>
           {DEVELOPMENT && (
             <VStack className="items-center gap-5 border-t">

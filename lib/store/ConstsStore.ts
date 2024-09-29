@@ -1,4 +1,4 @@
-import { auth } from "../configs/firebaseConfig";
+import { fetchUser } from "../core/di/Container";
 import User from "../domain/entities/User";
 import { create } from "zustand";
 
@@ -6,7 +6,8 @@ interface ConstsStore {
   useRegister: boolean;
   user?: User | null;
   admin: boolean;
-  fetchUser: () => Promise<User | null>;
+  setUser: (user: User | null) => void;
+  fetchUser: () => void;
   SingOut: () => void;
 }
 //TODO asignar roles https://firebase.google.com/docs/auth/admin/custom-claims
@@ -14,18 +15,10 @@ export const useConstsStore = create<ConstsStore>((set) => ({
   useRegister: false,
   user: null,
   admin: false,
+  setUser: (user: User | null) => set({ user }),
   fetchUser: async () => {
-    const credentials = auth.currentUser;
-    if (credentials) {
-      const admin = await credentials.getIdTokenResult();
-      const isAdmin = admin?.claims.role === "ADMIN";
-      const user = User.fromFirebaseUser(credentials);
-      set({ useRegister: true, admin: isAdmin, user });
-      return user;
-    } else {
-      set({ useRegister: false, admin: false, user: null });
-      return null;
-    }
+    const user = await fetchUser.execute();
+    set({ user });
   },
   SingOut: () => {
     set({ useRegister: false, admin: false, user: null });
