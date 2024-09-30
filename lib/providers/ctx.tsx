@@ -55,6 +55,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
   const [[isLoading, session], setSession] = useStorageState("session");
   const [error, setError] = useState<Error | null>(null);
   const cerrarSesion = useConstsStore((state) => state.SingOut);
+  const refresh = useConstsStore((state) => state.refreshUser);
 
   return (
     <AuthContext.Provider
@@ -128,6 +129,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
 
           try {
             await updateProfileUseCase.execute(displayName, photoURL);
+            await refresh();
             setError(new Error("success-update-profile"));
           } catch (error) {
             setError(error as Error);

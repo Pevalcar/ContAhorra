@@ -93,11 +93,8 @@ export default class SupabaseAuthRepository extends AuthRepositoryI {
     }
     if (datas) {
       const user = User.fromSupabaseUser(session.user, datas[0]);
-
       return user;
     }
-    //   const user = User.fromSupabaseUser(data);
-    //   return user;
     return null;
   }
 
