@@ -3,44 +3,33 @@ import "../domain/entities/User";
 import { useSession } from "../providers/ctx";
 import { useConstsStore } from "../store/ConstsStore";
 import { useMyToast } from "./useToast";
-import { useAssets } from "expo-asset";
 import React from "react";
 
 export const useProfile = () => {
   const fetchUser = useConstsStore((state) => state.fetchUser);
   const user = useConstsStore((state) => state.user);
-  const [avatarts] = useAssets(avatars);
   const { handleToast } = useMyToast();
   const [emailSend, setEmailSend] = React.useState(false);
   const [displayName, setDisplayName] = React.useState<string | null>(null);
-  const [photoURL, setPhotoURL] = React.useState<string>();
+  const [photoURL, setPhotoURL] = React.useState<string>("avatar_1");
   const { updateProfile, error } = useSession();
   const [showModal, setShowModal] = React.useState(false);
   const ref = React.useRef(null);
+  const { sendEmailVerification } = useSession();
 
   React.useEffect(() => {
     const fetchAndSetUser = async () => {
-      try {
-        await fetchUser();
+      await fetchUser();
+      if (user) {
+        setDisplayName(user?.name ?? null);
 
-        if (user) {
-          setDisplayName(user?.name ?? null);
-          if (avatarts) {
-            setPhotoURL(user?.photoURL ?? avatarts[0]?.uri);
-          }
-        }
-      } catch (error) {
-        console.log(error);
+        setPhotoURL(user.photoURL ?? avatars[0]);
       }
     };
 
     fetchAndSetUser();
-  }, [avatarts]);
-  const { sendEmailVerification } = useSession();
+  }, [user]);
 
-  const handleUpdateProfile = () => {
-    updateProfile(displayName ?? "", photoURL ?? "1");
-  };
   React.useEffect(() => {
     switch (error?.message) {
       case "success-update-profile":
@@ -51,13 +40,6 @@ export const useProfile = () => {
     }
   }, [error]);
 
-  React.useEffect(() => {
-    setDisplayName(user?.name ?? null);
-    if (avatarts) {
-      setPhotoURL(user?.photoURL ?? avatarts[0]?.uri);
-    }
-  }, [user]);
-
   async function enviaremailVerificacion() {
     await sendEmailVerification();
     handleToast(
@@ -67,6 +49,10 @@ export const useProfile = () => {
     );
     setEmailSend(true);
   }
+
+  const handleUpdateProfile = () => {
+    updateProfile(displayName ?? "", photoURL ?? "1");
+  };
 
   return {
     handleUpdateProfile,

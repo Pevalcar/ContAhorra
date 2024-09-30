@@ -10,7 +10,6 @@ import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
 import { useProfile } from "@/lib/Hooks/useProfile";
 import { avatars } from "@/lib/configs/images";
-import { useAssets } from "expo-asset";
 import { t } from "i18next";
 import { MailCheck } from "lucide-react-native";
 import React from "react";
@@ -61,10 +60,7 @@ export const PerfilUI: React.FC<PerfilProps> = () => {
       </Modal>
       <VStack className="items-center gap-3">
         <Text>{t("actualizar-informacion-del-perfil")}</Text>
-        <Avatar size="2xl">
-          <AvatarFallbackText>{displayName ?? t("anadir-foto")}</AvatarFallbackText>
-          <AvatarImage source={{ uri: photoURL }} />
-        </Avatar>
+        <MyAvatarUI onPress={() => setShowModal(true)} avatarts={photoURL} size="2xl" />
         <Button variant="outline" className="gap-2" onPress={() => setShowModal(true)}>
           <ButtonText>{t("cambiar-avatar")}</ButtonText>
         </Button>
@@ -112,36 +108,31 @@ interface gridItemProps {
 }
 
 const GridItemUI: React.FC<gridItemProps> = ({ onPress }) => {
-  const [avatarts] = useAssets(avatars);
-
   const onPressAvatar = (index: number) => {
-    if (avatarts) {
-      onPress(avatarts[index].uri);
-    }
+    onPress(avatars[index]);
   };
 
   return (
-    avatarts && (
-      <View className="w-full flex-row flex-wrap gap-3">
-        {avatarts.map((avatar, index) => {
-          return <MyAvatarUI key={index} onPress={() => onPressAvatar(index)} avatarts={avatar} />;
-        })}
-      </View>
-    )
+    <View className="w-full flex-row flex-wrap gap-3">
+      {avatars.map((avatar, index) => {
+        return <MyAvatarUI key={index} onPress={() => onPressAvatar(index)} avatarts={avatar} />;
+      })}
+    </View>
   );
 };
 
 interface AvatarProps {
   onPress: () => void;
-  avatarts: any;
+  avatarts: string;
+  size?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
 }
 
-const MyAvatarUI: React.FC<AvatarProps> = ({ onPress, avatarts }) => {
+const MyAvatarUI: React.FC<AvatarProps> = ({ onPress, avatarts, size = "lg" }) => {
   return (
     <Pressable onPress={() => onPress()}>
-      <Avatar size="lg">
+      <Avatar size={size}>
         <AvatarFallbackText>Añadir foto</AvatarFallbackText>
-        <AvatarImage source={avatarts} />
+        <AvatarImage source={{ uri: avatarts }} />
       </Avatar>
     </Pressable>
   );
