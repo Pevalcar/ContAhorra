@@ -78,11 +78,10 @@ export default class SupabaseAuthRepository extends AuthRepositoryI {
       data: { session },
       error,
     } = await supabase.auth.getSession();
-
     if (error) {
-      throw error;
+      return null;
     }
-    if (!session) throw new Error("No user on the session!");
+    if (!session) return null;
     const {
       data: datas,
       error: errors,

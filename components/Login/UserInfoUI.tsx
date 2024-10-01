@@ -4,14 +4,14 @@ import { Text } from "../ui/text";
 import { VStack } from "../ui/vstack";
 import { PerfilUI } from "./ui/Profile/ProfileUI";
 import { SeguridadUI } from "./ui/Secure/SecureUI";
-import { useSession } from "@/lib/providers/ctx";
+import { useStoreSesion } from "@/lib/providers/ctx";
 import { router } from "expo-router";
 import { t } from "i18next";
 import React from "react";
 
 interface Props {}
 export const UserInfoUI: React.FC<Props> = () => {
-  const { signOut } = useSession();
+  const signOut = useStoreSesion((state) => state.signOut);
   const [selected, setSelected] = React.useState(0);
 
   return (

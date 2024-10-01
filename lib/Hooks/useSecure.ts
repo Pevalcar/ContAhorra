@@ -1,4 +1,4 @@
-import { useSession } from "../providers/ctx";
+import { useStoreSesion } from "../providers/ctx";
 import { useMyToast } from "./useToast";
 import React from "react";
 
@@ -7,7 +7,7 @@ export const useSecureSecion = () => {
   const [currentPassword, setCurrentPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const { updatePassword, error } = useSession();
+  const { updatePassword, error } = useStoreSesion((state) => state);
 
   React.useEffect(() => {
     switch (error?.message) {

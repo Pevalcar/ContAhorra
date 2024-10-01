@@ -1,11 +1,13 @@
 import { DEVELOPMENT } from "../configs/config";
-import { useSession } from "../providers/ctx";
+import { useStoreSesion } from "../providers/ctx";
 import { useMyToast } from "./useToast";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
 export const useLogin = () => {
-  const { error, signIn, registrar, recoverPassword, getGoogleCredential } = useSession();
+  const { error, signIn, registrar, recoverPassword, getGoogleCredential } = useStoreSesion(
+    (state) => state,
+  );
   const [loagin, setLoagin] = React.useState(false);
   const [confimPassword, setConfirmPassword] = React.useState("");
   const [registerUi, setRegisterUi] = React.useState(false);

@@ -1,6 +1,6 @@
 import { Button, ButtonText } from "./ui/button";
 import { AVATAR_API_URL, DEVELOPMENT } from "@/lib/configs/config";
-import { useConstsStore } from "@/lib/store/ConstsStore";
+import { useStoreSesion } from "@/lib/providers/ctx";
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { DrawerContentScrollView, DrawerItemList } from "@react-navigation/drawer";
@@ -16,7 +16,7 @@ interface Props {
 
 const CustomDrawer = ({ props }: Props) => {
   const { i18n, t } = useTranslation();
-  const { user } = useConstsStore((state) => state);
+  const { user } = useStoreSesion((state) => state);
 
   useEffect(() => {
     const loadLanguage = async () => {
