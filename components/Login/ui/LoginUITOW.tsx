@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, ButtonText } from "@/components/ui/button";
+import { Button, ButtonGroup, ButtonSpinner, ButtonText } from "@/components/ui/button";
 import {
   FormControlError,
   FormControlErrorText,
@@ -9,6 +9,7 @@ import { Input, InputField } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
 import { useLogin } from "@/lib/Hooks/useLogin";
+import { useStoreSesion } from "@/lib/providers/ctx";
 import { t } from "i18next";
 import React from "react";
 
@@ -18,6 +19,7 @@ interface PropsUITO {
 }
 
 export const LoginUITow: React.FC<PropsUITO> = ({ onRecoverPassword, setRegister }) => {
+  const IsLoading = useStoreSesion((state) => state.isLoading);
   const { setEmail, setPassword, handleSubmit } = useLogin();
   return (
     <>
@@ -46,9 +48,12 @@ export const LoginUITow: React.FC<PropsUITO> = ({ onRecoverPassword, setRegister
           <FormControlErrorText>{t("error-de-validacion")}</FormControlErrorText>
         </FormControlError>
       </VStack>
-      <ButtonGroup className="flex-col gap-3" style={{ height: "30%" }}>
+      <ButtonGroup className="flex-col gap-3" style={{ height: "30%" }} isDisabled={IsLoading}>
         <Button className="w-full text-center" onPress={handleSubmit}>
-          <ButtonText className="text-center">{t("iniciar-sesion")}</ButtonText>
+          {IsLoading ? <ButtonSpinner /> : null}
+          <ButtonText className="text-center">
+            {IsLoading ? t("Cargando") : t("iniciar-sesion")}
+          </ButtonText>
         </Button>
         <Button className="w-full text-center" variant="outline" onPress={setRegister}>
           <ButtonText className="text-center">{t("registro")}</ButtonText>
