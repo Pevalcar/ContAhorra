@@ -1,21 +1,19 @@
 import { avatars } from "../configs/images";
 import "../domain/entities/User";
-import { useSession } from "../providers/ctx";
-import { useConstsStore } from "../store/ConstsStore";
+import { useStoreSesion } from "../providers/ctx";
 import { useMyToast } from "./useToast";
 import React from "react";
 
 export const useProfile = () => {
-  const fetchUser = useConstsStore((state) => state.fetchUser);
-  const user = useConstsStore((state) => state.user);
   const { handleToast } = useMyToast();
   const [emailSend, setEmailSend] = React.useState(false);
   const [displayName, setDisplayName] = React.useState<string | null>(null);
   const [photoURL, setPhotoURL] = React.useState<string>("avatar_1");
-  const { updateProfile, error } = useSession();
+  const { updateProfile, error, sendEmailVerification, user, fetchUser } = useStoreSesion(
+    (state) => state,
+  );
   const [showModal, setShowModal] = React.useState(false);
   const ref = React.useRef(null);
-  const { sendEmailVerification } = useSession();
 
   React.useEffect(() => {
     const fetchAndSetUser = async () => {

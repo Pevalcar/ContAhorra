@@ -76,7 +76,7 @@ if (getApps().length < 1) {
   console.log("Firebase App already initialized");
 }
 if (DEVELOPMENT) {
-  const host = "192.168.1.2";
+  const host = "localhost";
   connectAuthEmulator(auth, `http://${host}:9099`);
   connectDatabaseEmulator(db, host, 9000);
   connectFirestoreEmulator(dbFirestore, host, 8080);
