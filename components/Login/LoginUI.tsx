@@ -1,9 +1,6 @@
-import { Box } from "../ui/box";
 import { Button, ButtonText } from "../ui/button";
-import { Center } from "../ui/center";
 import { FormControl } from "../ui/form-control";
 import { Heading } from "../ui/heading";
-import { Spinner } from "../ui/spinner";
 import { Text } from "../ui/text";
 import { VStack } from "../ui/vstack";
 import { ForgotPas } from "./ui/ForgotPas";
@@ -21,7 +18,7 @@ interface Props {}
 //TODO reparar el loading mode
 export const LoginUI: React.FC<Props> = () => {
   const {
-    loagin,
+    loagin: Isloading,
     error,
     register,
     recorePassword,
@@ -31,16 +28,8 @@ export const LoginUI: React.FC<Props> = () => {
     setRecoverPasswords,
     getGoogleCredential,
   } = useLogin();
+
   const UI = React.useMemo(() => {
-    if (loagin) {
-      return (
-        <Box className="fixed inset-0 z-50 flex h-screen w-screen items-center justify-center bg-slate-500/50">
-          <Center className="flex flex-col items-center justify-center gap-3">
-            <Spinner />
-          </Center>
-        </Box>
-      );
-    }
     if (register) {
       return <RegisterUI setRegister={setRegister} />;
     }
@@ -82,7 +71,11 @@ export const LoginUI: React.FC<Props> = () => {
             </VStack>
           </VStack>
           <View className="mt-4 flex-row items-center justify-center gap-3">
-            <GoogleSigninButton size={GoogleSigninButton.Size.Icon} onPress={getGoogleCredential} />
+            <GoogleSigninButton
+              size={GoogleSigninButton.Size.Icon}
+              onPress={getGoogleCredential}
+              disabled={Isloading}
+            />
             {/* 
             
             // TODO: añadir los botones de redes sociales

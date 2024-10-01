@@ -5,10 +5,8 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 export const useLogin = () => {
-  const { error, signIn, registrar, recoverPassword, getGoogleCredential } = useStoreSesion(
-    (state) => state,
-  );
-  const [loagin, setLoagin] = React.useState(false);
+  const { error, signIn, registrar, recoverPassword, getGoogleCredential, isLoading } =
+    useStoreSesion((state) => state);
   const [confimPassword, setConfirmPassword] = React.useState("");
   const [registerUi, setRegisterUi] = React.useState(false);
   const { t } = useTranslation();
@@ -24,7 +22,6 @@ export const useLogin = () => {
 
   React.useEffect(() => {
     if (error) {
-      setLoagin(false);
       setMyError(true);
 
       switch (error.message) {
@@ -41,7 +38,6 @@ export const useLogin = () => {
         }
         case "success-google-auth":
           handleToast(t("success"), t("success-google-auth"), "success");
-          setLoagin(false);
           setMyError(false);
           break;
         case "email-ya-esta-en-uso":
@@ -82,7 +78,6 @@ export const useLogin = () => {
   }, [error]);
 
   function handleSubmit() {
-    setLoagin(true);
     DEVELOPMENT && console.log("enviando a " + email + " con contraseña " + password);
     signIn(email, password);
   }
@@ -98,28 +93,24 @@ export const useLogin = () => {
       handleToast(t("error"), t("error-contrasena"), "error");
       return;
     }
-    setLoagin(true);
     registrar(email, password);
   }
   function handleRecoverPassword() {
-    setLoagin(true);
     recoverPassword(email);
   }
   function setRecoverPasswords() {
     setRecoverPassword(!recorePassword);
   }
   function crearUsuarioTest() {
-    setLoagin(true);
     registrar("perroaa94@gmail.com", "123456");
   }
   function iniciarSesionTest() {
-    setLoagin(true);
     signIn("perroaa94@gmail.com", "123456");
   }
 
   if (DEVELOPMENT) {
     return {
-      loagin,
+      loagin: isLoading,
       setEmail,
       setPassword,
       handleSubmit,
@@ -138,7 +129,7 @@ export const useLogin = () => {
   }
 
   return {
-    loagin,
+    loagin: isLoading,
     setEmail,
     setPassword,
     handleSubmit,

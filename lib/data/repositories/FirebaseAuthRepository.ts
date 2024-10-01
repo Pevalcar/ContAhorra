@@ -118,7 +118,7 @@ export default class FirebaseAuthRepository extends AuthRepositoryI {
       }
     } catch (error) {
       if (isErrorWithCode(error)) {
-        console.log("error" + error.code);
+        // console.log("error" + error.code);
 
         switch (error.code) {
           case statusCodes.IN_PROGRESS:
