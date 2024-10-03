@@ -1,4 +1,5 @@
-import { Transaccion } from "../entities";
+import type { TransactionTotal } from "@/Types/types";
+import { Transaccion } from "@/lib/domain/entities";
 
 export default class TransaccionRepositoryI {
   getAll(): Promise<Transaccion[]> {
@@ -20,6 +21,13 @@ export default class TransaccionRepositoryI {
     type?: string,
     accountID?: string,
   ): Promise<Transaccion[]> {
+    throw new Error("Method not implemented.");
+  }
+  getTotalTransactionByDateRange(
+    startDate: number,
+    endDate: number,
+    accountID?: string,
+  ): Promise<TransactionTotal> {
     throw new Error("Method not implemented.");
   }
 }

@@ -16,7 +16,9 @@ import {
   AddTransaccionUseCase,
   DeleteTransaccionUseCase,
   GetAllUseCase,
+  GetTotalTransactionsByDateRangeUseCase,
   GetTransactionsByDateRangeUseCase,
+  UpdateTransaccionsUseCase,
 } from "@/lib/domain/usecases/Transacciones";
 
 const AuthRepository = new SupabaseAuthRepository();
@@ -49,6 +51,11 @@ const getTransactionsByDateRang = new GetTransactionsByDateRangeUseCase(
   DBRepositoryLocal,
   DBRepositoryLocal,
 );
+const updateTransaccion = new UpdateTransaccionsUseCase(DBRepositoryLocal, DBRepositoryLocal);
+const getTotalTransactionByDateRange = new GetTotalTransactionsByDateRangeUseCase(
+  DBRepositoryLocal,
+  DBRepositoryLocal,
+);
 
 export {
   addTransaccion,
@@ -64,4 +71,6 @@ export {
   updatePasswordUseCase,
   updateProfileUseCase,
   verificationUseCase,
+  updateTransaccion,
+  getTotalTransactionByDateRange,
 };
