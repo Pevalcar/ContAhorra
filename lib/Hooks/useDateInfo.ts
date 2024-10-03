@@ -28,7 +28,12 @@ export const useDate = () => {
   };
 
   useEffect(() => {
-    currentDate ? onChange("", currentDate) : onChange("", new Date());
+    const date = new Date();
+    if (currentDate) {
+      onChange("", currentDate);
+    } else {
+      onChange("", date);
+    }
   }, []);
 
   return { date, showDatepicker, showTimepicker };
