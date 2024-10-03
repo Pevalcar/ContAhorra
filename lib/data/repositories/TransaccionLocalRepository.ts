@@ -47,7 +47,7 @@ export class TransaccionLocalRepository implements TransaccionRepositoryI {
         INSERT INTO ${LOCAL_DB_TRANSACCIONES_NAME} (id, title, balance, type, date, description, categoryID, accountID, userOwnerID, prestadoaID)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
       `;
-      const result = await db.runAsync(query, [
+      await db.runAsync(query, [
         transaccion.id,
         transaccion.title,
         transaccion.balance,
