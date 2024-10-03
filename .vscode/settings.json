@@ -14,5 +14,9 @@
   "tailwindCSS.experimental.classRegex": [
     ["tva\\((([^()]*|\\([^()]*\\))*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
   ],
-  "exportall.config.folderListener": ["/lib/domain/usecases/Auth"]
+  "exportall.config.folderListener": [
+    "/lib/domain/usecases/Auth",
+    "/lib/domain/entities",
+    "/lib/domain/usecases/Transacciones"
+  ]
 }

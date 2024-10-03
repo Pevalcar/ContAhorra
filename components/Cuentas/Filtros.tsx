@@ -1,6 +1,6 @@
 import { Button, ButtonText } from "../ui/button";
 import { HStack } from "../ui/hstack";
-import { TiposDeTransacciones } from "@/Types/types";
+import { type TiposDeTransacciones } from "@/Types/types";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 

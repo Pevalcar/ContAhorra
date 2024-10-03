@@ -3,11 +3,11 @@ import { Button, ButtonIcon } from "../ui/button";
 import { Card } from "../ui/card";
 import { HStack } from "../ui/hstack";
 import { Text } from "../ui/text";
-import { type Transaccion } from "@/Types/types";
 import { Avatar, AvatarFallbackText } from "@/components/ui/avatar";
 import { Heading } from "@/components/ui/heading";
 import { VStack } from "@/components/ui/vstack";
 import { useSorterAndAgroopList } from "@/lib/Hooks/useSorterAndAgroopList";
+import { Transaccion } from "@/lib/domain/entities";
 import { useTransaccionesStore } from "@/lib/store/TransaccionesStore";
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react-native";
 import React from "react";
@@ -45,7 +45,7 @@ interface ItemProps {
   item: Transaccion;
   index: number;
 }
-const AccordingItem = ({ item, index }: ItemProps) => {
+export const AccordingItem = ({ item, index }: ItemProps) => {
   const deleteTransaccion = useTransaccionesStore((state) => state.deleteTransaccion);
   const bgColor = () => {
     switch (item.type) {
@@ -91,7 +91,7 @@ const AccordingItem = ({ item, index }: ItemProps) => {
   );
 };
 
-const DateHeader = ({ date }: { date: any }) => {
+export const DateHeader = ({ date }: { date: any }) => {
   return (
     <VStack className="flex-row items-center justify-between">
       <Text className="text-typography-500">{FormatedLocale({ date })}</Text>
