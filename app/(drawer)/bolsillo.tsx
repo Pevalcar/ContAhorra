@@ -32,16 +32,14 @@ export default function Bolsillo() {
 function Pruebas() {
   return (
     <View style={styles.container}>
-      <SQLiteProvider databaseName={LOCAL_DB_NAME} onInit={migrateDbIfNeeded}>
-        <SegmentControl
-          values={["a", "b", "c", "pene"]}
-          clasName="flex-row gap-2"
-          selectedIndex={0}
-          onChange={() => {}}
-        />
-        <Header />
-        <Content />
-      </SQLiteProvider>
+      <SegmentControl
+        values={["a", "b", "c", "pene"]}
+        clasName="flex-row gap-2"
+        selectedIndex={0}
+        onChange={() => {}}
+      />
+      <Header />
+      <Content />
     </View>
   );
 }
