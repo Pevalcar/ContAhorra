@@ -88,8 +88,8 @@ export const useTransactionToAdd = () => {
       }
 
       const transaccions: Transaccion = {
-        account: cuentaSelect?.id,
-        category: categoriSelect?.id,
+        accountID: cuentaSelect?.id,
+        categoryID: categoriSelect?.id,
         type: type,
         description: description,
         balance: amount,

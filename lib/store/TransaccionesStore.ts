@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
-import { DEFAULT_STATE, LOCAL_DB_TRANSACCIONES } from "../configs/config";
-import { type Transaccion } from "@/Types/types";
+import { DEFAULT_STATE, LOCAL_DB_TRANSACCIONES_NAME } from "../configs/config";
+import { Transaccion } from "../domain/entities";
 import { Platform } from "react-native";
 import { create } from "zustand";
 
@@ -8,7 +8,7 @@ const initialState = (() => {
   if (Platform.OS === "web") {
     try {
       if (typeof localStorage !== "undefined") {
-        const value = localStorage.getItem(LOCAL_DB_TRANSACCIONES);
+        const value = localStorage.getItem(LOCAL_DB_TRANSACCIONES_NAME);
         if (value) {
           return JSON.parse(value);
         }
@@ -32,7 +32,7 @@ const initialState = (() => {
 })();
 // in web funciona como localStorage pero en android supera la capacidades de SecureStore
 
-async function saveState(state: Transaccion[], key = LOCAL_DB_TRANSACCIONES) {
+async function saveState(state: Transaccion[], key = LOCAL_DB_TRANSACCIONES_NAME) {
   if (Platform.OS === "web") {
     try {
       if (state === null) {

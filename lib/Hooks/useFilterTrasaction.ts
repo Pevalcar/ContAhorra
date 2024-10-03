@@ -1,5 +1,6 @@
+import { Transaccion } from "../domain/entities";
 import { useTransaccionesStore } from "../store/TransaccionesStore";
-import { TiposDeTransacciones, Transaccion } from "@/Types/types";
+import { TiposDeTransacciones } from "@/Types/types";
 import React from "react";
 
 export const useFilterTrasaction = () => {

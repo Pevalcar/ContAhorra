@@ -1,11 +1,14 @@
 import { DB_Categorias, DB_Cuentas, DB_Transacciones } from "../db/local/db_local";
-import { type Categoria, type Cuenta, type Transaccion } from "@/Types/types";
+import { Categoria, Cuenta, Transaccion } from "@/lib/domain/entities";
 
 export const DEVELOPMENT = process.env.NODE_ENV !== "production";
 
-export const LOCAL_DB_TRANSACCIONES = "__transacctions__";
-export const LOCAL_DB_CUENTAS = "__accounts__";
-export const LOCAL_DB_CATEGORIAS = "__categories__";
+export const LOCAL_DB_NAME = "mySQLiteDB.db";
+export const DATABASE_VERSION = 2;
+export const LOCAL_DB_TRANSACCIONES_NAME = "transacciones";
+export const LOCAL_DB_CUENTAS_NAME = "accounts";
+export const LOCAL_DB_PROFILES_NAME = "profiles";
+export const LOCAL_DB_CATEGORIAS_NAME = "categories";
 export const DEFAULT_STATE: Transaccion[] = DB_Transacciones;
 export const DEFAULT_STATE_CATEGORIAS: Categoria[] = DB_Categorias;
 export const DEFAULT_STATE_CUENTAS: Cuenta[] = DB_Cuentas;

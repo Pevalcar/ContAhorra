@@ -1,4 +1,6 @@
+import { LOCAL_DB_NAME } from "@/lib/configs/config";
 import SupabaseAuthRepository from "@/lib/data/repositories/SupabaseAuthRepository";
+import { TransaccionLocalRepository } from "@/lib/data/repositories/TransaccionLocalRepository";
 import {
   FetchUserUseCase,
   GoogleAuthUseCase,
@@ -10,6 +12,12 @@ import {
   UpdateProfileUseCase,
   VerificationUseCase,
 } from "@/lib/domain/usecases/Auth";
+import {
+  AddTransaccionUseCase,
+  DeleteTransaccionUseCase,
+  GetAllUseCase,
+  GetTransactionsByDateRangeUseCase,
+} from "@/lib/domain/usecases/Transacciones";
 
 const AuthRepository = new SupabaseAuthRepository();
 
@@ -31,7 +39,23 @@ const googleAuthUseCase = new GoogleAuthUseCase(AuthRepository);
 
 const fetchUser = new FetchUserUseCase(AuthRepository);
 
+//Container db
+const DBRepositoryLocal = new TransaccionLocalRepository(LOCAL_DB_NAME);
+
+const addTransaccion = new AddTransaccionUseCase(DBRepositoryLocal, DBRepositoryLocal);
+const deleteTransaccion = new DeleteTransaccionUseCase(DBRepositoryLocal, DBRepositoryLocal);
+const getAllTransaccion = new GetAllUseCase(DBRepositoryLocal, DBRepositoryLocal);
+const getTransactionsByDateRang = new GetTransactionsByDateRangeUseCase(
+  DBRepositoryLocal,
+  DBRepositoryLocal,
+);
+
 export {
+  addTransaccion,
+  deleteTransaccion,
+  fetchUser,
+  getAllTransaccion,
+  getTransactionsByDateRang,
   googleAuthUseCase,
   loginUseCase,
   recoverUseCase,
@@ -40,5 +64,4 @@ export {
   updatePasswordUseCase,
   updateProfileUseCase,
   verificationUseCase,
-  fetchUser,
 };

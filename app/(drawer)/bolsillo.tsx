@@ -1,15 +1,40 @@
-import { type SQLiteDatabase, SQLiteProvider, useSQLiteContext } from "expo-sqlite";
-import { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { TextCurrency } from "@/components/TextCurrency";
+import { Avatar, AvatarFallbackText } from "@/components/ui/avatar";
+import { Button, ButtonText } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Heading } from "@/components/ui/heading";
+import { Pressable } from "@/components/ui/pressable";
+import { SegmentControl } from "@/components/ui/segmentcontrol";
+import { VStack } from "@/components/ui/vstack";
+import {
+  LOCAL_DB_CATEGORIAS_NAME,
+  LOCAL_DB_CUENTAS_NAME,
+  LOCAL_DB_NAME,
+  LOCAL_DB_TRANSACCIONES_NAME,
+} from "@/lib/configs/config";
+import { addTransaccion, deleteTransaccion, getAllTransaccion } from "@/lib/core/di/Container";
+import { migrateDbIfNeeded } from "@/lib/data/local/db/SQLiteDataBAse";
+import { Categoria, Cuenta, Transaccion } from "@/lib/domain/entities";
+import * as Crypto from "expo-crypto";
+import { SQLiteProvider, useSQLiteContext } from "expo-sqlite";
+import React, { useEffect, useState } from "react";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 
 export default function Bolsillo() {
   return <Pruebas />;
 }
 
+//TODO https://github.com/betomoedano/Budget-Buddy-App/tree/main
 function Pruebas() {
   return (
     <View style={styles.container}>
-      <SQLiteProvider databaseName="test.db" onInit={migrateDbIfNeeded}>
+      <SQLiteProvider databaseName={LOCAL_DB_NAME} onInit={migrateDbIfNeeded}>
+        <SegmentControl
+          values={["a", "b", "c", "pene"]}
+          clasName="flex-row gap-2"
+          selectedIndex={0}
+          onChange={() => {}}
+        />
         <Header />
         <Content />
       </SQLiteProvider>
@@ -37,66 +62,181 @@ export function Header() {
   );
 }
 
-interface Todo {
-  value: string;
-  intValue: number;
-}
-
 export function Content() {
   const db = useSQLiteContext();
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const [todos, setTodos] = useState<Transaccion[]>([]);
+  const [category, setCategory] = useState<Categoria[]>([]);
+  const [account, setAccount] = useState<Cuenta[]>([]);
+  const [transactionsByMonth, setTransactionsByMonth] = React.useState<{
+    totalExpenses: number;
+    totalIncome: number;
+  }>({
+    totalExpenses: 0,
+    totalIncome: 0,
+  });
+
+  async function getData() {
+    const result = await getAllTransaccion.execute();
+    setTodos(result);
+
+    const resultCategory = await db.getAllAsync<Categoria>(
+      `SELECT * FROM ${LOCAL_DB_CATEGORIAS_NAME}`,
+    );
+    setCategory(resultCategory);
+
+    const resultAccount = await db.getAllAsync<Cuenta>(`SELECT * FROM ${LOCAL_DB_CUENTAS_NAME}`);
+    setAccount(resultAccount);
+
+    const newDate = new Date();
+    const startOfMonth = new Date(newDate.getFullYear(), newDate.getMonth(), 1);
+    const endOfMonth = new Date(newDate.getFullYear(), newDate.getMonth() + 1, 1);
+
+    endOfMonth.setMilliseconds(endOfMonth.getMilliseconds() - 1);
+
+    const startOfMonthTimestamp = Math.floor(startOfMonth.getTime() / 1000);
+    const endOfMonthTimestamp = Math.floor(endOfMonth.getTime() / 1000);
+
+    const transactionsByMonth = await db.getAllAsync<{
+      totalExpenses: number;
+      totalIncome: number;
+    }>(
+      `SELECT
+ COALESCE(SUM(CASE WHEN type = 'Gasto' THEN balance ELSE 0 END), 0) AS totalExpenses,
+ COALESCE(SUM(CASE WHEN type = 'Ingreso' THEN balance ELSE 0 END), 0) AS totalIncome
+ FROM ${LOCAL_DB_TRANSACCIONES_NAME}
+ WHERE date >= ?  AND date <= ?
+`,
+      [startOfMonthTimestamp, endOfMonthTimestamp],
+    );
+    console.log("transactionsByMonth", transactionsByMonth);
+    setTransactionsByMonth(transactionsByMonth[0]);
+  }
 
   useEffect(() => {
-    async function setup() {
-      const result = await db.getAllAsync<Todo>("SELECT * FROM todos");
-      setTodos(result);
-    }
-    setup();
-  }, []);
+    db.withTransactionAsync(async () => {
+      await getData();
+    });
+  }, [db]);
 
+  const addTodo = async () => {
+    db.withTransactionAsync(async () => {
+      const UUID = Crypto.randomUUID();
+      const date = new Date();
+      const dateTimestamp = Math.floor(date.getTime() / 1000);
+      const transaction = new Transaccion({
+        id: UUID,
+        title: "hello",
+        balance: 6000,
+        type: "Ingreso",
+        date: dateTimestamp,
+        description: "hello",
+        categoryID: "1",
+        accountID: "2",
+      });
+      await addTransaccion.execute(transaction);
+      await getData();
+    });
+  };
+
+  const deleteTodo = async (id: string) => {
+    await db.withTransactionAsync(async () => {
+      await deleteTransaccion.execute(id);
+      await getData();
+    });
+  };
   return (
     <View style={styles.contentContainer}>
-      {todos.map((todo, index) => (
-        <View style={styles.todoItemContainer} key={index}>
-          <Text>{`${todo.intValue} - ${todo.value}`}</Text>
-        </View>
+      <Button
+        onPress={async () => {
+          await addTodo();
+        }}>
+        <ButtonText> add todo </ButtonText>
+      </Button>
+      <Heading> Categorias </Heading>
+      {category.map((item, index) => (
+        <>
+          <Text>{`${item.id} - ${item.name} - ${item.icon}`}</Text>
+        </>
       ))}
+      <Heading> Cuentas </Heading>
+      {account.map((item, index) => (
+        <>
+          <Text>{`${item.id} - ${item.name} - ${item.icon}`}</Text>
+        </>
+      ))}
+      {<Text>{`${transactionsByMonth.totalExpenses} - ${transactionsByMonth.totalIncome}`}</Text>}
+      <ScrollView>
+        {todos.map((item, index) => (
+          <Card
+            size="sm"
+            variant="outline"
+            className="mb-4 flex-row items-center justify-between"
+            key={index}>
+            <Avatar size="md">
+              <AvatarFallbackText className="text-white">{item.type}</AvatarFallbackText>
+            </Avatar>
+            <VStack className="ml-4 flex-1">
+              <Heading size="sm">{item.title}</Heading>
+              <Text className="text-typography-500">{item.description}</Text>
+              <Text className="text-typography-500">
+                {new Date(item.date).toLocaleDateString()}
+              </Text>
+            </VStack>
+            <TextCurrency
+              sign
+              negative={
+                item.type === "Gasto" || item.type === "Transferencia" || item.type === "Préstamo"
+              }
+              size="sm"
+              value={item.balance}
+            />
+            <Pressable className="mr-4" onPress={() => deleteTodo(item.id)}>
+              <Text>Delete</Text>
+            </Pressable>
+          </Card>
+        ))}
+      </ScrollView>
     </View>
   );
 }
 
-async function migrateDbIfNeeded(db: SQLiteDatabase) {
-  const DATABASE_VERSION = 1;
-  const result = await db.getFirstAsync<{ user_version: number }>("PRAGMA user_version");
+// async function migrateDbToVersion2(db: SQLiteDatabase) {
+//   await db.execAsync(`
+//             CREATE TABLE IF NOT EXISTS ${LOCAL_DB_PROFILES_NAME} (
+//                 id TEXT PRIMARY KEY NOT NULL UNIQUE ,
+//                 name TEXT NOT NULL,
+//                 photoURL TEXT NOT NULL,
+//                 userOwnerID TEXT
+//             );
+//         `);
+//   // Añadir columna 'uptodataBase' a la tabla 'categories'
+//   await db.execAsync(`ALTER TABLE categories ADD COLUMN uptodataBase BOOLEAN DEFAULT 0;`);
+//   // Añadir columna 'userOwnerID' a la tabla 'categories'
+//   await db.execAsync(`ALTER TABLE categories ADD COLUMN userOwnerID TEXT;`);
+//   // Añadir columna 'userOwnerID' a la tabla 'accounts'
+//   await db.execAsync(`ALTER TABLE accounts ADD COLUMN userOwnerID TEXT;`);
+//   // Añadir columna 'userOwnerID' a la tabla 'transacciones'
+//   await db.execAsync(`ALTER TABLE transacciones ADD COLUMN userOwnerID TEXT;`);
+//   // Añadir columna 'prestadoaID' a la tabla 'transacciones'
+//   await db.execAsync(`ALTER TABLE transacciones ADD COLUMN prestadoaID TEXT;`);
+//   // Añadir columna 'userOwnerID' a la tabla 'accounts'
+//   await db.execAsync(`ALTER TABLE accounts ADD COLUMN userOwnerID TEXT;`);
+//   await db.execAsync(`ALTER TABLE transacciones ADD COLUMN uptodataBase BOOLEAN DEFAULT 0;`);
+//   await db.execAsync(`ALTER TABLE accounts ADD COLUMN uptodataBase BOOLEAN DEFAULT 0;`);
+//   await db.execAsync(
+//     `ALTER TABLE transacciones ADD FOREIGN KEY(prestadoaID) REFERENCES ${LOCAL_DB_PROFILES_NAME}(id) ON DELETE CASCADE;`,
+//   );
 
-  let { user_version: currentDbVersion } = result ?? {};
-  if (currentDbVersion === undefined) {
-    return;
-  }
-  if (currentDbVersion >= DATABASE_VERSION) {
-    return;
-  }
-  console.log(" result", result);
+//   await db.execAsync(
+//     `ALTER TABLE transacciones ADD FOREIGN KEY(category_id) REFERENCES ${LOCAL_DB_CATEGORIAS_NAME}(id) ON DELETE CASCADE;`,
+//   );
 
-  if (currentDbVersion === 0) {
-    await db.execAsync(`
-PRAGMA journal_mode = 'wal';
-CREATE TABLE IF NOT EXISTS todos (id INTEGER PRIMARY KEY NOT NULL, value TEXT NOT NULL, intValue INTEGER);
-`);
-    await db.runAsync("INSERT INTO todos (value, intValue) VALUES (?, ?)", "hello", 1);
-    await db.runAsync("INSERT INTO todos (value, intValue) VALUES (?, ?)", "world", 2);
-    await db.runAsync("INSERT INTO todos (value, intValue) VALUES (?, ?)", "world2", 3);
-    await db.runAsync("INSERT INTO todos (value, intValue) VALUES (?, ?)", "world3", 4);
-    await db.runAsync("INSERT INTO todos (value, intValue) VALUES (?, ?)", "world4", 5);
-    await db.runAsync("INSERT INTO todos (value, intValue) VALUES (?, ?)", "world4", 6);
-    await db.runAsync("INSERT INTO todos (value, intValue) VALUES (?, ?)", "world4", 7);
-    currentDbVersion = 1;
-  }
-  // if (currentDbVersion === 1) {
-  //   Add more migrations
-  // }
-  await db.execAsync(`PRAGMA user_version = ${DATABASE_VERSION}`);
-}
+//   await db.execAsync(
+//     `ALTER TABLE transacciones ADD FOREIGN KEY(account_id) REFERENCES ${LOCAL_DB_CUENTAS_NAME}(id) ON DELETE CASCADE;`,
+// //   );
+
+//   await db.execAsync(`PRAGMA user_version = ${DATABASE_VERSION}`);
+// }
 
 const styles = StyleSheet.create({
   container: {
@@ -114,7 +254,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   contentContainer: {
-    padding: 16,
+    width: "100%",
+    height: "100%",
   },
   todoItemContainer: {
     padding: 16,

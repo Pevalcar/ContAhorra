@@ -1,5 +1,5 @@
-import { DEFAULT_STATE_CATEGORIAS, LOCAL_DB_CATEGORIAS } from "../configs/config";
-import { Categoria } from "@/Types/types";
+import { DEFAULT_STATE_CATEGORIAS, LOCAL_DB_CATEGORIAS_NAME } from "../configs/config";
+import { Categoria } from "../domain/entities";
 import { Platform } from "react-native";
 import { create } from "zustand";
 
@@ -8,7 +8,7 @@ const initialState = (() => {
     try {
       if (typeof localStorage !== "undefined") {
         // eslint-disable-next-line no-undef
-        const value = localStorage.getItem(LOCAL_DB_CATEGORIAS);
+        const value = localStorage.getItem(LOCAL_DB_CATEGORIAS_NAME);
         if (value) {
           return JSON.parse(value);
         }

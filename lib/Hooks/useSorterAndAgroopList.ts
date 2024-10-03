@@ -1,8 +1,41 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { Transaccion } from "../domain/entities";
 import { useTransaccionesStore } from "../store/TransaccionesStore";
-import { Transaccion } from "@/Types/types";
 import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+
+/**
+ * interface TransactionByMonth {
+ *  totalExpenses: number;
+ *  totalIncomes: number;
+ *  totalTransfers: number;
+ *  totalPréstamos: number; *
+ * }
+ *
+ * const [trasrationByMonth, setTransactionByMonth] = useState<TransactionByMonth[]>([]);
+ *
+ * const now = new Date();
+ * const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+ * const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+ *
+ * endOfMonth.setMilliseconds(endOfMonth.getMilliseconds() - 1);
+ *
+ * const startOfMonthTimestamp = Math.floor(startOfMonth.getTime() / 1000);
+ * const startOfMonthTimestamp = Math.floor(startOfMonth.getTime() / 1000);
+ * const endOfMonthTimestamp = Math.floor(endOfMonth.getTime() / 1000);
+ *
+ * const trasrationByMonth = await db.getAll<TransactionByMonth>(
+ *   `SELECT
+ *  COALESCE(SUM(CASE WHEN type = 'gasto' THEN balance ELSE 0 END), 0) AS totalExpenses,
+ *  COALESCE(SUM(CASE WHEN type = 'ingreso' THEN balance ELSE 0 END), 0) AS totalIncomes
+ *  COALESCE(SUM(CASE WHEN type = 'transferencia' THEN balance ELSE 0 END), 0) AS totalTransfers
+ *  COALESCE(SUM(CASE WHEN type = 'préstamo' THEN balance ELSE 0 END), 0) AS totalPréstamos
+ *  FROM transactions
+ *  WHERE date >= ?  AND date <= ?
+ * `, [startOfMonthTimestamp, endOfMonthTimestamp]);
+ * );
+ * setTransactionByMonth(trasrationByMonth[0]);
+ */
 
 export const useSorterAndAgroopList = (list: any[]) => {
   const setMes = useTransaccionesStore((state) => state.setMes);
