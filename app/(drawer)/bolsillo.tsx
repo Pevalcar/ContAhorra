@@ -10,9 +10,13 @@ import {
   LOCAL_DB_CATEGORIAS_NAME,
   LOCAL_DB_CUENTAS_NAME,
   LOCAL_DB_NAME,
-  LOCAL_DB_TRANSACCIONES_NAME,
 } from "@/lib/configs/config";
-import { addTransaccion, deleteTransaccion, getAllTransaccion } from "@/lib/core/di/Container";
+import {
+  addTransaccion,
+  deleteTransaccion,
+  getAllTransaccion,
+  getTotalTransactionByDateRange,
+} from "@/lib/core/di/Container";
 import { migrateDbIfNeeded } from "@/lib/data/local/db/SQLiteDataBAse";
 import { Categoria, Cuenta, Transaccion } from "@/lib/domain/entities";
 import * as Crypto from "expo-crypto";
@@ -86,7 +90,6 @@ export function Content() {
 
     const resultAccount = await db.getAllAsync<Cuenta>(`SELECT * FROM ${LOCAL_DB_CUENTAS_NAME}`);
     setAccount(resultAccount);
-
     const newDate = new Date();
     const startOfMonth = new Date(newDate.getFullYear(), newDate.getMonth(), 1);
     const endOfMonth = new Date(newDate.getFullYear(), newDate.getMonth() + 1, 1);
@@ -95,21 +98,12 @@ export function Content() {
 
     const startOfMonthTimestamp = Math.floor(startOfMonth.getTime() / 1000);
     const endOfMonthTimestamp = Math.floor(endOfMonth.getTime() / 1000);
-
-    const transactionsByMonth = await db.getAllAsync<{
-      totalExpenses: number;
-      totalIncome: number;
-    }>(
-      `SELECT
- COALESCE(SUM(CASE WHEN type = 'Gasto' THEN balance ELSE 0 END), 0) AS totalExpenses,
- COALESCE(SUM(CASE WHEN type = 'Ingreso' THEN balance ELSE 0 END), 0) AS totalIncome
- FROM ${LOCAL_DB_TRANSACCIONES_NAME}
- WHERE date >= ?  AND date <= ?
-`,
-      [startOfMonthTimestamp, endOfMonthTimestamp],
+    const transactionsByMonth = await getTotalTransactionByDateRange.execute(
+      startOfMonthTimestamp,
+      endOfMonthTimestamp,
     );
-    console.log("transactionsByMonth", transactionsByMonth);
-    setTransactionsByMonth(transactionsByMonth[0]);
+
+    setTransactionsByMonth(transactionsByMonth);
   }
 
   useEffect(() => {
@@ -119,20 +113,21 @@ export function Content() {
   }, [db]);
 
   const addTodo = async () => {
-    db.withTransactionAsync(async () => {
-      const UUID = Crypto.randomUUID();
-      const date = new Date();
-      const dateTimestamp = Math.floor(date.getTime() / 1000);
-      const transaction = new Transaccion({
-        id: UUID,
-        title: "hello",
-        balance: 6000,
-        type: "Ingreso",
-        date: dateTimestamp,
-        description: "hello",
-        categoryID: "1",
-        accountID: "2",
-      });
+    const UUID = Crypto.randomUUID();
+    const date = new Date();
+    const dateTimestamp = Math.floor(date.getTime() / 1000);
+    const transaction = new Transaccion({
+      id: UUID,
+      title: "hello",
+      balance: 6000,
+      type: "Ingreso",
+      date: dateTimestamp,
+      description: "hello",
+      categoryID: "1",
+      accountID: "2",
+    });
+    await db.withTransactionAsync(async () => {
+      //TODO sacar esto al zustand
       await addTransaccion.execute(transaction);
       await getData();
     });
@@ -155,13 +150,13 @@ export function Content() {
       <Heading> Categorias </Heading>
       {category.map((item, index) => (
         <>
-          <Text>{`${item.id} - ${item.name} - ${item.icon}`}</Text>
+          <Text key={"categoria" + index}>{`${item.id} - ${item.name} - ${item.icon}`}</Text>
         </>
       ))}
       <Heading> Cuentas </Heading>
       {account.map((item, index) => (
         <>
-          <Text>{`${item.id} - ${item.name} - ${item.icon}`}</Text>
+          <Text key={index + "textCuenta"}>{`${item.id} - ${item.name} - ${item.icon}`}</Text>
         </>
       ))}
       {<Text>{`${transactionsByMonth.totalExpenses} - ${transactionsByMonth.totalIncome}`}</Text>}
@@ -171,7 +166,7 @@ export function Content() {
             size="sm"
             variant="outline"
             className="mb-4 flex-row items-center justify-between"
-            key={index}>
+            key={index + "transaccions"}>
             <Avatar size="md">
               <AvatarFallbackText className="text-white">{item.type}</AvatarFallbackText>
             </Avatar>
