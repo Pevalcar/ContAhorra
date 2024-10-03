@@ -12,6 +12,6 @@ export class AddTransaccionUseCase {
 
   async execute(data: Transaccion): Promise<void> {
     // Guardar siempre localmente
-    await this.transaccionRepositoryLocal.add(data);
+    await this.transaccionRepositoryLocal.addTransaction(data);
   }
 }

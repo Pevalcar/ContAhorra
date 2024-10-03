@@ -1,17 +1,17 @@
-import { MyIconos } from "@/Types/types";
+import type { MyIconos, userOwnerID } from "@/Types/types";
 
 export class Cuenta {
   readonly id: string;
   name: string;
   icon: MyIconos;
-  userOwnerID: string;
+  userOwnerID: userOwnerID;
   uptodataBase: boolean;
 
   constructor(params: {
     id?: string;
     name: string;
     icon: MyIconos;
-    userOwnerID?: string;
+    userOwnerID?: userOwnerID;
     uptodataBase?: boolean;
   }) {
     this.id = params.id ?? "";

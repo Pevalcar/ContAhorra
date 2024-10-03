@@ -149,15 +149,11 @@ export function Content() {
       </Button>
       <Heading> Categorias </Heading>
       {category.map((item, index) => (
-        <>
-          <Text key={"categoria" + index}>{`${item.id} - ${item.name} - ${item.icon}`}</Text>
-        </>
+        <Text key={"categoria" + index}>{`${item.id} - ${item.name} - ${item.icon}`}</Text>
       ))}
       <Heading> Cuentas </Heading>
       {account.map((item, index) => (
-        <>
-          <Text key={index + "textCuenta"}>{`${item.id} - ${item.name} - ${item.icon}`}</Text>
-        </>
+        <Text key={index + "textCuenta"}>{`${item.id} - ${item.name} - ${item.icon}`}</Text>
       ))}
       {<Text>{`${transactionsByMonth.totalExpenses} - ${transactionsByMonth.totalIncome}`}</Text>}
       <ScrollView>
