@@ -1,8 +1,10 @@
+import type { userOwnerID } from "@/Types/types";
+
 export class Perfil {
   readonly id?: string;
   name: string;
   photoURL: string;
-  userOwnerID?: string;
+  userOwnerID?: userOwnerID;
   userReferredID?: string;
   uptodataBase?: boolean;
   emoji?: string;
@@ -11,7 +13,7 @@ export class Perfil {
     id?: string;
     name: string;
     photoURL: string;
-    userOwnerID?: string;
+    userOwnerID?: userOwnerID;
     userReferredID?: string;
     uptodataBase?: boolean;
     emoji?: string;

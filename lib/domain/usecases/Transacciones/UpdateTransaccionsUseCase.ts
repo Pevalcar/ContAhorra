@@ -12,6 +12,6 @@ export class UpdateTransaccionsUseCase {
 
   async execute(data: Transaccion): Promise<void> {
     // Guardar siempre localmente
-    await this.transaccionRepositoryLocal.update(data);
+    await this.transaccionRepositoryLocal.updateTransaction(data);
   }
 }

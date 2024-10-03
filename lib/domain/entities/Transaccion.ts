@@ -1,4 +1,4 @@
-import { TiposDeTransacciones } from "@/Types/types";
+import type { TiposDeTransacciones, userOwnerID } from "@/Types/types";
 
 export class Transaccion {
   readonly id: string;
@@ -12,7 +12,7 @@ export class Transaccion {
   uptodataBase: boolean;
   prestadoaName: string;
   prestadoaID: string;
-  userOwnerID: string;
+  userOwnerID: userOwnerID;
 
   constructor(params: {
     id: string;
@@ -23,7 +23,7 @@ export class Transaccion {
     description?: string;
     categoryID?: string;
     accountID?: string;
-    userOwnerID?: string;
+    userOwnerID?: userOwnerID;
     prestadoaID?: string;
     uptodataBase?: boolean;
     prestadoaName?: string;

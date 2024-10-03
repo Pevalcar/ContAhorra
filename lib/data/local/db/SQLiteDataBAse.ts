@@ -37,9 +37,11 @@ async function migrateDbToVersion0(db: SQLiteDatabase) {
       id TEXT PRIMARY KEY NOT NULL UNIQUE ,
       name TEXT NOT NULL,
       icon TEXT NOT NULL,
+      type TEXT NOT NULL CHECK( type IN ('Gasto', 'Transferencia', 'Préstamo', 'Ingreso') ),
       uptodataBase BOOLEAN DEFAULT 0,
       userOwnerID TEXT
       );`);
+
   await db.execAsync(`
       CREATE TABLE IF NOT EXISTS ${LOCAL_DB_CUENTAS_NAME} (
       id TEXT PRIMARY KEY NOT NULL UNIQUE,
@@ -64,7 +66,7 @@ async function migrateDbToVersion0(db: SQLiteDatabase) {
       id TEXT PRIMARY KEY NOT NULL UNIQUE ,
       title TEXT NOT NULL,
       balance REAL NOT NULL,
-      type TEXT NOT NULL CHECK( type IN ('Gasto', 'Transferencia', 'Préstamo', 'Ingreso', 'Saldo') ),
+      type TEXT NOT NULL CHECK( type IN ('Gasto', 'Transferencia', 'Préstamo', 'Ingreso') ),
       date INTEGER NOT NULL,
       description TEXT NOT NULL,
       categoryID TEXT NOT NULL,
@@ -76,15 +78,14 @@ async function migrateDbToVersion0(db: SQLiteDatabase) {
       FOREIGN KEY(prestadoaID) REFERENCES ${LOCAL_DB_PROFILES_NAME}(id) ON DELETE SET NULL,
       FOREIGN KEY(categoryID) REFERENCES ${LOCAL_DB_CATEGORIAS_NAME}(id) ON DELETE CASCADE,
       FOREIGN KEY(accountID) REFERENCES ${LOCAL_DB_CUENTAS_NAME}(id) ON DELETE CASCADE);`); //    userOwnerID TEXT,
-
   await db.withTransactionAsync(async () => {
-    console.log("iniciando insertado de datos");
-    const InsertCategories = `INSERT OR REPLACE INTO ${LOCAL_DB_CATEGORIAS_NAME} (id, name, icon, uptodataBase, userOwnerID) VALUES (?, ?, ?, ?, ?);`;
+    const InsertCategories = `INSERT OR REPLACE INTO ${LOCAL_DB_CATEGORIAS_NAME} ( id, name, icon, type, uptodataBase, userOwnerID) VALUES (?, ?, ?, ?, ?, ?);`;
     for (const category of DB_Categorias) {
       await db.runAsync(InsertCategories, [
         category.id,
         category.name,
         category.icon,
+        category.type,
         category.uptodataBase,
         category.userOwnerID,
       ]);

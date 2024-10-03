@@ -5,6 +5,8 @@ export interface TransactionTotal {
   totalPrestamos: number;
 }
 
+export type userOwnerID = string;
+
 export type TiposDeTransacciones = "Ingreso" | "Gasto" | "Préstamo" | "Transferencia";
 
 export type MyIconos =

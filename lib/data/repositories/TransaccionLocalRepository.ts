@@ -40,7 +40,7 @@ export class TransaccionLocalRepository implements TransaccionRepositoryI {
     }
   }
 
-  async add(transaccion: Transaccion): Promise<void> {
+  async addTransaction(transaccion: Transaccion): Promise<void> {
     const db = await openDatabaseAsync(this.dbNAme);
     try {
       const query = `
@@ -74,7 +74,7 @@ export class TransaccionLocalRepository implements TransaccionRepositoryI {
     }
   }
 
-  async delete(id: string): Promise<boolean> {
+  async deleteTransaction(id: string): Promise<boolean> {
     const db = await openDatabaseAsync(this.dbNAme);
     try {
       const query = `DELETE FROM ${LOCAL_DB_TRANSACCIONES_NAME} WHERE id = ?`;
@@ -84,7 +84,7 @@ export class TransaccionLocalRepository implements TransaccionRepositoryI {
       throw SQLiteControlError.getError(error);
     }
   }
-  async update(transaccion: Transaccion): Promise<void> {
+  async updateTransaction(transaccion: Transaccion): Promise<void> {
     const db = await openDatabaseAsync(this.dbNAme);
     const query = `
       UPDATE ${LOCAL_DB_TRANSACCIONES_NAME}
@@ -109,7 +109,7 @@ export class TransaccionLocalRepository implements TransaccionRepositoryI {
     }
   }
 
-  async getAll(): Promise<Transaccion[]> {
+  async getAllTransaction(): Promise<Transaccion[]> {
     const db = await openDatabaseAsync(this.dbNAme);
     try {
       const query = `SELECT * FROM ${LOCAL_DB_TRANSACCIONES_NAME}`;

@@ -11,6 +11,6 @@ export class DeleteTransaccionUseCase {
 
   async execute(id: string): Promise<boolean> {
     // Guardar siempre localmente
-    return await this.transaccionRepositoryLocal.delete(id);
+    return await this.transaccionRepositoryLocal.deleteTransaction(id);
   }
 }

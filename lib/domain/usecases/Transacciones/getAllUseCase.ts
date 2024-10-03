@@ -12,6 +12,6 @@ export class GetAllUseCase {
 
   async execute(): Promise<Transaccion[]> {
     // Guardar siempre localmente
-    return await this.transaccionRepositoryLocal.getAll();
+    return await this.transaccionRepositoryLocal.getAllTransaction();
   }
 }
