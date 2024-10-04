@@ -1,6 +1,6 @@
 import { DEVELOPMENT } from "../configs/config";
-import { useStoreSesion } from "../providers/ctx";
 import { useMyToast } from "./useToast";
+import { useStoreSesion } from "@/lib/store";
 import React from "react";
 import { useTranslation } from "react-i18next";
 

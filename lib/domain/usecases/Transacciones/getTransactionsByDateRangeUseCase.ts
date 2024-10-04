@@ -10,12 +10,17 @@ export class GetTransactionsByDateRangeUseCase {
     this.transaccionRepositoryRemote = transaccionRepositoryRemote;
   }
 
-  async execute(
-    startDate: number,
-    endDate: number,
-    type?: string,
-    accountID?: string,
-  ): Promise<Transaccion[]> {
+  async execute({
+    startDate,
+    endDate,
+    type,
+    accountID,
+  }: {
+    startDate?: number;
+    endDate?: number;
+    type?: string;
+    accountID?: string;
+  }): Promise<Transaccion[]> {
     // Guardar siempre localmente
     return await this.transaccionRepositoryLocal.getTrasaccionByDateRange(
       startDate,

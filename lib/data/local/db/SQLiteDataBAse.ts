@@ -6,7 +6,7 @@ import {
   LOCAL_DB_PROFILES_NAME,
   LOCAL_DB_TRANSACCIONES_NAME,
 } from "@/lib/configs/config";
-import { DB_Categorias, DB_Cuentas } from "@/lib/db/local/db_local";
+import { DB_Categorias, DB_Cuentas, DB_Transacciones } from "@/lib/db/local/db_local";
 import { SQLiteControlError } from "@/lib/domain/error/SqlControlError";
 import { SQLiteDatabase } from "expo-sqlite";
 
@@ -101,7 +101,27 @@ async function migrateDbToVersion0(db: SQLiteDatabase) {
         account.userOwnerID,
       ]);
     }
+    if (DEVELOPMENT) {
+      const InsertTransacciones = `INSERT OR REPLACE INTO ${LOCAL_DB_TRANSACCIONES_NAME} (id, title, balance, type, date, description, categoryID, accountID, userOwnerID, prestadoaID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
+      await db.withExclusiveTransactionAsync(async () => {
+        for (const account of DB_Transacciones) {
+          await db.runAsync(InsertTransacciones, [
+            account.id,
+            account.title,
+            account.balance,
+            account.type,
+            account.date,
+            account.description,
+            account.categoryID,
+            account.accountID,
+            account.userOwnerID,
+            account.prestadoaID,
+          ]);
+        }
+      });
+    }
   });
+
   // }
   await db.execAsync(`PRAGMA user_version = ${DATABASE_VERSION}`);
 }

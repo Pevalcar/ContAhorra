@@ -10,7 +10,7 @@ interface BearState {
   reset: (by: "home" | "setings" | "reports" | "shopping") => void;
 }
 
-const useBearStore = create<BearState>()(
+export const useBearStore = create<BearState>()(
   devtools(
     (set) => ({
       home: 0,
@@ -67,5 +67,3 @@ const useBearStore = create<BearState>()(
     },
   ),
 );
-
-export default useBearStore;

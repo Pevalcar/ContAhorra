@@ -1,4 +1,4 @@
-import { TransactionTotal } from "@/Types/types";
+import { TiposDeTransacciones, TransactionTotal } from "@/Types/types";
 import TransaccionRepositoryI from "@/lib/domain/repositories/TransaccionRepository";
 
 export class GetTotalTransactionsByDateRangeUseCase {
@@ -10,17 +10,23 @@ export class GetTotalTransactionsByDateRangeUseCase {
     this.transaccionRepositoryRemote = transaccionRepositoryRemote;
   }
 
-  async execute(
-    startDate: number,
-    endDate: number,
-    type?: string,
-    accountID?: string,
-  ): Promise<TransactionTotal> {
+  async execute({
+    startDate,
+    endDate,
+    type,
+    accountID,
+  }: {
+    startDate?: number;
+    endDate?: number;
+    type?: TiposDeTransacciones;
+    accountID?: string;
+  }): Promise<TransactionTotal> {
     // Guardar siempre localmente
     return await this.transaccionRepositoryLocal.getTotalTransactionByDateRange(
       startDate,
       endDate,
       accountID,
+      type,
     );
   }
 }

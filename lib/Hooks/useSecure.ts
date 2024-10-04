@@ -1,5 +1,5 @@
-import { useStoreSesion } from "../providers/ctx";
 import { useMyToast } from "./useToast";
+import { useStoreSesion } from "@/lib/store";
 import React from "react";
 
 export const useSecureSecion = () => {

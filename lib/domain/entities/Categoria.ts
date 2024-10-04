@@ -19,7 +19,7 @@ export class Categoria {
     this.id = params.id ?? "";
     this.name = params.name;
     this.icon = params.icon;
-    this.userOwnerID = params.userOwnerID ?? "";
+    this.userOwnerID = params.userOwnerID ?? "1";
     this.uptodataBase = params.uptodataBase ?? false;
     this.type = params.type ?? "Gasto";
   }

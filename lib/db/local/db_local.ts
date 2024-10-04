@@ -6,37 +6,40 @@ const DB_Transacciones: Transaccion[] = [
     title: "Compra supermercado",
     balance: 50.75,
     type: "Gasto",
-    date: 1624317330000,
+    date: 1727740800, // 1 de octubre de 2024
     description: "Compra mensual en el supermercado",
     categoryID: "1",
     accountID: "1",
+    userOwnerID: "1",
   }),
   new Transaccion({
     id: "2",
     title: "Salario",
     balance: 1500,
     type: "Ingreso",
-    date: 1798051730000,
+    date: 1728172800, // 5 de octubre de 2024
     description: "Salario mensual",
     categoryID: "2",
     accountID: "2",
+    userOwnerID: "1",
   }),
   new Transaccion({
-    id: "4",
+    id: "3",
     title: "Pago alquiler",
     balance: 600,
     type: "Gasto",
-    date: 1598051730000,
+    date: 1728604800, // 10 de octubre de 2024
     description: "Pago mensual de alquiler",
     categoryID: "3",
     accountID: "1",
+    userOwnerID: "1",
   }),
   new Transaccion({
     id: "4",
     title: "Transferencia entre cuentas",
     balance: 200,
     type: "Transferencia",
-    date: 1598051830000,
+    date: 1728604800, // 10 de octubre de 2024 (repetido)
     description: "Transferencia de cuenta bancaria a cuenta de ahorros",
     categoryID: "4",
     accountID: "2",
@@ -46,7 +49,7 @@ const DB_Transacciones: Transaccion[] = [
     title: "Compra de ropa",
     balance: 120,
     type: "Gasto",
-    date: 1632266130000,
+    date: 1729036800, // 15 de octubre de 2024
     description: "Compra de ropa en tienda",
     categoryID: "5",
     accountID: "1",
@@ -56,7 +59,7 @@ const DB_Transacciones: Transaccion[] = [
     title: "Préstamo",
     balance: 1000,
     type: "Préstamo",
-    date: 1729552930000,
+    date: 1729468800, // 20 de octubre de 2024
     description: "Pago de préstamo personal",
     categoryID: "6",
     accountID: "3",
@@ -66,7 +69,7 @@ const DB_Transacciones: Transaccion[] = [
     title: "Préstamo",
     balance: 15000,
     type: "Préstamo",
-    date: 1729552930000,
+    date: 1729468800, // 20 de octubre de 2024 (repetido)
     description: "Pago inicial de préstamo automotriz",
     categoryID: "6",
     accountID: "3",
@@ -76,7 +79,7 @@ const DB_Transacciones: Transaccion[] = [
     title: "Préstamo",
     balance: 8000,
     type: "Préstamo",
-    date: 1729552930000,
+    date: 1729900800, // 25 de octubre de 2024
     description: "Pago mensual de préstamo estudiantil",
     categoryID: "6",
     accountID: "4",
@@ -86,7 +89,7 @@ const DB_Transacciones: Transaccion[] = [
     title: "Préstamo",
     balance: 50000,
     type: "Préstamo",
-    date: 1729552930000,
+    date: 1730332800, // 28 de octubre de 2024
     description: "Pago mensual de préstamo hipotecario",
     categoryID: "6",
     accountID: "4",
@@ -96,7 +99,37 @@ const DB_Transacciones: Transaccion[] = [
     title: "Préstamo",
     balance: 12000,
     type: "Préstamo",
-    date: 1729552930000,
+    date: 1730332800, // 28 de octubre de 2024 (repetido)
+    description: "Pago mensual de préstamo hipotecario",
+    categoryID: "6",
+    accountID: "4",
+  }),
+  new Transaccion({
+    id: "11",
+    title: "Préstamo",
+    balance: 12000,
+    type: "Préstamo",
+    date: 1728104400, // 28 de octubre de 2024 (repetido)
+    description: "Pago mensual de préstamo hipotecario",
+    categoryID: "6",
+    accountID: "4",
+  }),
+  new Transaccion({
+    id: "12",
+    title: "Préstamo",
+    balance: 12000,
+    type: "Préstamo",
+    date: 1733374800, // 28 de octubre de 2024 (repetido)
+    description: "Pago mensual de préstamo hipotecario",
+    categoryID: "6",
+    accountID: "4",
+  }),
+  new Transaccion({
+    id: "15",
+    title: "Préstamo",
+    balance: 12000,
+    type: "Préstamo",
+    date: 1728104400, // 28 de octubre de 2024 (repetido)
     description: "Pago mensual de préstamo hipotecario",
     categoryID: "6",
     accountID: "4",

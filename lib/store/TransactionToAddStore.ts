@@ -1,6 +1,7 @@
 import { INITIALCATEGORY, INITIALCUENTA } from "../configs/config";
+import { Categoria, Cuenta } from "../domain/entities";
 import { storeData } from "./useStorageState";
-import type { Categoria, Cuenta, TiposDeTransacciones } from "@/Types/types";
+import type { TiposDeTransacciones } from "@/Types/types";
 import { create } from "zustand";
 
 interface ITransaccionSate {

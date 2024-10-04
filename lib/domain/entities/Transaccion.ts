@@ -36,7 +36,7 @@ export class Transaccion {
     this.description = params.description ?? "";
     this.categoryID = params.categoryID ?? "";
     this.accountID = params.accountID ?? "";
-    this.userOwnerID = params.userOwnerID ?? "";
+    this.userOwnerID = params.userOwnerID ?? "1";
     this.prestadoaID = params.prestadoaID ?? "";
     this.uptodataBase = params.uptodataBase ?? false;
     this.prestadoaName = params.prestadoaName ?? "";

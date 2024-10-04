@@ -1,3 +1,4 @@
+import { TransactionTotal } from "@/Types/types";
 import { TextCurrency } from "@/components/TextCurrency";
 import { Avatar, AvatarFallbackText } from "@/components/ui/avatar";
 import { Button, ButtonText } from "@/components/ui/button";
@@ -7,20 +8,16 @@ import { Pressable } from "@/components/ui/pressable";
 import { SegmentControl } from "@/components/ui/segmentcontrol";
 import { VStack } from "@/components/ui/vstack";
 import {
-  LOCAL_DB_CATEGORIAS_NAME,
-  LOCAL_DB_CUENTAS_NAME,
-  LOCAL_DB_NAME,
-} from "@/lib/configs/config";
-import {
   addTransaccion,
   deleteTransaccion,
+  getAllAccount,
+  getAllCategory,
   getAllTransaccion,
   getTotalTransactionByDateRange,
 } from "@/lib/core/di/Container";
-import { migrateDbIfNeeded } from "@/lib/data/local/db/SQLiteDataBAse";
 import { Categoria, Cuenta, Transaccion } from "@/lib/domain/entities";
 import * as Crypto from "expo-crypto";
-import { SQLiteProvider, useSQLiteContext } from "expo-sqlite";
+import { useSQLiteContext } from "expo-sqlite";
 import React, { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
@@ -69,24 +66,21 @@ export function Content() {
   const [todos, setTodos] = useState<Transaccion[]>([]);
   const [category, setCategory] = useState<Categoria[]>([]);
   const [account, setAccount] = useState<Cuenta[]>([]);
-  const [transactionsByMonth, setTransactionsByMonth] = React.useState<{
-    totalExpenses: number;
-    totalIncome: number;
-  }>({
+  const [transactionsByMonth, setTransactionsByMonth] = React.useState<TransactionTotal>({
     totalExpenses: 0,
     totalIncome: 0,
+    totalTransferences: 0,
+    totalPrestamos: 0,
   });
 
   async function getData() {
     const result = await getAllTransaccion.execute();
     setTodos(result);
 
-    const resultCategory = await db.getAllAsync<Categoria>(
-      `SELECT * FROM ${LOCAL_DB_CATEGORIAS_NAME}`,
-    );
+    const resultCategory = await getAllCategory.execute();
     setCategory(resultCategory);
 
-    const resultAccount = await db.getAllAsync<Cuenta>(`SELECT * FROM ${LOCAL_DB_CUENTAS_NAME}`);
+    const resultAccount = await getAllAccount.execute("3");
     setAccount(resultAccount);
     const newDate = new Date();
     const startOfMonth = new Date(newDate.getFullYear(), newDate.getMonth(), 1);
@@ -96,10 +90,11 @@ export function Content() {
 
     const startOfMonthTimestamp = Math.floor(startOfMonth.getTime() / 1000);
     const endOfMonthTimestamp = Math.floor(endOfMonth.getTime() / 1000);
-    const transactionsByMonth = await getTotalTransactionByDateRange.execute(
-      startOfMonthTimestamp,
-      endOfMonthTimestamp,
-    );
+    const transactionsByMonth = await getTotalTransactionByDateRange.execute({
+      startDate: startOfMonthTimestamp,
+      endDate: endOfMonthTimestamp,
+      type: "Ingreso",
+    });
 
     setTransactionsByMonth(transactionsByMonth);
   }
@@ -153,7 +148,10 @@ export function Content() {
       {account.map((item, index) => (
         <Text key={index + "textCuenta"}>{`${item.id} - ${item.name} - ${item.icon}`}</Text>
       ))}
-      {<Text>{`${transactionsByMonth.totalExpenses} - ${transactionsByMonth.totalIncome}`}</Text>}
+      {
+        <Text>{` Total de ${transactionsByMonth.totalExpenses} gastos y ${transactionsByMonth.totalIncome} ingresos, en ${transactionsByMonth.totalTransferences} transferencias y ${transactionsByMonth.totalPrestamos} prestamos`}</Text>
+      }
+
       <ScrollView>
         {todos.map((item, index) => (
           <Card
@@ -167,6 +165,7 @@ export function Content() {
             <VStack className="ml-4 flex-1">
               <Heading size="sm">{item.title}</Heading>
               <Text className="text-typography-500">{item.description}</Text>
+              <Text className="text-typography-500">{item.type}</Text>
               <Text className="text-typography-500">
                 {new Date(item.date).toLocaleDateString()}
               </Text>
@@ -179,6 +178,7 @@ export function Content() {
               size="sm"
               value={item.balance}
             />
+
             <Pressable className="mr-4" onPress={() => deleteTodo(item.id)}>
               <Text>Delete</Text>
             </Pressable>
