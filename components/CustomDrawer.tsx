@@ -1,6 +1,6 @@
 import { Button, ButtonText } from "./ui/button";
 import { AVATAR_API_URL, DEVELOPMENT } from "@/lib/configs/config";
-import { useStoreSesion } from "@/lib/providers/ctx";
+import { useStoreSesion } from "@/lib/store";
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { DrawerContentScrollView, DrawerItemList } from "@react-navigation/drawer";

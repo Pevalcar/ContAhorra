@@ -1,43 +1,59 @@
-import { TextCurrency } from "../TextCurrency";
-import { Button, ButtonIcon } from "../ui/button";
-import { Card } from "../ui/card";
-import { HStack } from "../ui/hstack";
-import { Text } from "../ui/text";
+import { TextCurrency } from "@/components/TextCurrency";
 import { Avatar, AvatarFallbackText } from "@/components/ui/avatar";
+import { Button, ButtonIcon } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { Heading } from "@/components/ui/heading";
+import { HStack } from "@/components/ui/hstack";
+import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
-import { useSorterAndAgroopList } from "@/lib/Hooks/useSorterAndAgroopList";
 import { Transaccion } from "@/lib/domain/entities";
-import { useTransaccionesStore } from "@/lib/store/TransaccionesStore";
+import { getMes, useTransaccionesStore } from "@/lib/store/TransaccionesStore";
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react-native";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, SectionList } from "react-native";
 
-interface Props {
-  list: Transaccion[];
-}
-export const ListTransacciones = ({ list }: Props) => {
-  const { lista, month, siguienteMes, anteriorMEs } = useSorterAndAgroopList(list);
+interface Props {}
+export const ListTransacciones: React.FC<Props> = () => {
+  const { getAllTransaccion, transaccionesByMonth, currentMonth, setCurrentMonth } =
+    useTransaccionesStore((state) => state);
+  // const { lista, month, siguienteMes, anteriorMEs } = useSorterAndAgroopList(transacciones);
+
+  React.useEffect(() => {
+    const fetchAndSetUser = async () => {
+      await getAllTransaccion();
+    };
+    fetchAndSetUser();
+  }, []);
 
   return (
     <>
       <HStack className="w-full items-center justify-between p-1">
-        <Button onPress={anteriorMEs}>
+        <Button onPress={() => setCurrentMonth(-1)}>
           <ButtonIcon as={ArrowLeftIcon} stroke="white" size="xl" />
         </Button>
-        <Heading>{month}</Heading>
-        <Button onPress={siguienteMes}>
+        <DateHeaderTitle date={currentMonth} />
+        <Button onPress={() => setCurrentMonth(+1)}>
           <ButtonIcon as={ArrowRightIcon} stroke="white" size="xl" />
         </Button>
       </HStack>
       <SectionList
-        sections={lista}
+        sections={transaccionesByMonth}
         renderItem={({ item }) => <AccordingItem item={item} index={0} />}
         renderSectionHeader={({ section: { title } }) => <DateHeader date={title} />}
         keyExtractor={(item) => item.id}
       />
     </>
+  );
+};
+
+const DateHeaderTitle = ({ date }: { date: any }) => {
+  const { i18n } = useTranslation();
+  const newDate = getMes(date, i18n);
+  return (
+    <VStack className="flex-row items-center justify-between">
+      <Heading>{newDate}</Heading>
+    </VStack>
   );
 };
 

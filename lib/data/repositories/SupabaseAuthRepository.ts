@@ -1,5 +1,5 @@
 import { supabase } from "@/lib/configs/supabase";
-import User from "@/lib/domain/entities/User";
+import { User } from "@/lib/domain/entities";
 import { SupaBaseControlError } from "@/lib/domain/error/SupaBaseControlError";
 import AuthRepositoryI from "@/lib/domain/repositories/AuthRepositoryI";
 import { GoogleSignin, statusCodes } from "@react-native-google-signin/google-signin";

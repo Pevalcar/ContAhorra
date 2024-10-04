@@ -1,79 +1,55 @@
 /* eslint-disable no-undef */
-import { DEFAULT_STATE, LOCAL_DB_TRANSACCIONES_NAME } from "../configs/config";
-import { Transaccion } from "../domain/entities";
-import { Platform } from "react-native";
+import { TiposDeTransacciones } from "@/Types/types";
+import { getTransactionsByDateRang } from "@/lib/core/di/Container";
+import { Transaccion } from "@/lib/domain/entities";
 import { create } from "zustand";
 
-const initialState = (() => {
-  if (Platform.OS === "web") {
-    try {
-      if (typeof localStorage !== "undefined") {
-        const value = localStorage.getItem(LOCAL_DB_TRANSACCIONES_NAME);
-        if (value) {
-          return JSON.parse(value);
-        }
-      }
-    } catch (e) {
-      console.error("Local storage is unavailable:", e);
-    }
-  } else {
-    // try { TODO hay que arreglar el esto para dispositivos https://docs.expo.dev/versions/latest/sdk/sqlite/
-    //   AsyncStorage.getItem(LOCAL_DB_TRANSACCIONES).then((value) => {
-    //     if (value) {
-    //       console.info("value in store");
-    //       return JSON.parse(value);
-    //     }
-    //   });
-    // } catch (e) {
-    //   console.error("Local storage is unavailable:", e);
-    // }
-  }
-  return DEFAULT_STATE;
-})();
 // in web funciona como localStorage pero en android supera la capacidades de SecureStore
-
-async function saveState(state: Transaccion[], key = LOCAL_DB_TRANSACCIONES_NAME) {
-  if (Platform.OS === "web") {
-    try {
-      if (state === null) {
-        localStorage.removeItem(key);
-      } else {
-        localStorage.setItem(key, JSON.stringify(state));
-      }
-    } catch (e) {
-      console.error("Local storage is unavailable:", e);
-    }
-  } else {
-    // if (state == null) {
-    //   await SecureStore.deleteItemAsync(LOCAL_DB_TRANSACCIONES);
-    // } else {
-    //   try {
-    //     await AsyncStorage.setItem(
-    //       LOCAL_DB_TRANSACCIONES,
-    //       JSON.stringify(state),
-    //     );
-    //   } catch (e) {
-    //     throw e;
-    //   }
-    // }
-  }
-}
+//TOOD web control db solo disponible en premium
+// async function saveState(state: Transaccion[], key = LOCAL_DB_TRANSACCIONES_NAME) {
+//   if (Platform.OS === "web") {
+//     try {
+//       if (state === null) {
+//         localStorage.removeItem(key);
+//       } else {
+//         localStorage.setItem(key, JSON.stringify(state));
+//       }
+//     } catch (e) {
+//       console.error("Local storage is unavailable:", e);
+//     }
+//   }
+// }
 //TODO implementar  reducer https://github.com/midudev/aprendiendo-react/blob/master/projects/06-shopping-cart/src/context/cart.jsx
 
 interface ITransaccionesStore {
   transacciones: Transaccion[];
+  transaccionesByMonth: { title: number; data: Transaccion[] }[];
+  currentMonth: Date;
   saldo: number;
+  loading: boolean;
+  filter: TiposDeTransacciones | undefined;
+  setCurrentMonth: (mount: number) => void;
+  setTransaccionesByMonth: () => void;
+  setFilter: (filter: number) => void;
   setMes: (list: Transaccion[]) => void;
+  getAllTransaccion: () => void;
   addTransaccion: (transaccion: Transaccion) => void;
   deleteTransaccion: (id: string) => void;
   updateTransaccion: (transaccion: Transaccion) => void;
 }
 
-//TODO hay que agendar saldo de cada mes separado creo que juntaremos el saldo de cada mes en una sola lista
-
 export const useTransaccionesStore = create<ITransaccionesStore>((set, get) => ({
-  transacciones: initialState,
+  transacciones: [],
+  transaccionesByMonth: [],
   saldo: 0,
+  currentMonth: new Date(),
+  loading: false,
+  filter: undefined,
+  setFilter: async (filter) => {
+    const newFilter = newFilters(filter);
+    set({ filter: newFilter, loading: true });
+    await get().getAllTransaccion();
+  },
   setMes: (list) => {
     let saldo = 0;
     list.forEach((transaccion) => {
@@ -90,11 +66,30 @@ export const useTransaccionesStore = create<ITransaccionesStore>((set, get) => (
 
     set({ saldo: saldo });
   },
+  getAllTransaccion: async () => {
+    set({ loading: true });
+    //TODO ahcer la llamada con las fechas exactas
+    try {
+      const { endOfMonthTimestamp, startOfMonthTimestamp } = getInitialAndFinalDate(
+        get().currentMonth,
+      );
+      const transacciones = await getTransactionsByDateRang.execute({
+        endDate: endOfMonthTimestamp,
+        startDate: startOfMonthTimestamp,
+        type: get().filter,
+      });
+      set({ transacciones: transacciones });
+      await get().setTransaccionesByMonth();
+    } catch (e) {
+      console.error("Error al guardar la transacción:", e);
+      set({ loading: false });
+      throw e;
+    }
+  },
   addTransaccion: async (transaccion: Transaccion) => {
     try {
       const { transacciones } = get();
       const newState = [transaccion, ...transacciones];
-      saveState(newState);
       set({ transacciones: newState });
     } catch (e) {
       console.error("Error al guardar la transacción:", e);
@@ -104,13 +99,91 @@ export const useTransaccionesStore = create<ITransaccionesStore>((set, get) => (
   deleteTransaccion: (id: string) => {
     const { transacciones } = get();
     const newState = transacciones.filter((transaccion) => transaccion.id !== id);
-    saveState(newState);
     set({ transacciones: newState });
   },
   updateTransaccion: (transaccion: Transaccion) => {
     const { transacciones } = get();
     const newState = transacciones.map((t) => (t.id === transaccion.id ? transaccion : t));
-    saveState(newState);
     set({ transacciones: newState });
   },
+  setCurrentMonth: async (mount: number) => {
+    const { currentMonth } = get();
+
+    const mounti = currentMonth.setMonth(currentMonth.getMonth() + mount);
+
+    const newMonth = new Date(mounti);
+    set({ currentMonth: newMonth });
+    await get().getAllTransaccion();
+  },
+  setTransaccionesByMonth: async () => {
+    const { transacciones } = get();
+    const newState = sortByDate(transacciones);
+    set({ transaccionesByMonth: newState, loading: false });
+  },
 }));
+
+function newFilters(filter: number) {
+  const posibleFilter = [undefined, "Ingreso", "Transferencia", "Gasto", "Préstamo"];
+  const newFilter = posibleFilter[filter] as TiposDeTransacciones;
+  if (newFilter === null) {
+    return undefined;
+  }
+  return newFilter;
+}
+
+function sortByDate(list: Transaccion[]): { title: number; data: Transaccion[] }[] {
+  let sortedList;
+  if (list.length !== 1) {
+    sortedList = list.sort((a, b) => b.date - a.date);
+  } else {
+    sortedList = list;
+  }
+  let newList: { title: number; data: Transaccion[] }[] = [];
+  let lasDates: string[] = [];
+  // const month = new Date();
+
+  sortedList.forEach((item) => {
+    const corretDAta = new Date(item.date * 1000);
+    const date = corretDAta.toLocaleDateString();
+    // const mesDAte = getMes(corretDAta, i18n);
+    // const currentMonth = getMes(month, i18n);
+    // //TODO hay que ver que mas posibilidades den error
+    // // si la fecha esta en el mes actual
+    // if (mesDAte !== currentMonth) return
+    if (lasDates.includes(date)) {
+      // la lista nueva se compondra por  [ { title: item.date, data: [item] } ]
+      //busamos el indice de la fecha en lasDates
+
+      newList[lasDates.indexOf(date)].data = [...newList[lasDates.indexOf(date)].data, item];
+      return;
+    }
+    // la lista nueva se compondra por  [ { title: item.date, data: [item] } ]
+
+    lasDates.push(date);
+    newList.push({ title: item.date * 1000, data: [item] });
+  });
+
+  return newList;
+}
+
+export function getMes(date: Date, i18n: any) {
+  const month =
+    date.toLocaleString(i18n.language, { month: "long" }).charAt(0).toUpperCase() +
+    date.toLocaleString(i18n.language, { month: "long" }).slice(1);
+  const formatMounthYear = `${month}, ${date.getFullYear()}`;
+  return formatMounthYear;
+}
+
+function getInitialAndFinalDate(date: Date) {
+  const now = new Date(date);
+  // Set to the first day of the current month
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  // Get the first day of the next month, then subtract one millisecond to get the end of the current month
+  const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+  endOfMonth.setMilliseconds(endOfMonth.getMilliseconds() - 1);
+
+  // Convert to Unix timestamps (seconds)
+  const startOfMonthTimestamp = Math.floor(startOfMonth.getTime() / 1000);
+  const endOfMonthTimestamp = Math.floor(endOfMonth.getTime() / 1000);
+  return { startOfMonthTimestamp, endOfMonthTimestamp };
+}

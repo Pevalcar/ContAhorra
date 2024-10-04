@@ -1,7 +1,7 @@
 import { avatars } from "../configs/images";
 import "../domain/entities/User";
-import { useStoreSesion } from "../providers/ctx";
 import { useMyToast } from "./useToast";
+import { useStoreSesion } from "@/lib/store";
 import React from "react";
 
 export const useProfile = () => {

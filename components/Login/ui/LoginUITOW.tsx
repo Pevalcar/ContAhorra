@@ -9,7 +9,7 @@ import { Input, InputField } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
 import { useLogin } from "@/lib/Hooks/useLogin";
-import { useStoreSesion } from "@/lib/providers/ctx";
+import { useStoreSesion } from "@/lib/store";
 import { t } from "i18next";
 import React from "react";
 

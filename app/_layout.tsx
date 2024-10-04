@@ -1,11 +1,14 @@
 import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 import "@/global.css";
 import "@/i18n";
+import { LOCAL_DB_NAME } from "@/lib/configs/config";
+import { migrateDbIfNeeded } from "@/lib/data/local/db/SQLiteDataBAse";
 import { useDarkModeStore } from "@/lib/store/ThemeDarkMode";
 import { DarkTheme, DefaultTheme, ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
+import { SQLiteProvider } from "expo-sqlite";
 import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
@@ -32,17 +35,19 @@ export default function RootLayout() {
     <GluestackUIProvider mode={darkMode ? "dark" : "light"}>
       <ThemeProvider value={darkMode ? DarkTheme : DefaultTheme}>
         <SafeAreaProvider>
-          <Stack>
-            <Stack.Screen
-              name="(drawer)"
-              options={{
-                headerShown: false,
-              }}
-            />
+          <SQLiteProvider databaseName={LOCAL_DB_NAME} onInit={migrateDbIfNeeded}>
+            <Stack>
+              <Stack.Screen
+                name="(drawer)"
+                options={{
+                  headerShown: false,
+                }}
+              />
 
-            <Stack.Screen name="add_tansaction" options={{ headerShown: false }} />
-            <Stack.Screen name="login" options={{ headerShown: false }} />
-          </Stack>
+              <Stack.Screen name="add_tansaction" options={{ headerShown: false }} />
+              <Stack.Screen name="login" options={{ headerShown: false }} />
+            </Stack>
+          </SQLiteProvider>
         </SafeAreaProvider>
       </ThemeProvider>
     </GluestackUIProvider>

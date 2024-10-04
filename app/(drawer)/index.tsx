@@ -7,15 +7,13 @@ import { Fab, FabIcon } from "@/components/ui/fab";
 import { Heading } from "@/components/ui/heading";
 import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
-import { useFilterTrasaction } from "@/lib/Hooks/useFilterTrasaction";
-import { useStoreSesion } from "@/lib/providers/ctx";
+import { useStoreSesion } from "@/lib/store";
 import { router } from "expo-router";
 import { t } from "i18next";
 import { PlusIcon } from "lucide-react-native";
 import React from "react";
 
 export default function Index() {
-  const { filter, setSearch } = useFilterTrasaction();
   const user = useStoreSesion((state) => state.user);
   const fetchUser = useStoreSesion((state) => state.fetchUser);
   const isLoading = useStoreSesion((state) => state.isLoading);
@@ -37,11 +35,11 @@ export default function Index() {
       </Button>
       <VStack className="flex-1">
         <SaldoHeading />
-        <Filtros setFliter={setSearch} />
+        <Filtros />
         <Heading size="lg" className="my-4">
           {t("home.history")}
         </Heading>
-        <ListTransacciones list={filter} />
+        <ListTransacciones />
         <Fab
           size={"lg"}
           placement="bottom right"

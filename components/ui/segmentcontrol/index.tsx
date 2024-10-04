@@ -4,8 +4,9 @@ import { Text, View } from "react-native";
 
 interface Props {
   values: string[];
-  selectedIndex: number;
+  selectedIndex: number | null;
   onChange: (index: number) => void;
+  isLoading?: boolean;
   clasName?: string;
   buttonsClassName?: string;
 }
@@ -13,11 +14,12 @@ interface Props {
 export function SegmentControl({
   values,
   clasName,
+  isLoading,
   selectedIndex,
   onChange,
   buttonsClassName,
 }: Props) {
-  const [selected, setSelected] = React.useState(selectedIndex);
+  const [selected, setSelected] = React.useState(selectedIndex ?? 0);
 
   const handleChange = (index: number) => {
     setSelected(index);
@@ -31,6 +33,7 @@ export function SegmentControl({
       }>
       {values.map((value, index) => (
         <Buttons
+          disabled={isLoading}
           key={index}
           className={buttonsClassName}
           onClick={() => handleChange(index)}
@@ -47,11 +50,16 @@ interface ButtonsProps {
   onClick: () => void;
   className?: string;
   selected: boolean;
+  disabled?: boolean;
 }
 
-const Buttons = React.memo(({ children, className, onClick, selected }: ButtonsProps) => {
+const Buttons = React.memo(({ children, className, onClick, selected, disabled }: ButtonsProps) => {
   return (
-    <Button className={className + " "} variant={selected ? "solid" : "outline"} onPress={onClick}>
+    <Button
+      className={className + " "}
+      variant={selected ? "solid" : "outline"}
+      onPress={onClick}
+      isDisabled={disabled}>
       <ButtonText>{children}</ButtonText>
     </Button>
   );

@@ -4,10 +4,10 @@ export class Perfil {
   readonly id?: string;
   name: string;
   photoURL: string;
-  userOwnerID?: userOwnerID;
-  userReferredID?: string;
-  uptodataBase?: boolean;
-  emoji?: string;
+  userOwnerID: userOwnerID;
+  userReferredID: string;
+  uptodataBase: boolean;
+  emoji: string;
 
   constructor(params: {
     id?: string;
@@ -21,9 +21,9 @@ export class Perfil {
     this.id = params.id;
     this.name = params.name;
     this.photoURL = params.photoURL;
-    this.userOwnerID = params.userOwnerID;
-    this.userReferredID = params.userReferredID;
-    this.uptodataBase = params.uptodataBase;
-    this.emoji = params.emoji;
+    this.userOwnerID = params.userOwnerID ?? "1";
+    this.userReferredID = params.userReferredID ?? "";
+    this.uptodataBase = params.uptodataBase ?? false;
+    this.emoji = params.emoji ?? "";
   }
 }

@@ -1,13 +1,14 @@
 import { INITIALCATEGORY, INITIALCUENTA } from "../configs/config";
+import { Categoria, Cuenta, Transaccion } from "../domain/entities";
 import { useCategoriaStore } from "../store/CategoriaStore";
 import { useCuentasStore } from "../store/CuentasStore";
 import { useTransaccionesStore } from "../store/TransaccionesStore";
 import { useTransactionToADDState } from "../store/TransactionToAddStore";
 import { initialState } from "../store/useStorageState";
-import useDebuger from "./useDebuger";
 import { useMyToast } from "./useToast";
-import type { Categoria, Cuenta, TiposDeTransacciones, Transaccion } from "@/Types/types";
+import { TiposDeTransacciones } from "@/Types/types";
 import { useMediaQuery } from "@/components/ui/utils/use-media-query";
+import { useDebuger } from "@/lib/Hooks/useDebuger";
 import * as Crypto from "expo-crypto";
 import React from "react";
 
@@ -88,14 +89,18 @@ export const useTransactionToAdd = () => {
       }
 
       const transaccions: Transaccion = {
-        accountID: cuentaSelect?.id,
-        categoryID: categoriSelect?.id,
+        accountID: cuentaSelect?.id ?? "",
+        categoryID: categoriSelect?.id ?? "",
         type: type,
         description: description,
         balance: amount,
         date: currentDate.getTime(),
         id: Crypto.randomUUID(),
         title: description,
+        prestadoaID: "",
+        userOwnerID: "1",
+        prestadoaName: "",
+        uptodataBase: false,
       };
 
       setMessage("Transacción", JSON.stringify(transaccions));

@@ -13,12 +13,25 @@ import {
   VerificationUseCase,
 } from "@/lib/domain/usecases/Auth";
 import {
+  AddAccountUseCase,
+  AddCategoryUseCase,
+  AddProfileUseCase,
   AddTransaccionUseCase,
+  DeleteAccountUseCase,
+  DeleteCategoryUseCase,
+  DeleteProfileUseCase,
   DeleteTransaccionUseCase,
+  GetAllAccountUseCase,
+  GetAllCategoryUseCase,
+  GetAllProfileByUserOwnerIDUseCase,
   GetAllUseCase,
+  GetProfileByIDUseCase,
   GetTotalTransactionsByDateRangeUseCase,
   GetTransactionsByDateRangeUseCase,
+  UpdateAccountUseCase,
+  UpdateCategoryUseCase,
   UpdateTransaccionsUseCase,
+  UpdateProfileUseCase as updateProfileDBUseCase,
 } from "@/lib/domain/usecases/Transacciones";
 
 const AuthRepository = new SupabaseAuthRepository();
@@ -57,6 +70,25 @@ const getTotalTransactionByDateRange = new GetTotalTransactionsByDateRangeUseCas
   DBRepositoryLocal,
 );
 
+const getAllCategory = new GetAllCategoryUseCase(DBRepositoryLocal, DBRepositoryLocal);
+const addCategory = new AddCategoryUseCase(DBRepositoryLocal, DBRepositoryLocal);
+const updateCategory = new UpdateCategoryUseCase(DBRepositoryLocal, DBRepositoryLocal);
+const deleteCategory = new DeleteCategoryUseCase(DBRepositoryLocal, DBRepositoryLocal);
+
+const getAllAccount = new GetAllAccountUseCase(DBRepositoryLocal, DBRepositoryLocal);
+const addAccount = new AddAccountUseCase(DBRepositoryLocal, DBRepositoryLocal);
+const updateAccount = new UpdateAccountUseCase(DBRepositoryLocal, DBRepositoryLocal);
+const deleteAccount = new DeleteAccountUseCase(DBRepositoryLocal, DBRepositoryLocal);
+
+const getAllProfileByUserOwnerID = new GetAllProfileByUserOwnerIDUseCase(
+  DBRepositoryLocal,
+  DBRepositoryLocal,
+);
+const getProfileByID = new GetProfileByIDUseCase(DBRepositoryLocal, DBRepositoryLocal);
+const addProfile = new AddProfileUseCase(DBRepositoryLocal, DBRepositoryLocal);
+const updateProfile = new updateProfileDBUseCase(DBRepositoryLocal, DBRepositoryLocal);
+const deleteProfile = new DeleteProfileUseCase(DBRepositoryLocal, DBRepositoryLocal);
+
 export {
   addTransaccion,
   deleteTransaccion,
@@ -73,4 +105,17 @@ export {
   verificationUseCase,
   updateTransaccion,
   getTotalTransactionByDateRange,
+  getAllCategory,
+  addCategory,
+  updateCategory,
+  deleteCategory,
+  getAllAccount,
+  addAccount,
+  updateAccount,
+  deleteAccount,
+  getAllProfileByUserOwnerID,
+  getProfileByID,
+  addProfile,
+  updateProfile,
+  deleteProfile,
 };
