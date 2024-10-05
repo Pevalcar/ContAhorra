@@ -82,20 +82,28 @@ export default function SummaryChart() {
     try {
       const query = `
       SELECT
-        strftime('%w', date / 1000, 'unixepoch') AS day_of_week, -- convert date to day of week %m 
+        strftime('%w', date , 'unixepoch') AS day_of_week, -- convert date to day of week %m 
         SUM(balance) as total -- sum balance by day of week
         FROM ${LOCAL_DB_TRANSACCIONES_NAME}
-        WHERE date >= ? AND date <= ? AND type = ?
+        WHERE  date >= ? 
         GROUP BY day_of_week
-        ORDER BY day_of_week ASC
-        
+        ORDER BY day_of_week ASC        
     `;
+      const querr_dos = `
+    SELECT
+    strftime('%w', date  , 'unixepoch') AS week,
+    date as data
+    FROM ${LOCAL_DB_TRANSACCIONES_NAME}
+    WHERE  date BETWEEN ? AND ?
+    `;
+      const results = await db.getAllAsync(querr_dos, [startDate, endDate, type]);
+      console.log(" result ", results, "props " + [startDate, endDate, type]);
 
       const result = await db.getAllAsync<{
         day_of_week: number;
         total: number;
       }>(query, [startDate, endDate, type]);
-      console.log(" result ", result, "props " + [startDate, endDate, type]);
+      // console.log(" result ", result, "props " + [startDate, endDate, type], result);
 
       // Convert day_of_week (0-6) to match days array index (1-7)
       const formattedResult = result.map((item) => {
@@ -105,13 +113,6 @@ export default function SummaryChart() {
           total: item.total,
         };
       });
-
-      console.log(
-        " startOfWeek " +
-          new Date(startDate).toLocaleDateString() +
-          " endOfWeek " +
-          new Date(endDate).toLocaleDateString(),
-      );
       return formattedResult;
     } catch (e) {
       console.error("Error fetching weekly data:", e);

@@ -15,6 +15,7 @@ export const TextCurrency = ({
   neutral = false,
   sign = false,
   negative = false,
+  ...props
 }: Props) => {
   const textColor = neutral
     ? "text-typography-900"
@@ -23,7 +24,7 @@ export const TextCurrency = ({
       : "text-green-500";
 
   return (
-    <Heading size={size} className={`text-${size} font-bold ${textColor} `}>
+    <Heading size={size} className={`text-${size} font-bold ${textColor} `} {...props}>
       {sign && (negative ? "-" : "+")}
       {formatValue(value)}
     </Heading>
