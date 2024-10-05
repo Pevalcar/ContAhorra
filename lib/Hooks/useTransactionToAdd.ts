@@ -87,14 +87,15 @@ export const useTransactionToAdd = () => {
         handleToast("Error de transacción", "Inserte una descripción válida");
         throw new Error("Error de transacción");
       }
-
+      const date = new Date();
+      const dateTimestamp = Math.floor(date.getTime() / 1000);
       const transaccions: Transaccion = new Transaccion({
         accountID: cuentaSelect?.id ?? "",
         categoryID: categoriSelect?.id ?? "",
         type: type,
         description: description,
         balance: amount,
-        date: currentDate.getTime() / 1000,
+        date: dateTimestamp,
         id: Crypto.randomUUID(),
         title: description,
         prestadoaID: "",

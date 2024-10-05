@@ -48,8 +48,8 @@ export const ListTransacciones: React.FC<Props> = () => {
       </HStack>
       <SectionList
         sections={transaccionesByMonth}
-        renderItem={({ item }) => <AccordingItem item={item} index={0} />}
-        renderSectionHeader={({ section: { title } }) => <DateHeader date={title} />}
+        renderItem={({ item }) => <AccordingItem item={item} key={item.id} />}
+        renderSectionHeader={({ section: { title } }) => <DateHeader date={title} key={title} />}
         keyExtractor={(item) => item.id}
       />
     </>
@@ -68,9 +68,8 @@ const DateHeaderTitle = ({ date }: { date: any }) => {
 
 interface ItemProps {
   item: Transaccion;
-  index: number;
 }
-export const AccordingItem = ({ item, index }: ItemProps) => {
+export const AccordingItem = ({ item }: ItemProps) => {
   const { deleteTransaccion, loading } = useTransaccionesStore((state) => state);
   const [showModal, setShowModal] = React.useState(false);
   const ref = React.useRef(null);
@@ -96,12 +95,38 @@ export const AccordingItem = ({ item, index }: ItemProps) => {
 
   return (
     <Card size="sm" variant="outline" className="mb-4 flex-row items-center justify-between">
-      <ModalDEleteConfirm
-        showModal={showModal}
-        setShowModal={setShowModal}
-        ref={ref}
-        confirmar={() => deleteTransaccion(item.id)}
-      />
+      <Modal
+        isOpen={showModal}
+        onClose={() => {
+          setShowModal(false);
+        }}
+        finalFocusRef={ref}
+        size="md">
+        <ModalBackdrop />
+        <ModalContent>
+          <ModalHeader>
+            <Heading size="md" className="text-typography-950">
+              {t("eliminar-transaccion")}
+            </Heading>
+          </ModalHeader>
+          <ModalBody>
+            <Text>{t("confirmar-eliminar")}</Text>
+          </ModalBody>
+          <ModalFooter>
+            <Button onPress={() => setShowModal(false)}>
+              <ButtonText>{t("cancelar")}</ButtonText>
+            </Button>
+            <Button
+              variant="outline"
+              onPress={() => {
+                setShowModal(false);
+                deleteTransaccion(item.id);
+              }}>
+              <ButtonText>{t("eliminar")}</ButtonText>
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
       <Avatar size="md" className={bgColor()}>
         <AvatarFallbackText className="text-white">{item.type}</AvatarFallbackText>
       </Avatar>
@@ -149,41 +174,4 @@ const FormatedLocale = ({ date }: { date: any }) => {
 
   const formated = `${formatMount} ${newDate.toLocaleString(i18n.language, { day: "numeric" })}, ${formatDayWeek}`;
   return formated;
-};
-
-const ModalDEleteConfirm = ({ showModal, setShowModal, ref, confirmar }: any) => {
-  return (
-    <Modal
-      isOpen={showModal}
-      onClose={() => {
-        setShowModal(false);
-      }}
-      finalFocusRef={ref}
-      size="md">
-      <ModalBackdrop />
-      <ModalContent>
-        <ModalHeader>
-          <Heading size="md" className="text-typography-950">
-            {t("eliminar-transaccion")}
-          </Heading>
-        </ModalHeader>
-        <ModalBody>
-          <Text>{t("confirmar-eliminar")}</Text>
-        </ModalBody>
-        <ModalFooter>
-          <Button onPress={() => setShowModal(false)}>
-            <ButtonText>{t("cancelar")}</ButtonText>
-          </Button>
-          <Button
-            variant="outline"
-            onPress={() => {
-              setShowModal(false);
-              confirmar();
-            }}>
-            <ButtonText>{t("eliminar")}</ButtonText>
-          </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
-  );
 };

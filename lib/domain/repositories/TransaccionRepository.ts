@@ -51,8 +51,8 @@ export default class TransaccionRepositoryI {
   getTrasaccionByDateRange(
     startDate?: number,
     endDate?: number,
-    type?: string,
-    accountID?: string,
+    type?: string | null,
+    accountID?: string | null,
   ): Promise<Transaccion[]> {
     throw new Error("Method not implemented.");
   }

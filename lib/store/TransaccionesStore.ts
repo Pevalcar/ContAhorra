@@ -39,9 +39,9 @@ interface ITransaccionesStore {
     totalPrestamos: number;
   };
   loading: boolean;
-  filter: TiposDeTransacciones | undefined;
+  filter: TiposDeTransacciones | null;
   setCurrentMonth: (mount: number) => void;
-  setFilter: (filter: number) => void;
+  setFilter: (filter: TiposDeTransacciones | null) => void;
   getTotalTransaction: () => void;
   getAllTransaccion: () => void;
   addTransaccion: (transaccion: Transaccion) => void;
@@ -56,10 +56,9 @@ export const useTransaccionesStore = create<ITransaccionesStore>((set, get) => (
   currentMonth: new Date(),
   endDate: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1),
   loading: false,
-  filter: undefined,
+  filter: null,
   setFilter: async (filter) => {
-    const newFilter = newFilters(filter);
-    set({ filter: newFilter, loading: true });
+    set({ filter: filter, loading: true });
     await get().getAllTransaccion();
   },
   getTotalTransaction: async () => {
@@ -143,14 +142,14 @@ export const useTransaccionesStore = create<ITransaccionesStore>((set, get) => (
   },
 }));
 
-function newFilters(filter: number) {
-  const posibleFilter = [undefined, "Ingreso", "Transferencia", "Gasto", "Préstamo"];
-  const newFilter = posibleFilter[filter] as TiposDeTransacciones;
-  if (newFilter === null) {
-    return undefined;
-  }
-  return newFilter;
-}
+// function newFilters(filter: number) {
+//   const posibleFilter = [undefined, "Ingreso", "Transferencia", "Gasto", "Préstamo"];
+//   const newFilter = posibleFilter[filter] as TiposDeTransacciones;
+//   if (newFilter === null) {
+//     return undefined;
+//   }
+//   return newFilter;
+// }
 
 function sortByDate(list: Transaccion[]): { title: number; data: Transaccion[] }[] {
   let sortedList;

@@ -1,6 +1,5 @@
 import { TextCurrency } from "../TextCurrency";
-import { Heading } from "../ui/heading";
-import { VStack } from "../ui/vstack";
+import { Card, HStack, Heading } from "../ui";
 import { useTransaccionesStore } from "@/lib/store/TransaccionesStore";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -19,21 +18,17 @@ export const SaldoHeading: React.FC<Props> = () => {
     };
     fetchAndSetUser();
   }, [transaccionesByMonth]);
-
+  const sumaGastos = saldo.totalExpenses + saldo.totalTransferences + saldo.totalPrestamos;
   return (
-    <VStack
-      space="md"
-      className="w-auto items-center rounded-full border border-outline-300 bg-background-0 py-5">
-      <TextCurrency value={saldo.total} negative={saldo.total < 0} size="3xl" />
-      <TextCurrency value={saldo.totalIncome} size="sm" />
-      <TextCurrency value={saldo.totalExpenses} negative={saldo.totalExpenses > 0} size="sm" />
-      <TextCurrency value={saldo.totalPrestamos} size="sm" />
-      <TextCurrency
-        value={saldo.totalTransferences}
-        negative={saldo.totalTransferences < 0}
-        size="sm"
-      />
-      <Heading>{t("saldo")}</Heading>
-    </VStack>
+    <HStack space="md" className="w-auto items-center justify-between">
+      <Card className="w-auto flex-1">
+        <TextCurrency value={saldo.total} negative={saldo.total < 0} size="xl" />
+        <Heading>{t("saldo")}</Heading>
+      </Card>
+      <Card className="w-auto flex-1">
+        <TextCurrency value={sumaGastos} size="xl" negative />
+        <Heading>{t("gastos")}</Heading>
+      </Card>
+    </HStack>
   );
 };

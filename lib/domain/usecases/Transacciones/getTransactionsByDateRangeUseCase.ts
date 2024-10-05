@@ -18,7 +18,7 @@ export class GetTransactionsByDateRangeUseCase {
   }: {
     startDate?: number;
     endDate?: number;
-    type?: string;
+    type?: string | null;
     accountID?: string;
   }): Promise<Transaccion[]> {
     // Guardar siempre localmente

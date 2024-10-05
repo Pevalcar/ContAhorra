@@ -146,5 +146,6 @@
   "eliminar-transaccion": "Deleting Transaction",
   "confirmar-eliminar": "You are about to close a transaction, do you want to continue?",
   "cancelar": "Cancel",
-  "eliminar": "Delete"
+  "eliminar": "Delete",
+  "gastos": "Bills"
 }
