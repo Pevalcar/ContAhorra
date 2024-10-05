@@ -1,65 +1,22 @@
-import { INITIALCATEGORY, INITIALCUENTA } from "../configs/config";
-import { Categoria, Cuenta, Transaccion } from "../domain/entities";
-import { useCategoriaStore } from "../store/CategoriaStore";
-import { useCuentasStore } from "../store/CuentasStore";
+import { Transaccion } from "../domain/entities";
 import { useTransaccionesStore } from "../store/TransaccionesStore";
 import { useTransactionToADDState } from "../store/TransactionToAddStore";
-import { initialState } from "../store/useStorageState";
 import { useMyToast } from "./useToast";
-import { TiposDeTransacciones } from "@/Types/types";
-import { useMediaQuery } from "@/components/ui/utils/use-media-query";
 import { useDebuger } from "@/lib/Hooks/useDebuger";
 import * as Crypto from "expo-crypto";
 import React from "react";
 
 export const useTransactionToAdd = () => {
-  const [isMobile] = useMediaQuery([
-    {
-      maxWidth: 480,
-    },
-    {
-      minWidth: 481,
-      maxWidth: 768,
-    },
-    {
-      minWidth: 769,
-      maxWidth: 1440,
-    },
-    {
-      minWidth: 1441,
-    },
-  ]);
-
   const { setMessage } = useDebuger((state) => state);
-  const categorias = useCategoriaStore((state) => state.categorias);
-  const cuentas = useCuentasStore((state) => state.cuentas);
   const agregarTransacciones = useTransaccionesStore((state) => state.addTransaccion);
   const {
-    setCuentaId,
-    setCategoriaId,
-    setType,
-    setDescription,
-    setAmount,
     setDate,
     reset,
     date: currentDate,
-    categoriSelect,
-    cuentaSelect,
     type,
     description,
-    amount,
   } = useTransactionToADDState((state) => state);
   const { handleToast } = useMyToast();
-
-  React.useEffect(() => {
-    const loadInitialData = async () => {
-      const initialCategory = await initialState(INITIALCATEGORY, null);
-      const initialCuenta = await initialState(INITIALCUENTA, null);
-      if (initialCategory) setCategoriaId(initialCategory);
-      if (initialCuenta) setCuentaId(initialCuenta);
-    };
-    loadInitialData();
-  }, [setCategoriaId, setCuentaId]);
 
   React.useEffect(() => {
     reset();
@@ -68,21 +25,14 @@ export const useTransactionToAdd = () => {
       reset();
     };
   }, [reset, setMessage]);
-
-  const onTypeChange = (index: TiposDeTransacciones) => setType(index);
-
-  const onCategoriaChange = (id: Categoria) => setCategoriaId(id);
-  const onCuentaChange = (id: Cuenta) => setCuentaId(id);
-  const onDescriptionChange = (description: string) => setDescription(description); //TODO validar la descripcion
   const onDateChange = (date: Date) => setDate(date);
-  const onAmountChange = React.useCallback((amount: number) => setAmount(amount), [setAmount]);
 
   async function saveTransaction() {
     try {
-      if (!amount) {
-        handleToast("Error de transacción", "Inserte una cantidad válida");
-        throw new Error("Error de transacción");
-      }
+      // if (!amount) {
+      //   handleToast("Error de transacción", "Inserte una cantidad válida");
+      //   throw new Error("Error de transacción");
+      // }
       if (!description) {
         handleToast("Error de transacción", "Inserte una descripción válida");
         throw new Error("Error de transacción");
@@ -90,11 +40,10 @@ export const useTransactionToAdd = () => {
       const date = new Date();
       const dateTimestamp = Math.floor(date.getTime() / 1000);
       const transaccions: Transaccion = new Transaccion({
-        accountID: cuentaSelect?.id ?? "",
-        categoryID: categoriSelect?.id ?? "",
-        type: type,
+        // accountID: cuentaSelect?.id ,
+        // categoryID: categoriSelect?.id ,
+        // type: type,
         description: description,
-        balance: amount,
         date: dateTimestamp,
         id: Crypto.randomUUID(),
         title: description,
@@ -112,21 +61,10 @@ export const useTransactionToAdd = () => {
   }
 
   return {
-    onCuentaChange,
-    onCategoriaChange,
-    onTypeChange,
-    onDescriptionChange,
-    setAmount: onAmountChange,
     onDateChange,
     saveTransaction,
     currentDate,
-    amount,
     description,
-    categoriSelect,
-    cuentaSelect,
     type,
-    categoriasData: categorias, //TODO filtrar dependiendo de el typo
-    cuentasData: cuentas,
-    isMobile,
   };
 };

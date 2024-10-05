@@ -37,7 +37,7 @@ async function migrateDbToVersion0(db: SQLiteDatabase) {
       id TEXT PRIMARY KEY NOT NULL UNIQUE ,
       name TEXT NOT NULL,
       icon TEXT NOT NULL,
-      type TEXT NOT NULL CHECK( type IN ('Gasto', 'Transferencia', 'Préstamo', 'Ingreso') ),
+      type TEXT NOT NULL CHECK( type IN ('Gasto','Ingreso' ,'Transferencia') ),
       uptodataBase BOOLEAN DEFAULT 0,
       userOwnerID TEXT
       );`);
@@ -66,7 +66,7 @@ async function migrateDbToVersion0(db: SQLiteDatabase) {
       id TEXT PRIMARY KEY NOT NULL UNIQUE ,
       title TEXT NOT NULL,
       balance REAL NOT NULL,
-      type TEXT NOT NULL CHECK( type IN ('Gasto', 'Transferencia', 'Préstamo', 'Ingreso') ),
+      type TEXT NOT NULL CHECK( type IN ('Gasto','Ingreso' ,'Transferencia') ),
       date INTEGER NOT NULL,
       description TEXT NOT NULL,
       categoryID TEXT NOT NULL,

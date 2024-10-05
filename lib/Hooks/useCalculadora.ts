@@ -1,126 +1,100 @@
-import { useTransactionToAdd } from "./useTransactionToAdd";
+import { useTransactionToADDState } from "../store";
 import { useEffect, useRef, useState } from "react";
+
+const initialState = {
+  currentValue: "0",
+  operator: null,
+  previousValue: null,
+};
+type INItIALSTATE = {
+  currentValue: string;
+  operator: string | null;
+  previousValue: string | null;
+};
 
 //TODO usar useReducer para la calculadora
 export const useCalculadora = () => {
-  const [valuePantalla, setValuePantalla] = useState("");
-  const sign = useRef("");
-  const firstValue = useRef("");
-  const secondValue = useRef("");
-  const prevValue = useRef("");
-  const resultDado = useRef(false);
-  const { setAmount, amount } = useTransactionToAdd();
+  const [state, setState] = useState<INItIALSTATE>(initialState);
 
-  useEffect(() => {
-    setAmount(parseFloat(valuePantalla));
-  }, [setAmount, valuePantalla]);
-
-  useEffect(() => {
-    if (!amount) return;
-    setValuePantalla(amount.toString());
-  }, [amount]);
-
-  // DEVELOPMENT
-  //   ? console.log(
-  //       " valuePantalla",
-  //       valuePantalla,
-  //       " firstValue",
-  //       firstValue.current,
-  //       " secondValue",
-  //       secondValue.current,
-  //       " sign",
-  //       sign.current,
-  //     )
-  //   : "";
-
-  function setSign(value: string) {
-    if (value === "=") {
-      calcular();
-      return;
+  const handleNumber = (value: string | number, state: INItIALSTATE) => {
+    if (state.currentValue === "0") {
+      return `${value}`;
     }
-    if (firstValue.current === "") {
-      if (value === "-" || value === "+") {
-        setValuePantalla(value);
-        return;
-      }
-    } else if (secondValue.current === "") {
-      sign.current = value;
-      if (ifLastValueIsOperator(valuePantalla)) {
-        setValuePantalla((prevValue) => prevValue.slice(0, -1) + value);
-        return;
-      }
-      setValuePantalla((prevValue) => prevValue + value);
-      resultDado.current = false;
-      return;
-    }
-  }
 
-  function reset() {
-    setValuePantalla("");
-    prevValue.current = "";
-    firstValue.current = "";
-    secondValue.current = "";
-    sign.current = "";
-    resultDado.current = false;
-  }
+    return `${state.currentValue}${value}`;
+  };
 
-  function calcular() {
-    if (valuePantalla === "") return;
-    if (valuePantalla === "Error") return;
-    if (valuePantalla === prevValue.current) return;
-    try {
-      setValuePantalla((prev) => {
-        //TODO es importante saber de esto Intl.NumberFormat
-        if (secondValue.current === "") return; //TODO refactorizar la caluladora para dejar de usar eval
-        const lastValue = eval(prev).toString();
-        firstValue.current = lastValue;
-        secondValue.current = "";
-        prevValue.current = lastValue;
-        return lastValue;
-      });
-      resultDado.current = true;
-    } catch {
-      setValuePantalla("Error");
+  const handleEqual = (state: INItIALSTATE) => {
+    const { currentValue, previousValue, operator } = state;
 
-      prevValue.current = "Error";
-      resultDado.current = true;
-    }
-  }
+    const resetState = { operator: null, previousValue: null };
+    if (operator === null) return resetState;
+    if (previousValue === null) return resetState;
 
-  function onHandlePress(value: string | number) {
-    if (resultDado.current) {
-      setValuePantalla(() => {
-        resultDado.current = false;
-        sign.current = "";
-        return value.toString();
-      });
-      return;
+    const current = parseFloat(currentValue);
+    const previous = parseFloat(previousValue);
+
+    switch (operator) {
+      case "+":
+        return {
+          currentValue: `${previous + current}`,
+          ...resetState,
+        };
+      case "-":
+        return {
+          currentValue: `${previous - current}`,
+          ...resetState,
+        };
+      case "*":
+        return {
+          currentValue: `${previous * current}`,
+          ...resetState,
+        };
+      case "/":
+        return {
+          currentValue: `${previous / current}`,
+          ...resetState,
+        };
+
+      default:
     }
-    if (sign.current === "") {
-      setValuePantalla((prevValue) => {
-        const lastValue = prevValue + value;
-        firstValue.current = lastValue;
-        return lastValue;
-      });
-      return;
-    } else {
-      setValuePantalla((prevValue) => {
-        const lastValue = prevValue + value;
-        secondValue.current = lastValue;
-        return lastValue;
-      });
-      return;
-    }
-  }
+  };
+
+  const calculator = (type: string, value: string | number) => {
+    setState((prevState) => {
+      let state = prevState;
+      switch (type) {
+        case "number":
+          state.currentValue = handleNumber(value, prevState);
+          break;
+        case "clear":
+          state = initialState;
+          break;
+        case "posneg":
+          state.currentValue = `${parseFloat(state.currentValue) * -1}`;
+          break;
+        case "percentage":
+          state.currentValue = `${parseFloat(state.currentValue) * 0.01}`;
+          break;
+        case "operator":
+          state = {
+            operator: value as string,
+            previousValue: state.currentValue,
+            currentValue: "0",
+          };
+          break;
+        case "equal": {
+          state = handleEqual(prevState);
+          break;
+        }
+        default:
+          return state;
+      } //TODO arreglar alculadora
+    });
+  };
+
   return {
-    valuePantalla,
-    setValuePantalla: onHandlePress,
-    reset,
-    setSign,
+    calculator,
+    state,
   };
 };
-
-function ifLastValueIsOperator(value: string) {
-  const lastValue = value.slice(-1);
-  return ["+", "-", "*", "/"].includes(lastValue);
-}

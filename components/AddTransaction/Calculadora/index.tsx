@@ -10,59 +10,58 @@ import { View } from "react-native";
 interface Props {}
 
 export const Calculadora: React.FC<Props> = () => {
-  const { valuePantalla, setValuePantalla, reset, setSign } = useCalculadora();
-  // DEVELOPMENT
-  //   ? console.log(
-  //       " valuePantalla",
-  //       valuePantalla,
-  //       " firstValue",
-  //       firstValue.current,
-  //       " secondValue",
-  //       secondValue.current,
-  //       " sign",
-  //       sign.current,
-  //     )
-  //   : "";
+  const { calculator, state } = useCalculadora();
+  const onHandlePress = React.useCallback((type, value) => {
+    calculator(type, value);
+  }, []);
+
+  const onSignPress = React.useCallback((value: string) => {
+    // setSign(value);
+  }, []);
+
+  const onDeletePress = React.useCallback(() => {
+    // reset();
+  }, []);
 
   return (
     <View className="w-full justify-center gap-1">
-      <Pantalla onDeletePress={reset} className="col-span-4">
-        {valuePantalla}
+      <Pantalla onDeletePress={onDeletePress} className="col-span-4">
+        {parseFloat("500000").toLocaleString()}
       </Pantalla>
 
       <HStack className="justify-center gap-1">
-        <BotonCalculadoraResaltado onPress={setSign} variant>
+        <BotonCalculadoraResaltado onPress={onSignPress} variant>
           +
         </BotonCalculadoraResaltado>
-        <BotonCalculadoraResaltado onPress={setValuePantalla}>7</BotonCalculadoraResaltado>
-        <BotonCalculadoraResaltado onPress={setValuePantalla}>8</BotonCalculadoraResaltado>
-        <BotonCalculadoraResaltado onPress={setValuePantalla}>9</BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={onHandlePress}>7</BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={onHandlePress}>8</BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={onHandlePress}>9</BotonCalculadoraResaltado>
       </HStack>
 
       <HStack className="justify-center gap-1">
-        <BotonCalculadoraResaltado onPress={setSign} variant>
+        <BotonCalculadoraResaltado onPress={onSignPress} variant>
           -
         </BotonCalculadoraResaltado>
-        <BotonCalculadoraResaltado onPress={setValuePantalla}>4</BotonCalculadoraResaltado>
-        <BotonCalculadoraResaltado onPress={setValuePantalla}>5</BotonCalculadoraResaltado>
-        <BotonCalculadoraResaltado onPress={setValuePantalla}>6</BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={onHandlePress}>4</BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={onHandlePress}>5</BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={onHandlePress}>6</BotonCalculadoraResaltado>
       </HStack>
 
       <HStack className="justify-center gap-1">
-        <BotonCalculadoraResaltado onPress={setSign} variant>
+        <BotonCalculadoraResaltado onPress={onSignPress} variant>
           *
         </BotonCalculadoraResaltado>
-        <BotonCalculadoraResaltado onPress={setValuePantalla}>1</BotonCalculadoraResaltado>
-        <BotonCalculadoraResaltado onPress={setValuePantalla}>2</BotonCalculadoraResaltado>
-        <BotonCalculadoraResaltado onPress={setValuePantalla}>3</BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={onHandlePress}>1</BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={onHandlePress}>2</BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={onHandlePress}>3</BotonCalculadoraResaltado>
       </HStack>
       <HStack className="justify-center gap-1">
-        <BotonCalculadoraResaltado onPress={setSign} variant>
+        <BotonCalculadoraResaltado onPress={onSignPress} variant>
           /
         </BotonCalculadoraResaltado>
-        <BotonCalculadoraResaltado onPress={setValuePantalla}>0</BotonCalculadoraResaltado>
-        <BotonCalculadoraResaltado onPress={setValuePantalla}>.</BotonCalculadoraResaltado>
-        <BotonCalculadoraResaltado onPress={setSign} variant>
+        <BotonCalculadoraResaltado onPress={onHandlePress}>0</BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={onHandlePress}>.</BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={onSignPress} variant>
           =
         </BotonCalculadoraResaltado>
       </HStack>
@@ -77,22 +76,18 @@ type PantallaProps = {
   onDeletePress?: () => void;
 };
 
-const Pantalla: React.FC<PantallaProps> = ({
-  className,
-  children,
-  onDeletePress = () => {},
-  ...props
-}) => {
+const Pantalla = React.memo(pantalla);
+
+function pantalla({ className, children, onDeletePress = () => {}, ...props }: PantallaProps) {
   return (
     <View className={"flex h-20 w-full flex-row rounded-lg border " + className} {...props}>
       <Heading className="mr-1 h-full flex-1 text-right align-middle text-3xl">{children}</Heading>
       <Pressable className="h-full w-14 justify-center" onPress={onDeletePress}>
-        <MyIcon name="Delete" size={40} />
+        <MyIcon name="Delete" size={40} color="black" />
       </Pressable>
     </View>
   );
-};
-
+}
 interface BotonProps {
   children?: React.ReactNode;
   variant?: boolean;
@@ -100,12 +95,14 @@ interface BotonProps {
   onPress?: (value: string) => void;
 }
 
-const BotonCalculadoraResaltado: React.FC<BotonProps> = ({
+const BotonCalculadoraResaltado = React.memo(botonCalculadoraResaltado);
+
+function botonCalculadoraResaltado({
   children,
   variant,
   onPress = () => {},
   ...props
-}) => {
+}: BotonProps) {
   return (
     <Button
       onPress={() => onPress(children?.toString() || "")}
@@ -117,4 +114,4 @@ const BotonCalculadoraResaltado: React.FC<BotonProps> = ({
       </ButtonText>
     </Button>
   );
-};
+}

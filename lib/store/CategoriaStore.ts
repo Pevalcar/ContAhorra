@@ -1,5 +1,6 @@
 import { DEFAULT_STATE_CATEGORIAS, LOCAL_DB_CATEGORIAS_NAME } from "../configs/config";
 import { Categoria } from "../domain/entities";
+import { TiposDeTransacciones } from "@/Types/types";
 import { Platform } from "react-native";
 import { create } from "zustand";
 
@@ -31,7 +32,10 @@ const initialState = (() => {
   return DEFAULT_STATE_CATEGORIAS;
 })();
 interface ICategoriaStore {
+  loagin: boolean;
+  Error: Error | null;
   categorias: Categoria[];
+  fetchCategorias: (type: TiposDeTransacciones) => Promise<Categoria[]>;
   addCategoria: (data: Categoria) => void;
   deleteCategoria: (id: string) => void;
   updateCategoria: (data: Categoria) => void;
@@ -39,6 +43,21 @@ interface ICategoriaStore {
 
 export const useCategoriaStore = create<ICategoriaStore>((set, get) => ({
   categorias: initialState,
+  loagin: false,
+  Error: null,
+  fetchCategorias: async (type: TiposDeTransacciones) => {
+    set({ loagin: true });
+    try {
+      const initialCategoria = initialState.filter((c: Categoria) => c.type === type);
+      set({ categorias: initialCategoria });
+    } catch (error) {
+      console.error("Error al guardar la transacción:", error);
+      set({ Error: error as Error });
+    }
+    set({ loagin: false });
+
+    return get().categorias;
+  },
   addCategoria: (data: Categoria) => {
     const { categorias } = get();
     const newState = [...categorias, data];
