@@ -1,13 +1,11 @@
 export interface TransactionTotal {
   totalExpenses: number;
   totalIncome: number;
-  totalTransferences: number;
-  totalPrestamos: number;
 }
 
 export type userOwnerID = string;
 
-export type TiposDeTransacciones = "Ingreso" | "Gasto" | "Préstamo" | "Transferencia";
+export type TiposDeTransacciones = "Ingreso" | "Gasto" | "Transferencia";
 
 export type MyIconos =
   | "Home"

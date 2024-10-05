@@ -192,7 +192,7 @@ export default function SummaryChart() {
         </TouchableOpacity>
         <SegmentControl
           values={["Gasto", "Ingreso", "Transferencia", "Préstamo"]}
-          clasName="w-[200px]"
+          className="w-[200px]"
           selectedIndex={transactionType === "Gasto" ? 0 : 1}
           onChange={(event) => {
             const index = event;

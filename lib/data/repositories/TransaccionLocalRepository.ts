@@ -226,8 +226,6 @@ export class TransaccionLocalRepository implements TransaccionRepositoryI {
       SELECT
       COALESCE(SUM(CASE WHEN type = 'Gasto' THEN balance ELSE 0 END), 0) AS totalExpenses,
       COALESCE(SUM(CASE WHEN type = 'Ingreso' THEN balance ELSE 0 END), 0) AS totalIncome,
-      COALESCE(SUM(CASE WHEN type = 'Transferencia' THEN balance ELSE 0 END), 0) AS totalTransferences,
-      COALESCE(SUM(CASE WHEN type = 'Préstamo' THEN balance ELSE 0 END), 0) AS totalPrestamos
       FROM ${LOCAL_DB_TRANSACCIONES_NAME} 
       `;
       const params: any[] = [];

@@ -13,36 +13,42 @@ import {
   ActionsheetItem,
   ActionsheetItemText,
 } from "@/components/ui/actionsheet";
-import { useTransactionToAdd } from "@/lib/Hooks/useTransactionToAdd";
+import { useTransactionToADDState } from "@/lib/store";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
 interface Props {}
 export const SelectorGroup: React.FC<Props> = () => {
   const { t } = useTranslation();
-
   const {
-    cuentaSelect,
     categoriSelect,
-    cuentasData,
-    categoriasData,
-    onCategoriaChange,
-    onCuentaChange,
-  } = useTransactionToAdd();
+    cuentaSelect,
+    cuentasData: cuentas,
+    categoriasData: categorias,
+    setCategoriaId: onCategoriaChange,
+    setCuentaId: onCuentaChange,
+    fetchCategoriasData,
+    fetchCuentaData,
+    type,
+  } = useTransactionToADDState();
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      await fetchCuentaData();
+      await fetchCategoriasData();
+    };
+    fetchData();
+  }, [type]);
 
   return (
-    <HStack space="4xl" className="w-full justify-center">
-      <MySelector
-        name="Cuenta"
-        data={cuentasData}
-        selected={cuentaSelect}
-        idSelected={onCuentaChange}>
+    <HStack space="sm" className="w-full justify-center">
+      <MySelector name="Cuenta" data={cuentas} selected={cuentaSelect} idSelected={onCuentaChange}>
         {t("cuenta")}
       </MySelector>
       <MySelector
         selected={categoriSelect}
         name="Categoria"
-        data={categoriasData}
+        data={categorias}
         idSelected={onCategoriaChange}>
         {t("categoria")}
       </MySelector>
@@ -58,8 +64,13 @@ interface SelectorProps {
   idSelected: (id: any) => void;
   children?: React.ReactNode;
 }
-
-const MySelector = ({ name, data, idSelected, selected, children }: SelectorProps) => {
+const MySelector = React.memo(function MySelector({
+  name,
+  data,
+  idSelected,
+  selected,
+  children,
+}: SelectorProps) {
   const [showActionsheet, setShowActionsheet] = React.useState(false);
   const handleClose = () => setShowActionsheet(false);
 
@@ -107,4 +118,4 @@ const MySelector = ({ name, data, idSelected, selected, children }: SelectorProp
       </Actionsheet>
     </>
   );
-};
+});

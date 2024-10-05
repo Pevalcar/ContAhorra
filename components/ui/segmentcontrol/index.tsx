@@ -7,13 +7,13 @@ interface Props {
   selectedIndex: number | null;
   onChange: (index: number) => void;
   isLoading?: boolean;
-  clasName?: string;
+  className?: string;
   buttonsClassName?: string;
 }
 
 export function SegmentControl({
   values,
-  clasName,
+  className,
   isLoading,
   selectedIndex,
   onChange,
@@ -29,7 +29,7 @@ export function SegmentControl({
   return (
     <View
       className={
-        clasName + " flex items-center justify-center gap-2 rounded-lg bg-background-100/50 p-4"
+        className + " flex items-center justify-center gap-2 rounded-lg bg-background-100/50 p-4"
       }>
       {values.map((value, index) => (
         <Buttons

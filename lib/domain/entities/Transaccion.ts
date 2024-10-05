@@ -16,9 +16,9 @@ export class Transaccion {
 
   constructor(params: {
     id: string;
-    balance: number;
-    type: TiposDeTransacciones;
-    date: number;
+    balance?: number;
+    type?: TiposDeTransacciones;
+    date?: number;
     title?: string;
     description?: string;
     categoryID?: string;
@@ -29,9 +29,9 @@ export class Transaccion {
     prestadoaName?: string;
   }) {
     this.id = params.id;
-    this.balance = params.balance;
-    this.type = params.type;
-    this.date = params.date;
+    this.balance = params.balance ?? 0;
+    this.type = params.type ?? "Gasto";
+    this.date = params.date ?? new Date().getTime();
     this.title = params.title ?? "";
     this.description = params.description ?? "";
     this.categoryID = params.categoryID ?? "";

@@ -30,7 +30,7 @@ function Pruebas() {
     <View style={styles.container}>
       <SegmentControl
         values={["a", "b", "c", "pene"]}
-        clasName="flex-row gap-2"
+        className="flex-row gap-2"
         selectedIndex={0}
         onChange={() => {}}
       />
@@ -69,8 +69,6 @@ export function Content() {
   const [transactionsByMonth, setTransactionsByMonth] = React.useState<TransactionTotal>({
     totalExpenses: 0,
     totalIncome: 0,
-    totalTransferences: 0,
-    totalPrestamos: 0,
   });
 
   async function getData() {
@@ -149,7 +147,7 @@ export function Content() {
         <Text key={index + "textCuenta"}>{`${item.id} - ${item.name} - ${item.icon}`}</Text>
       ))}
       {
-        <Text>{` Total de ${transactionsByMonth.totalExpenses} gastos y ${transactionsByMonth.totalIncome} ingresos, en ${transactionsByMonth.totalTransferences} transferencias y ${transactionsByMonth.totalPrestamos} prestamos`}</Text>
+        <Text>{` Total de ${transactionsByMonth.totalExpenses} gastos y ${transactionsByMonth.totalIncome} ingresos`}</Text>
       }
 
       <ScrollView>
@@ -170,14 +168,7 @@ export function Content() {
                 {new Date(item.date).toLocaleDateString()}
               </Text>
             </VStack>
-            <TextCurrency
-              sign
-              negative={
-                item.type === "Gasto" || item.type === "Transferencia" || item.type === "Préstamo"
-              }
-              size="sm"
-              value={item.balance}
-            />
+            <TextCurrency sign negative={item.type === "Gasto"} size="sm" value={item.balance} />
 
             <Pressable className="mr-4" onPress={() => deleteTodo(item.id)}>
               <Text>Delete</Text>
