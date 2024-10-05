@@ -1,6 +1,14 @@
+import {
+  Modal,
+  ModalBackdrop,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+} from "../ui/modal";
 import { TextCurrency } from "@/components/TextCurrency";
 import { Avatar, AvatarFallbackText } from "@/components/ui/avatar";
-import { Button, ButtonIcon } from "@/components/ui/button";
+import { Button, ButtonIcon, ButtonText } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Heading } from "@/components/ui/heading";
 import { HStack } from "@/components/ui/hstack";
@@ -8,6 +16,7 @@ import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
 import { Transaccion } from "@/lib/domain/entities";
 import { getMes, useTransaccionesStore } from "@/lib/store/TransaccionesStore";
+import { t } from "i18next";
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react-native";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -62,7 +71,9 @@ interface ItemProps {
   index: number;
 }
 export const AccordingItem = ({ item, index }: ItemProps) => {
-  const deleteTransaccion = useTransaccionesStore((state) => state.deleteTransaccion);
+  const { deleteTransaccion, loading } = useTransaccionesStore((state) => state);
+  const [showModal, setShowModal] = React.useState(false);
+  const ref = React.useRef(null);
   const bgColor = () => {
     switch (item.type) {
       case "Ingreso":
@@ -79,18 +90,27 @@ export const AccordingItem = ({ item, index }: ItemProps) => {
   };
 
   const onDelete = () => {
-    deleteTransaccion(item.id);
+    if (loading) return;
+    setShowModal(true);
   };
 
   return (
     <Card size="sm" variant="outline" className="mb-4 flex-row items-center justify-between">
+      <ModalDEleteConfirm
+        showModal={showModal}
+        setShowModal={setShowModal}
+        ref={ref}
+        confirmar={() => deleteTransaccion(item.id)}
+      />
       <Avatar size="md" className={bgColor()}>
         <AvatarFallbackText className="text-white">{item.type}</AvatarFallbackText>
       </Avatar>
       <VStack className="ml-4 flex-1">
         <Heading size="sm">{item.title}</Heading>
         <Text className="text-typography-500">{item.description}</Text>
-        <Text className="text-typography-500">{new Date(item.date).toLocaleDateString()}</Text>
+        <Text className="text-typography-500">
+          {new Date(item.date * 1000).toLocaleDateString()}
+        </Text>
       </VStack>
       <TextCurrency
         sign
@@ -100,7 +120,7 @@ export const AccordingItem = ({ item, index }: ItemProps) => {
         size="sm"
         value={item.balance}
       />
-      <Pressable className="mr-4" onPress={onDelete}>
+      <Pressable className="mr-4 p-2" onPress={onDelete}>
         <Text>Delete</Text>
       </Pressable>
     </Card>
@@ -129,4 +149,41 @@ const FormatedLocale = ({ date }: { date: any }) => {
 
   const formated = `${formatMount} ${newDate.toLocaleString(i18n.language, { day: "numeric" })}, ${formatDayWeek}`;
   return formated;
+};
+
+const ModalDEleteConfirm = ({ showModal, setShowModal, ref, confirmar }: any) => {
+  return (
+    <Modal
+      isOpen={showModal}
+      onClose={() => {
+        setShowModal(false);
+      }}
+      finalFocusRef={ref}
+      size="md">
+      <ModalBackdrop />
+      <ModalContent>
+        <ModalHeader>
+          <Heading size="md" className="text-typography-950">
+            {t("eliminar-transaccion")}
+          </Heading>
+        </ModalHeader>
+        <ModalBody>
+          <Text>{t("confirmar-eliminar")}</Text>
+        </ModalBody>
+        <ModalFooter>
+          <Button onPress={() => setShowModal(false)}>
+            <ButtonText>{t("cancelar")}</ButtonText>
+          </Button>
+          <Button
+            variant="outline"
+            onPress={() => {
+              setShowModal(false);
+              confirmar();
+            }}>
+            <ButtonText>{t("eliminar")}</ButtonText>
+          </Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  );
 };

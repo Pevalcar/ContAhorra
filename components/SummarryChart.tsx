@@ -78,10 +78,11 @@ export default function SummaryChart() {
     endDate: number,
     type: TiposDeTransacciones,
   ) => {
+    //TODO agregar graciso con ayuda
     try {
       const query = `
       SELECT
-        strftime('%w', date / 1000, 'unixepoch') AS day_of_week, -- convert date to day of week
+        strftime('%w', date / 1000, 'unixepoch') AS day_of_week, -- convert date to day of week %m 
         SUM(balance) as total -- sum balance by day of week
         FROM ${LOCAL_DB_TRANSACCIONES_NAME}
         WHERE date >= ? AND date <= ? AND type = ?

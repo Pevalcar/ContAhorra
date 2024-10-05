@@ -36,9 +36,7 @@ export default function Index() {
       <VStack className="flex-1">
         <SaldoHeading />
         <Filtros />
-        <Heading size="lg" className="my-4">
-          {t("home.history")}
-        </Heading>
+        <Heading size="lg">{t("home.history")}</Heading>
         <ListTransacciones />
         <Fab
           size={"lg"}

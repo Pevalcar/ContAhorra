@@ -142,5 +142,9 @@
   "In progress": "Section in Progress",
   "Play services not available": "Play Services not found",
   "Some other error": "Some Error Happened",
-  "success-google-auth": "Google Session Start"
+  "success-google-auth": "Google Session Start",
+  "eliminar-transaccion": "Deleting Transaction",
+  "confirmar-eliminar": "You are about to close a transaction, do you want to continue?",
+  "cancelar": "Cancel",
+  "eliminar": "Delete"
 }

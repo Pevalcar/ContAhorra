@@ -8,14 +8,13 @@ import { Pressable } from "@/components/ui/pressable";
 import { SegmentControl } from "@/components/ui/segmentcontrol";
 import { VStack } from "@/components/ui/vstack";
 import {
-  addTransaccion,
-  deleteTransaccion,
   getAllAccount,
   getAllCategory,
   getAllTransaccion,
   getTotalTransactionByDateRange,
 } from "@/lib/core/di/Container";
 import { Categoria, Cuenta, Transaccion } from "@/lib/domain/entities";
+import { useTransaccionesStore } from "@/lib/store";
 import * as Crypto from "expo-crypto";
 import { useSQLiteContext } from "expo-sqlite";
 import React, { useEffect, useState } from "react";
@@ -66,6 +65,7 @@ export function Content() {
   const [todos, setTodos] = useState<Transaccion[]>([]);
   const [category, setCategory] = useState<Categoria[]>([]);
   const [account, setAccount] = useState<Cuenta[]>([]);
+  const { addTransaccion, deleteTransaccion } = useTransaccionesStore((state) => state);
   const [transactionsByMonth, setTransactionsByMonth] = React.useState<TransactionTotal>({
     totalExpenses: 0,
     totalIncome: 0,
@@ -121,14 +121,14 @@ export function Content() {
     });
     await db.withTransactionAsync(async () => {
       //TODO sacar esto al zustand
-      await addTransaccion.execute(transaction);
+      await addTransaccion(transaction);
       await getData();
     });
   };
 
   const deleteTodo = async (id: string) => {
     await db.withTransactionAsync(async () => {
-      await deleteTransaccion.execute(id);
+      await deleteTransaccion(id);
       await getData();
     });
   };

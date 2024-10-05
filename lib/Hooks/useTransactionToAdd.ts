@@ -88,23 +88,21 @@ export const useTransactionToAdd = () => {
         throw new Error("Error de transacción");
       }
 
-      const transaccions: Transaccion = {
+      const transaccions: Transaccion = new Transaccion({
         accountID: cuentaSelect?.id ?? "",
         categoryID: categoriSelect?.id ?? "",
         type: type,
         description: description,
         balance: amount,
-        date: currentDate.getTime(),
+        date: currentDate.getTime() / 1000,
         id: Crypto.randomUUID(),
         title: description,
         prestadoaID: "",
-        userOwnerID: "1",
-        prestadoaName: "",
-        uptodataBase: false,
-      };
-
+        prestadoaName: "", //TODO por poner luego
+      });
       setMessage("Transacción", JSON.stringify(transaccions));
       await agregarTransacciones(transaccions);
+      console.log(transaccions);
       handleToast("Transacción", "Transacción guardada");
     } catch (error) {
       console.error("Error al guardar la transacción:", error);
