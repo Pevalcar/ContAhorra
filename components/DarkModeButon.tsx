@@ -1,6 +1,6 @@
 import { DarkModeIcon } from "./Icons";
 import { Pressable } from "./ui/pressable";
-import useDarkModeStore from "@/lib/store/ThemeDarkMode";
+import { useDarkModeStore } from "@/lib/store/";
 import React from "react";
 
 interface Props {}

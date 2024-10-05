@@ -1,4 +1,5 @@
 import { DarkModeButon } from "@/components/DarkModeButon";
+import SummaryChart from "@/components/SummarryChart";
 import { HStack } from "@/components/ui/hstack";
 import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
@@ -13,6 +14,7 @@ export default function Config() {
         <Text>{t("modo-oscuro")}</Text>
         <DarkModeButon />
       </HStack>
+      <SummaryChart />
     </VStack>
   );
 }
