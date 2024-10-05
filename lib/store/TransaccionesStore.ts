@@ -1,6 +1,11 @@
 /* eslint-disable no-undef */
 import { TiposDeTransacciones } from "@/Types/types";
-import { getTransactionsByDateRang } from "@/lib/core/di/Container";
+import {
+  addTransaccion,
+  deleteTransaccion,
+  getTotalTransactionByDateRange,
+  getTransactionsByDateRang,
+} from "@/lib/core/di/Container";
 import { Transaccion } from "@/lib/domain/entities";
 import { create } from "zustand";
 
@@ -25,13 +30,19 @@ interface ITransaccionesStore {
   transacciones: Transaccion[];
   transaccionesByMonth: { title: number; data: Transaccion[] }[];
   currentMonth: Date;
-  saldo: number;
+  endDate: Date;
+  saldo: {
+    total: number;
+    totalExpenses: number;
+    totalIncome: number;
+    totalTransferences: number;
+    totalPrestamos: number;
+  };
   loading: boolean;
   filter: TiposDeTransacciones | undefined;
   setCurrentMonth: (mount: number) => void;
-  setTransaccionesByMonth: () => void;
   setFilter: (filter: number) => void;
-  setMes: (list: Transaccion[]) => void;
+  getTotalTransaction: () => void;
   getAllTransaccion: () => void;
   addTransaccion: (transaccion: Transaccion) => void;
   deleteTransaccion: (id: string) => void;
@@ -41,8 +52,9 @@ interface ITransaccionesStore {
 export const useTransaccionesStore = create<ITransaccionesStore>((set, get) => ({
   transacciones: [],
   transaccionesByMonth: [],
-  saldo: 0,
+  saldo: { totalExpenses: 0, totalIncome: 0, totalTransferences: 0, totalPrestamos: 0, total: 0 },
   currentMonth: new Date(),
+  endDate: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1),
   loading: false,
   filter: undefined,
   setFilter: async (filter) => {
@@ -50,36 +62,46 @@ export const useTransaccionesStore = create<ITransaccionesStore>((set, get) => (
     set({ filter: newFilter, loading: true });
     await get().getAllTransaccion();
   },
-  setMes: (list) => {
-    let saldo = 0;
-    list.forEach((transaccion) => {
-      if (
-        transaccion.type === "Transferencia" ||
-        transaccion.type === "Préstamo" ||
-        transaccion.type === "Gasto"
-      ) {
-        saldo -= transaccion.balance;
-      } else {
-        saldo += transaccion.balance;
-      }
+  getTotalTransaction: async () => {
+    const { endDate, currentMonth } = get();
+    const { endOfMonthTimestamp, startOfMonthTimestamp } = getInitialAndFinalDate(
+      currentMonth,
+      endDate,
+    );
+    const resunt = await getTotalTransactionByDateRange.execute({
+      startDate: startOfMonthTimestamp,
+      endDate: endOfMonthTimestamp,
     });
 
-    set({ saldo: saldo });
+    const newState = {
+      totalExpenses: resunt.totalExpenses,
+      totalIncome: resunt.totalIncome,
+      totalTransferences: resunt.totalTransferences,
+      totalPrestamos: resunt.totalPrestamos,
+      total:
+        resunt.totalIncome -
+        resunt.totalTransferences -
+        resunt.totalPrestamos -
+        resunt.totalExpenses,
+    };
+    set({ saldo: newState });
   },
   getAllTransaccion: async () => {
     set({ loading: true });
     //TODO ahcer la llamada con las fechas exactas
+    const { currentMonth, endDate, filter } = get();
     try {
       const { endOfMonthTimestamp, startOfMonthTimestamp } = getInitialAndFinalDate(
-        get().currentMonth,
+        currentMonth,
+        endDate,
       );
       const transacciones = await getTransactionsByDateRang.execute({
         endDate: endOfMonthTimestamp,
         startDate: startOfMonthTimestamp,
-        type: get().filter,
+        type: filter,
       });
-      set({ transacciones: transacciones });
-      await get().setTransaccionesByMonth();
+      const newState = sortByDate(transacciones);
+      set({ transacciones: transacciones, transaccionesByMonth: newState, loading: false });
     } catch (e) {
       console.error("Error al guardar la transacción:", e);
       set({ loading: false });
@@ -88,18 +110,23 @@ export const useTransaccionesStore = create<ITransaccionesStore>((set, get) => (
   },
   addTransaccion: async (transaccion: Transaccion) => {
     try {
-      const { transacciones } = get();
-      const newState = [transaccion, ...transacciones];
-      set({ transacciones: newState });
+      const { getAllTransaccion } = get();
+      await addTransaccion.execute(transaccion);
+      await getAllTransaccion();
     } catch (e) {
       console.error("Error al guardar la transacción:", e);
       throw e;
     }
   },
-  deleteTransaccion: (id: string) => {
-    const { transacciones } = get();
-    const newState = transacciones.filter((transaccion) => transaccion.id !== id);
-    set({ transacciones: newState });
+  deleteTransaccion: async (id: string) => {
+    const { getAllTransaccion } = get();
+    try {
+      await deleteTransaccion.execute(id);
+      await getAllTransaccion();
+    } catch (e) {
+      console.error("Error al guardar la transacción:", e);
+      throw e;
+    }
   },
   updateTransaccion: (transaccion: Transaccion) => {
     const { transacciones } = get();
@@ -108,17 +135,11 @@ export const useTransaccionesStore = create<ITransaccionesStore>((set, get) => (
   },
   setCurrentMonth: async (mount: number) => {
     const { currentMonth } = get();
-
     const mounti = currentMonth.setMonth(currentMonth.getMonth() + mount);
-
     const newMonth = new Date(mounti);
-    set({ currentMonth: newMonth });
+    const newEnd = new Date(newMonth.getFullYear(), newMonth.getMonth() + 1, 1);
+    set({ currentMonth: newMonth, endDate: newEnd });
     await get().getAllTransaccion();
-  },
-  setTransaccionesByMonth: async () => {
-    const { transacciones } = get();
-    const newState = sortByDate(transacciones);
-    set({ transaccionesByMonth: newState, loading: false });
   },
 }));
 
@@ -143,8 +164,8 @@ function sortByDate(list: Transaccion[]): { title: number; data: Transaccion[] }
   // const month = new Date();
 
   sortedList.forEach((item) => {
-    const corretDAta = new Date(item.date * 1000);
-    const date = corretDAta.toLocaleDateString();
+    const corretDAta = item.date * 1000;
+    const date = new Date(corretDAta).toLocaleDateString();
     // const mesDAte = getMes(corretDAta, i18n);
     // const currentMonth = getMes(month, i18n);
     // //TODO hay que ver que mas posibilidades den error
@@ -160,7 +181,7 @@ function sortByDate(list: Transaccion[]): { title: number; data: Transaccion[] }
     // la lista nueva se compondra por  [ { title: item.date, data: [item] } ]
 
     lasDates.push(date);
-    newList.push({ title: item.date * 1000, data: [item] });
+    newList.push({ title: corretDAta, data: [item] });
   });
 
   return newList;
@@ -174,16 +195,20 @@ export function getMes(date: Date, i18n: any) {
   return formatMounthYear;
 }
 
-function getInitialAndFinalDate(date: Date) {
+function getInitialAndFinalDate(date: Date, end: Date) {
   const now = new Date(date);
+  const endDate = new Date(end);
+
   // Set to the first day of the current month
   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
   // Get the first day of the next month, then subtract one millisecond to get the end of the current month
-  const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+  const endOfMonth = new Date(endDate.getFullYear(), endDate.getMonth(), 1);
+
   endOfMonth.setMilliseconds(endOfMonth.getMilliseconds() - 1);
 
   // Convert to Unix timestamps (seconds)
   const startOfMonthTimestamp = Math.floor(startOfMonth.getTime() / 1000);
   const endOfMonthTimestamp = Math.floor(endOfMonth.getTime() / 1000);
+
   return { startOfMonthTimestamp, endOfMonthTimestamp };
 }

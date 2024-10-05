@@ -143,5 +143,9 @@
   "In progress": "Secion en Progreso",
   "Play services not available": "Play Services no encontrado",
   "Some other error": "Sucedió Algún Error",
-  "success-google-auth": "Inicio de Session Google "
+  "success-google-auth": "Inicio de Session Google ",
+  "eliminar-transaccion": "Eliminando Transaccion",
+  "confirmar-eliminar": "Estas apunto de cerrar una transaccion, ¿desea continuar?",
+  "cancelar": "Cancelar",
+  "eliminar": "Eliminar"
 }

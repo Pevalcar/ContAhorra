@@ -1,3 +1,4 @@
+import { User } from "@/lib/domain/entities";
 import AuthRepositoryI from "@/lib/domain/repositories/AuthRepositoryI";
 
 export class FetchUserUseCase {
@@ -6,7 +7,7 @@ export class FetchUserUseCase {
     this.authRepository = authRepository;
   }
 
-  async execute() {
+  async execute(): Promise<User | null> {
     return await this.authRepository.fetchUser();
   }
 }
