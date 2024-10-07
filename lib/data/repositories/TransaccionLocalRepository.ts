@@ -138,12 +138,11 @@ export class TransaccionLocalRepository implements TransaccionRepositoryI {
     const db = await openDatabaseAsync(this.dbNAme);
     try {
       const query = `
-        INSERT INTO ${LOCAL_DB_TRANSACCIONES_NAME} (id, title, balance, type, date, description, categoryID, accountID, userOwnerID, prestadoaID)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+        INSERT INTO ${LOCAL_DB_TRANSACCIONES_NAME} (id, balance, type, date, description, categoryID, accountID, userOwnerID, prestadoaID)
+        VALUES (?, ?, ?, ?, ?, ?, ?,  ?, ?);
       `;
       await db.runAsync(query, [
         transaccion.id,
-        transaccion.title,
         transaccion.balance,
         transaccion.type,
         transaccion.date,
@@ -182,12 +181,11 @@ export class TransaccionLocalRepository implements TransaccionRepositoryI {
     const db = await openDatabaseAsync(this.dbNAme);
     const query = `
       UPDATE ${LOCAL_DB_TRANSACCIONES_NAME}
-      SET title = ?, balance = ?, type = ?, date = ?, description = ?, categoryID = ?, accountID = ?, userOwnerID = ?, prestadoaID = ?
+      SET  balance = ?, type = ?, date = ?, description = ?, categoryID = ?, accountID = ?, userOwnerID = ?, prestadoaID = ?
       WHERE id = ?
     `;
     try {
       await db.runAsync(query, [
-        transaccion.title,
         transaccion.balance,
         transaccion.type,
         transaccion.date,
@@ -226,6 +224,7 @@ export class TransaccionLocalRepository implements TransaccionRepositoryI {
       SELECT
       COALESCE(SUM(CASE WHEN type = 'Gasto' THEN balance ELSE 0 END), 0) AS totalExpenses,
       COALESCE(SUM(CASE WHEN type = 'Ingreso' THEN balance ELSE 0 END), 0) AS totalIncome,
+      COALESCE(SUM(CASE WHEN type = 'Transferencia' THEN balance ELSE 0 END), 0) AS totalTransfer
       FROM ${LOCAL_DB_TRANSACCIONES_NAME} 
       `;
       const params: any[] = [];

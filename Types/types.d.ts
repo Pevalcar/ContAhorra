@@ -1,6 +1,7 @@
 export interface TransactionTotal {
   totalExpenses: number;
   totalIncome: number;
+  totalTransfer: number;
 }
 
 export type userOwnerID = string;

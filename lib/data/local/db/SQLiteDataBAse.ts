@@ -6,7 +6,7 @@ import {
   LOCAL_DB_PROFILES_NAME,
   LOCAL_DB_TRANSACCIONES_NAME,
 } from "@/lib/configs/config";
-import { DB_Categorias, DB_Cuentas, DB_Transacciones } from "@/lib/db/local/db_local";
+import { DB_Categorias, DB_Cuentas, DB_PERFILES, DB_Transacciones } from "@/lib/db/local/db_local";
 import { SQLiteControlError } from "@/lib/domain/error/SqlControlError";
 import { SQLiteDatabase } from "expo-sqlite";
 
@@ -38,6 +38,7 @@ async function migrateDbToVersion0(db: SQLiteDatabase) {
       name TEXT NOT NULL,
       icon TEXT NOT NULL,
       type TEXT NOT NULL CHECK( type IN ('Gasto','Ingreso' ,'Transferencia') ),
+      prestamo BOOLEAN DEFAULT 0,
       uptodataBase BOOLEAN DEFAULT 0,
       userOwnerID TEXT
       );`);
@@ -48,23 +49,23 @@ async function migrateDbToVersion0(db: SQLiteDatabase) {
       name TEXT NOT NULL,
       icon TEXT NOT NULL,
       uptodataBase BOOLEAN DEFAULT 0,
+      grupal BOOLEAN DEFAULT 0,
       userOwnerID TEXT
       );`);
   await db.execAsync(`
       CREATE TABLE IF NOT EXISTS ${LOCAL_DB_PROFILES_NAME} (
       id TEXT PRIMARY KEY NOT NULL UNIQUE ,
       name TEXT NOT NULL,
-      photoURL TEXT NOT NULL,
+      avatar_url TEXT,
       userReferredID TEXT,
       uptodataBase BOOLEAN DEFAULT 0,
-      userOwnerID TEXT
+      userOwnerID TEXT,
       emojis TEXT
       );`);
 
   await db.execAsync(`  
       CREATE TABLE IF NOT EXISTS ${LOCAL_DB_TRANSACCIONES_NAME} (
       id TEXT PRIMARY KEY NOT NULL UNIQUE ,
-      title TEXT NOT NULL,
       balance REAL NOT NULL,
       type TEXT NOT NULL CHECK( type IN ('Gasto','Ingreso' ,'Transferencia') ),
       date INTEGER NOT NULL,
@@ -79,7 +80,7 @@ async function migrateDbToVersion0(db: SQLiteDatabase) {
       FOREIGN KEY(categoryID) REFERENCES ${LOCAL_DB_CATEGORIAS_NAME}(id) ON DELETE CASCADE,
       FOREIGN KEY(accountID) REFERENCES ${LOCAL_DB_CUENTAS_NAME}(id) ON DELETE CASCADE);`); //    userOwnerID TEXT,
   await db.withTransactionAsync(async () => {
-    const InsertCategories = `INSERT OR REPLACE INTO ${LOCAL_DB_CATEGORIAS_NAME} ( id, name, icon, type, uptodataBase, userOwnerID) VALUES (?, ?, ?, ?, ?, ?);`;
+    const InsertCategories = `INSERT OR REPLACE INTO ${LOCAL_DB_CATEGORIAS_NAME} ( id, name, icon, type, uptodataBase, userOwnerID , prestamo) VALUES (?, ?, ?, ?, ?, ?, ?);`;
     for (const category of DB_Categorias) {
       await db.runAsync(InsertCategories, [
         category.id,
@@ -88,10 +89,11 @@ async function migrateDbToVersion0(db: SQLiteDatabase) {
         category.type,
         category.uptodataBase,
         category.userOwnerID,
+        category.prestamo,
       ]);
     }
 
-    const InsertAccounts = `INSERT OR REPLACE INTO ${LOCAL_DB_CUENTAS_NAME} (id, name, icon, uptodataBase, userOwnerID) VALUES (?, ?, ?, ?, ?);`;
+    const InsertAccounts = `INSERT OR REPLACE INTO ${LOCAL_DB_CUENTAS_NAME} (id, name, icon, uptodataBase, userOwnerID, grupal) VALUES (?, ?, ?, ?, ?, ?);`;
     for (const account of DB_Cuentas) {
       await db.runAsync(InsertAccounts, [
         account.id,
@@ -99,15 +101,28 @@ async function migrateDbToVersion0(db: SQLiteDatabase) {
         account.icon,
         account.uptodataBase,
         account.userOwnerID,
+        account.grupal,
       ]);
     }
+
     if (DEVELOPMENT) {
-      const InsertTransacciones = `INSERT OR REPLACE INTO ${LOCAL_DB_TRANSACCIONES_NAME} (id, title, balance, type, date, description, categoryID, accountID, userOwnerID, prestadoaID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
+      const InsertPerfiles = `INSERT OR REPLACE INTO ${LOCAL_DB_PROFILES_NAME} (id, name, avatar_url, userOwnerID, userReferredID, uptodataBase, emojis) VALUES (?, ?, ?, ?, ?, ?, ?);`;
+      for (const perfil of DB_PERFILES) {
+        await db.runAsync(InsertPerfiles, [
+          perfil.id,
+          perfil.name,
+          perfil.avatar_url,
+          perfil.userOwnerID,
+          perfil.userReferredID,
+          perfil.uptodataBase,
+          perfil.emojis,
+        ]);
+      }
+      const InsertTransacciones = `INSERT OR REPLACE INTO ${LOCAL_DB_TRANSACCIONES_NAME} (id, balance, type, date, description, categoryID, accountID, userOwnerID, prestadoaID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`;
       await db.withExclusiveTransactionAsync(async () => {
         for (const account of DB_Transacciones) {
           await db.runAsync(InsertTransacciones, [
             account.id,
-            account.title,
             account.balance,
             account.type,
             account.date,

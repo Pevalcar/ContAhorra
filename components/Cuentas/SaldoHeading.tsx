@@ -18,7 +18,6 @@ export const SaldoHeading: React.FC<Props> = () => {
     };
     fetchAndSetUser();
   }, [transaccionesByMonth]);
-  const sumaGastos = saldo.totalExpenses + saldo.totalTransferences + saldo.totalPrestamos;
   return (
     <HStack space="md" className="w-auto items-center justify-between">
       <Card className="w-auto flex-1">
@@ -26,7 +25,7 @@ export const SaldoHeading: React.FC<Props> = () => {
         <Heading>{t("saldo")}</Heading>
       </Card>
       <Card className="w-auto flex-1">
-        <TextCurrency value={sumaGastos} size="xl" negative />
+        <TextCurrency value={saldo.totalExpenses} size="xl" negative />
         <Heading>{t("gastos")}</Heading>
       </Card>
     </HStack>

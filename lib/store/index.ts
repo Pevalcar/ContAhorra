@@ -1,6 +1,7 @@
 export * from "./CategoriaStore";
 export * from "./CuentasStore";
 export * from "./NotifieStore";
+export * from "./PerfilesStores";
 export * from "./SecionStore";
 export * from "./ThemeDarkMode";
 export * from "./TransaccionesStore";
