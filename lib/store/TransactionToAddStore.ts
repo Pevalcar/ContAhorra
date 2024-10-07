@@ -32,7 +32,6 @@ interface ITransaccionSate {
   setAmount: (amount: number | null) => void;
   setDescription: (description: string) => void;
   setDate: (date: Date) => void;
-  reset: () => void;
 }
 
 export const useTransactionToADDState = create<ITransaccionSate>((set, get) => ({
@@ -113,14 +112,14 @@ export const useTransactionToADDState = create<ITransaccionSate>((set, get) => (
     }
     set({ loagin: false });
   },
-  reset: () => {
-    set({
-      type: 1,
-      description: "",
-      amount: 0,
-      date: new Date(),
-    });
-  },
+  // reset: () => {
+  //   set({
+  //     type: 1,
+  //     description: "",
+  //     amount: 0,
+  //     date: new Date(),
+  //   });
+  // },
   saveTransaction: async () => {
     const {
       amount,
