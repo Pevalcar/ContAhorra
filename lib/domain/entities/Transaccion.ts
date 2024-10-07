@@ -2,7 +2,6 @@ import type { TiposDeTransacciones, userOwnerID } from "@/Types/types";
 
 export class Transaccion {
   readonly id: string;
-  title: string;
   balance: number;
   type: TiposDeTransacciones;
   date: number;
@@ -19,7 +18,6 @@ export class Transaccion {
     balance?: number;
     type?: TiposDeTransacciones;
     date?: number;
-    title?: string;
     description?: string;
     categoryID?: string;
     accountID?: string;
@@ -32,7 +30,6 @@ export class Transaccion {
     this.balance = params.balance ?? 0;
     this.type = params.type ?? "Gasto";
     this.date = params.date ?? new Date().getTime();
-    this.title = params.title ?? "";
     this.description = params.description ?? "";
     this.categoryID = params.categoryID ?? "";
     this.accountID = params.accountID ?? "";

@@ -45,6 +45,8 @@ export default function RootLayout() {
               />
 
               <Stack.Screen name="add_tansaction" options={{ headerShown: false }} />
+              <Stack.Screen name="add_perfil" options={{ headerShown: false }} />
+
               <Stack.Screen name="login" options={{ headerShown: false }} />
             </Stack>
           </SQLiteProvider>

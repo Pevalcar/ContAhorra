@@ -5,6 +5,7 @@ export class Cuenta {
   name: string;
   icon: MyIconos;
   userOwnerID: userOwnerID;
+  grupal: boolean;
   uptodataBase: boolean;
 
   constructor(params: {
@@ -12,12 +13,14 @@ export class Cuenta {
     name: string;
     icon: MyIconos;
     userOwnerID?: userOwnerID;
+    grupal?: boolean;
     uptodataBase?: boolean;
   }) {
     this.id = params.id ?? "";
     this.name = params.name;
     this.icon = params.icon;
     this.userOwnerID = params.userOwnerID ?? "1";
+    this.grupal = params.grupal ?? false;
     this.uptodataBase = params.uptodataBase ?? false;
   }
 }

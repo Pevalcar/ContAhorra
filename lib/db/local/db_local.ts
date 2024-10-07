@@ -1,9 +1,8 @@
-import { Categoria, Cuenta, Transaccion } from "@/lib/domain/entities";
+import { Categoria, Cuenta, Perfil, Transaccion } from "@/lib/domain/entities";
 
 const DB_Transacciones: Transaccion[] = [
   new Transaccion({
     id: "1",
-    title: "Compra supermercado",
     balance: 50.75,
     type: "Gasto",
     date: 1727740800, // 1 de octubre de 2024
@@ -14,7 +13,6 @@ const DB_Transacciones: Transaccion[] = [
   }),
   new Transaccion({
     id: "2",
-    title: "Salario",
     balance: 1500,
     type: "Ingreso",
     date: 1728172800, // 5 de octubre de 2024
@@ -25,7 +23,6 @@ const DB_Transacciones: Transaccion[] = [
   }),
   new Transaccion({
     id: "3",
-    title: "Pago alquiler",
     balance: 600,
     type: "Gasto",
     date: 1728604800, // 10 de octubre de 2024
@@ -36,7 +33,6 @@ const DB_Transacciones: Transaccion[] = [
   }),
   new Transaccion({
     id: "4",
-    title: "Transferencia entre cuentas",
     balance: 200,
     type: "Gasto",
     date: 1728604800, // 10 de octubre de 2024 (repetido)
@@ -46,7 +42,6 @@ const DB_Transacciones: Transaccion[] = [
   }),
   new Transaccion({
     id: "5",
-    title: "Compra de ropa",
     balance: 120,
     type: "Gasto",
     date: 1729036800, // 15 de octubre de 2024
@@ -56,7 +51,6 @@ const DB_Transacciones: Transaccion[] = [
   }),
   new Transaccion({
     id: "6",
-    title: "Préstamo",
     balance: 1000,
     type: "Transferencia",
     date: 1729468800, // 20 de octubre de 2024
@@ -66,7 +60,6 @@ const DB_Transacciones: Transaccion[] = [
   }),
   new Transaccion({
     id: "7",
-    title: "Préstamo",
     balance: 15000,
     type: "Transferencia",
     date: 1729468800, // 20 de octubre de 2024 (repetido)
@@ -76,7 +69,6 @@ const DB_Transacciones: Transaccion[] = [
   }),
   new Transaccion({
     id: "8",
-    title: "Préstamo",
     balance: 8000,
     type: "Gasto",
     date: 1729900800, // 25 de octubre de 2024
@@ -86,7 +78,6 @@ const DB_Transacciones: Transaccion[] = [
   }),
   new Transaccion({
     id: "9",
-    title: "Préstamo",
     balance: 50000,
     type: "Gasto",
     date: 1730332800, // 28 de octubre de 2024
@@ -96,7 +87,6 @@ const DB_Transacciones: Transaccion[] = [
   }),
   new Transaccion({
     id: "10",
-    title: "Préstamo",
     balance: 12000,
     type: "Gasto",
     date: 1730332800, // 28 de octubre de 2024 (repetido)
@@ -106,7 +96,6 @@ const DB_Transacciones: Transaccion[] = [
   }),
   new Transaccion({
     id: "11",
-    title: "Préstamo",
     balance: 12000,
     type: "Gasto",
     date: 1728104400, // 28 de octubre de 2024 (repetido)
@@ -116,7 +105,6 @@ const DB_Transacciones: Transaccion[] = [
   }),
   new Transaccion({
     id: "12",
-    title: "Préstamo",
     balance: 12000,
     type: "Gasto",
     date: 1733374800, // 28 de octubre de 2024 (repetido)
@@ -126,7 +114,6 @@ const DB_Transacciones: Transaccion[] = [
   }),
   new Transaccion({
     id: "15",
-    title: "Préstamo",
     balance: 12000,
     type: "Gasto",
     date: 1728104400, // 28 de octubre de 2024 (repetido)
@@ -199,6 +186,15 @@ const DB_Categorias: Categoria[] = [
     icon: "FileEdit",
     type: "Transferencia",
     userOwnerID: "1",
+    prestamo: true,
+    uptodataBase: false,
+  }),
+  new Categoria({
+    id: "17",
+    name: "Transferencias",
+    icon: "FileEdit",
+    type: "Transferencia",
+    userOwnerID: "1",
     uptodataBase: false,
   }),
   new Categoria({
@@ -225,6 +221,7 @@ const DB_Cuentas: Cuenta[] = [
     icon: "Wallet",
     userOwnerID: "1",
     uptodataBase: false,
+    grupal: false,
   }),
   new Cuenta({
     id: "2",
@@ -232,6 +229,37 @@ const DB_Cuentas: Cuenta[] = [
     icon: "PiggyBank",
     userOwnerID: "1",
     uptodataBase: false,
+    grupal: true,
+  }),
+];
+
+export const DB_PERFILES: Perfil[] = [
+  new Perfil({
+    id: "1",
+    name: "Andry",
+    avatar_url: "avatar_1",
+    userOwnerID: "1",
+    userReferredID: "1",
+    uptodataBase: false,
+    emojis: "😀",
+  }),
+  new Perfil({
+    id: "2",
+    name: "Pedry",
+    avatar_url: "avatar_2",
+    userOwnerID: "1",
+    userReferredID: "1",
+    uptodataBase: false,
+    emojis: "😘",
+  }),
+  new Perfil({
+    id: "3",
+    name: "Mariluz",
+    avatar_url: "avatar_3",
+    userOwnerID: "1",
+    userReferredID: "1",
+    uptodataBase: false,
+    emojis: "🤣",
   }),
 ];
 

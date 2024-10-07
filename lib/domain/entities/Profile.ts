@@ -1,29 +1,29 @@
 import type { userOwnerID } from "@/Types/types";
 
 export class Perfil {
-  readonly id?: string;
+  readonly id: string;
   name: string;
-  photoURL: string;
+  avatar_url: string;
   userOwnerID: userOwnerID;
   userReferredID: string;
   uptodataBase: boolean;
-  emoji: string;
+  emojis: string;
 
   constructor(params: {
     id?: string;
     name: string;
-    photoURL: string;
+    avatar_url: string;
     userOwnerID?: userOwnerID;
     userReferredID?: string;
     uptodataBase?: boolean;
-    emoji?: string;
+    emojis?: string;
   }) {
-    this.id = params.id;
+    this.id = params.id ?? "";
     this.name = params.name;
-    this.photoURL = params.photoURL;
+    this.avatar_url = params.avatar_url;
     this.userOwnerID = params.userOwnerID ?? "1";
     this.userReferredID = params.userReferredID ?? "";
     this.uptodataBase = params.uptodataBase ?? false;
-    this.emoji = params.emoji ?? "";
+    this.emojis = params.emojis ?? "";
   }
 }

@@ -35,8 +35,6 @@ interface ITransaccionesStore {
     total: number;
     totalExpenses: number;
     totalIncome: number;
-    totalTransferences: number;
-    totalPrestamos: number;
   };
   loading: boolean;
   filter: TiposDeTransacciones | null;
@@ -75,13 +73,7 @@ export const useTransaccionesStore = create<ITransaccionesStore>((set, get) => (
     const newState = {
       totalExpenses: resunt.totalExpenses,
       totalIncome: resunt.totalIncome,
-      totalTransferences: resunt.totalTransferences,
-      totalPrestamos: resunt.totalPrestamos,
-      total:
-        resunt.totalIncome -
-        resunt.totalTransferences -
-        resunt.totalPrestamos -
-        resunt.totalExpenses,
+      total: resunt.totalIncome - resunt.totalExpenses,
     };
     set({ saldo: newState });
   },

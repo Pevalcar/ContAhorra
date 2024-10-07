@@ -81,8 +81,6 @@ export const AccordingItem = ({ item }: ItemProps) => {
         return "bg-red-500";
       case "Transferencia":
         return "bg-yellow-500";
-      case "Préstamo":
-        return "bg-purple-500";
       default:
         return "bg-gray-500";
     }
@@ -131,7 +129,7 @@ export const AccordingItem = ({ item }: ItemProps) => {
         <AvatarFallbackText className="text-white">{item.type}</AvatarFallbackText>
       </Avatar>
       <VStack className="ml-4 flex-1">
-        <Heading size="sm">{item.title}</Heading>
+        <Heading size="sm">{item.description}</Heading>
         <Text className="text-typography-500">{item.description}</Text>
         <Text className="text-typography-500">
           {new Date(item.date * 1000).toLocaleDateString()}
@@ -139,9 +137,7 @@ export const AccordingItem = ({ item }: ItemProps) => {
       </VStack>
       <TextCurrency
         sign
-        negative={
-          item.type === "Gasto" || item.type === "Transferencia" || item.type === "Préstamo"
-        }
+        negative={item.type === "Gasto" || item.type === "Transferencia"}
         size="sm"
         value={item.balance}
       />
