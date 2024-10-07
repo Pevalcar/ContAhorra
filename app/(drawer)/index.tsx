@@ -2,11 +2,12 @@ import { Filtros } from "@/components/Cuentas/Filtros";
 import { ListTransacciones } from "@/components/Cuentas/ListTransacciones";
 import { SaldoHeading } from "@/components/Cuentas/SaldoHeading";
 import { Screen } from "@/components/Screen";
-import { Fab, FabIcon, VStack } from "@/components/ui";
+import { Button, ButtonIcon, VStack } from "@/components/ui";
 import { useStoreSesion } from "@/lib/store";
 import { router } from "expo-router";
 import { PlusIcon } from "lucide-react-native";
 import React from "react";
+import { StyleSheet } from "react-native";
 
 export default function Index() {
   const fetchUser = useStoreSesion((state) => state.fetchUser);
@@ -19,21 +20,32 @@ export default function Index() {
 
   return (
     <Screen>
-      <VStack className="-pt-5 mt-5 flex-1 gap-2">
+      <VStack className="mt-2 flex-1 gap-2">
         <SaldoHeading />
         <Filtros />
 
         <ListTransacciones />
-        <Fab
-          size={"lg"}
-          placement="bottom right"
-          className="bg-green-500"
+        <Button
+          size="xl"
+          className="absolute bottom-4 right-4 m-11 h-16 w-16 rounded-full p-3.5"
+          style={styles.shadow}
           onPress={() => {
             router.push("/add_tansaction");
           }}>
-          <FabIcon as={PlusIcon} stroke="white" size="xl" />
-        </Fab>
+          <ButtonIcon as={PlusIcon} stroke="white" size="xl" />
+        </Button>
       </VStack>
     </Screen>
   );
 }
+
+const styles = StyleSheet.create({
+  shadow: {
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    elevation: 6,
+  },
+});
