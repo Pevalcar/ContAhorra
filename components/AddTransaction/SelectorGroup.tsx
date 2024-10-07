@@ -30,7 +30,7 @@ export const SelectorGroup: React.FC<Props> = () => {
     fetchCategoriasData,
     fetchCuentaData,
     type,
-  } = useTransactionToADDState();
+  } = useTransactionToADDState((state) => state);
 
   React.useEffect(() => {
     const fetchData = async () => {

@@ -1,27 +1,32 @@
 import { Calculadora } from "@/components/AddTransaction/Calculadora";
 import { DataInfo } from "@/components/AddTransaction/DataInfo";
 import { DescripcionAddTr } from "@/components/AddTransaction/DescripcionAddTr";
+import { Grupalmenu } from "@/components/AddTransaction/Grupalmenu";
 import { SelectorDeTipos } from "@/components/AddTransaction/SelectorDeTipos";
 import { SelectorGroup } from "@/components/AddTransaction/SelectorGroup";
 import { Screen } from "@/components/Screen";
-import { Text } from "@/components/ui";
 import { Button, ButtonText } from "@/components/ui/button";
 import { HStack } from "@/components/ui/hstack";
 import { VStack } from "@/components/ui/vstack";
-import { useTransactionToAdd } from "@/lib/Hooks/useTransactionToAdd";
+import { useMyToast } from "@/lib/Hooks/useToast";
 import { useTransactionToADDState } from "@/lib/store";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { ScrollView } from "react-native";
 
 export default function Add() {
-  const { saveTransaction } = useTransactionToAdd();
-  const { amount } = useTransactionToADDState((state) => state);
+  const { handleToast } = useMyToast();
+  const { categoriSelect, saveTransaction, Error } = useTransactionToADDState((state) => state);
   const { t } = useTranslation();
 
   const onSaveTransaction = async () => {
-    await saveTransaction();
-    router.back();
+    await saveTransaction()
+      .then((result) => {
+        router.back();
+      })
+      .catch((err: any) => {
+        handleToast("Error al guardar la transacción", err.message, "error");
+      });
   };
   return (
     <Screen>
@@ -37,10 +42,10 @@ export default function Add() {
         </Button>
       </HStack>
       <ScrollView>
-        <VStack className={"mx-2 h-full items-center gap-3"}>
+        <VStack className={"mx-2 h-full items-center gap-2"}>
           <SelectorDeTipos />
-          <Text>Amount: {amount}</Text>
           <SelectorGroup />
+          {categoriSelect?.prestamo ? <Grupalmenu /> : null}
           <DescripcionAddTr />
           <Calculadora />
           <DataInfo />

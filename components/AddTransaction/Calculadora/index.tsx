@@ -1,8 +1,6 @@
-import { MyIcon } from "@/components/Icons";
 import { Button, ButtonText } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
 import { HStack } from "@/components/ui/hstack";
-import { Pressable } from "@/components/ui/pressable";
 import { useCalculadora } from "@/lib/Hooks/useCalculadora";
 import React from "react";
 import { View } from "react-native";
@@ -10,60 +8,63 @@ import { View } from "react-native";
 interface Props {}
 
 export const Calculadora: React.FC<Props> = () => {
-  const { calculator, state } = useCalculadora();
-  const onHandlePress = React.useCallback((type, value) => {
-    calculator(type, value);
-  }, []);
-
-  const onSignPress = React.useCallback((value: string) => {
-    // setSign(value);
-  }, []);
-
-  const onDeletePress = React.useCallback(() => {
-    // reset();
-  }, []);
+  const {
+    handleNumberClick,
+    handleOperatorClick,
+    handleEqualClick,
+    handleClearClick,
+    handleTap,
+    state,
+  } = useCalculadora();
 
   return (
     <View className="w-full justify-center gap-1">
-      <Pantalla onDeletePress={onDeletePress} className="col-span-4">
-        {parseFloat("500000").toLocaleString()}
+      <Pantalla onDeletePress={handleClearClick} className="col-span-4">
+        {state.currentValue}
       </Pantalla>
 
       <HStack className="justify-center gap-1">
-        <BotonCalculadoraResaltado onPress={onSignPress} variant>
-          +
+        <BotonCalculadoraResaltado onPress={handleClearClick}>C</BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={() => handleTap("posneg")}>
+          +/-
         </BotonCalculadoraResaltado>
-        <BotonCalculadoraResaltado onPress={onHandlePress}>7</BotonCalculadoraResaltado>
-        <BotonCalculadoraResaltado onPress={onHandlePress}>8</BotonCalculadoraResaltado>
-        <BotonCalculadoraResaltado onPress={onHandlePress}>9</BotonCalculadoraResaltado>
-      </HStack>
-
-      <HStack className="justify-center gap-1">
-        <BotonCalculadoraResaltado onPress={onSignPress} variant>
-          -
+        <BotonCalculadoraResaltado onPress={() => handleTap("percentage")}>
+          %
         </BotonCalculadoraResaltado>
-        <BotonCalculadoraResaltado onPress={onHandlePress}>4</BotonCalculadoraResaltado>
-        <BotonCalculadoraResaltado onPress={onHandlePress}>5</BotonCalculadoraResaltado>
-        <BotonCalculadoraResaltado onPress={onHandlePress}>6</BotonCalculadoraResaltado>
-      </HStack>
-
-      <HStack className="justify-center gap-1">
-        <BotonCalculadoraResaltado onPress={onSignPress} variant>
-          *
-        </BotonCalculadoraResaltado>
-        <BotonCalculadoraResaltado onPress={onHandlePress}>1</BotonCalculadoraResaltado>
-        <BotonCalculadoraResaltado onPress={onHandlePress}>2</BotonCalculadoraResaltado>
-        <BotonCalculadoraResaltado onPress={onHandlePress}>3</BotonCalculadoraResaltado>
-      </HStack>
-      <HStack className="justify-center gap-1">
-        <BotonCalculadoraResaltado onPress={onSignPress} variant>
+        <BotonCalculadoraResaltado variant onPress={handleOperatorClick}>
           /
         </BotonCalculadoraResaltado>
-        <BotonCalculadoraResaltado onPress={onHandlePress}>0</BotonCalculadoraResaltado>
-        <BotonCalculadoraResaltado onPress={onHandlePress}>.</BotonCalculadoraResaltado>
-        <BotonCalculadoraResaltado onPress={onSignPress} variant>
-          =
+      </HStack>
+      <HStack className="justify-center gap-1">
+        <BotonCalculadoraResaltado onPress={handleNumberClick}>7</BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={handleNumberClick}>8</BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={handleNumberClick}>9</BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado variant onPress={handleOperatorClick}>
+          *
         </BotonCalculadoraResaltado>
+      </HStack>
+
+      <HStack className="justify-center gap-1">
+        <BotonCalculadoraResaltado onPress={handleNumberClick}>4</BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={handleNumberClick}>5</BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={handleNumberClick}>6</BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado variant onPress={handleOperatorClick}>
+          -
+        </BotonCalculadoraResaltado>
+      </HStack>
+
+      <HStack className="justify-center gap-1">
+        <BotonCalculadoraResaltado onPress={handleNumberClick}>1</BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={handleNumberClick}>2</BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={handleNumberClick}>3</BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado variant onPress={handleOperatorClick}>
+          +
+        </BotonCalculadoraResaltado>
+      </HStack>
+      <HStack className="justify-center gap-1">
+        <BotonCalculadoraResaltado onPress={handleNumberClick}>0</BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={handleNumberClick}>.</BotonCalculadoraResaltado>
+        <BotonCalculadoraResaltado onPress={handleEqualClick}>=</BotonCalculadoraResaltado>
       </HStack>
     </View>
   );
@@ -74,17 +75,15 @@ type PantallaProps = {
   children?: React.ReactNode;
   isError?: boolean;
   onDeletePress?: () => void;
+  opetaror?: string;
 };
 
 const Pantalla = React.memo(pantalla);
 
 function pantalla({ className, children, onDeletePress = () => {}, ...props }: PantallaProps) {
   return (
-    <View className={"flex h-20 w-full flex-row rounded-lg border " + className} {...props}>
-      <Heading className="mr-1 h-full flex-1 text-right align-middle text-3xl">{children}</Heading>
-      <Pressable className="h-full w-14 justify-center" onPress={onDeletePress}>
-        <MyIcon name="Delete" size={40} color="black" />
-      </Pressable>
+    <View className={"flex h-16 w-full flex-row rounded-lg border " + className} {...props}>
+      <Heading className="mr-5 h-full flex-1 text-right align-middle text-3xl">{children}</Heading>
     </View>
   );
 }
