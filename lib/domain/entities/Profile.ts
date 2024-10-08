@@ -7,7 +7,6 @@ export class Perfil {
   userOwnerID: userOwnerID;
   userReferredID: string;
   uptodataBase: boolean;
-  emojis: string;
 
   constructor(params: {
     id?: string;
@@ -16,7 +15,6 @@ export class Perfil {
     userOwnerID?: userOwnerID;
     userReferredID?: string;
     uptodataBase?: boolean;
-    emojis?: string;
   }) {
     this.id = params.id ?? "";
     this.name = params.name;
@@ -24,6 +22,5 @@ export class Perfil {
     this.userOwnerID = params.userOwnerID ?? "1";
     this.userReferredID = params.userReferredID ?? "";
     this.uptodataBase = params.uptodataBase ?? false;
-    this.emojis = params.emojis ?? "";
   }
 }

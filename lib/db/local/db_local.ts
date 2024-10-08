@@ -241,7 +241,6 @@ export const DB_PERFILES: Perfil[] = [
     userOwnerID: "1",
     userReferredID: "1",
     uptodataBase: false,
-    emojis: "😀",
   }),
   new Perfil({
     id: "2",
@@ -250,7 +249,6 @@ export const DB_PERFILES: Perfil[] = [
     userOwnerID: "1",
     userReferredID: "1",
     uptodataBase: false,
-    emojis: "😘",
   }),
   new Perfil({
     id: "3",
@@ -259,7 +257,6 @@ export const DB_PERFILES: Perfil[] = [
     userOwnerID: "1",
     userReferredID: "1",
     uptodataBase: false,
-    emojis: "🤣",
   }),
 ];
 

@@ -23,7 +23,6 @@ export default function Index() {
       <VStack className="mt-2 flex-1 gap-2">
         <SaldoHeading />
         <Filtros />
-
         <ListTransacciones />
         <Button
           size="xl"
@@ -32,7 +31,7 @@ export default function Index() {
           onPress={() => {
             router.push("/add_tansaction");
           }}>
-          <ButtonIcon as={PlusIcon} stroke="white" size="xl" />
+          <ButtonIcon as={PlusIcon} size="xl" />
         </Button>
       </VStack>
     </Screen>

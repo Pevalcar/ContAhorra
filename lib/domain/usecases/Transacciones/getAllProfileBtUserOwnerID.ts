@@ -10,8 +10,9 @@ export class GetAllProfileByUserOwnerIDUseCase {
     this.transaccionRepositoryRemote = transaccionRepositoryRemote;
   }
 
-  async execute(userOwnerID: string): Promise<Perfil[]> {
+  async execute(userOwnerID?: string): Promise<Perfil[]> {
     // Guardar siempre localmente
+    //TODO implementar si esa funcionando el woner
     return await this.transaccionRepositoryLocal.getAllProfileByUserOwnerID(userOwnerID);
   }
 }

@@ -147,5 +147,11 @@
   "confirmar-eliminar": "You are about to close a transaction, do you want to continue?",
   "cancelar": "Cancel",
   "eliminar": "Delete",
-  "gastos": "Bills"
+  "gastos": "Bills",
+  "selecciona-un-perfil": "Add Profile",
+  "nombre": "Name",
+  "prestado-a": "Loaned to:",
+  "delete": "Delete",
+  "error-al-guardar-la-transaccion": "Error saving transaction",
+  "debe-ingresar-un-nombre": "You must enter a name"
 }

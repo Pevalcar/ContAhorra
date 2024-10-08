@@ -1,10 +1,33 @@
+import { Screen } from "@/components/Screen";
+import { Input, InputField, VStack } from "@/components/ui";
+import { Perfil } from "@/lib/domain/entities";
 import React from "react";
 import { Text, View } from "react-native";
 
 export default function Add_perfil() {
+  const [emojis, setEmojis] = React.useState<string>("");
+  const [nombre, setNombre] = React.useState<string>("");
+
   return (
-    <View>
-      <Text>add_perfil</Text>
-    </View>
+    <Screen>
+      <VStack>
+        <Text>add_perfil</Text>
+        <Text>{emojis}</Text>
+        <Input className="mb-4">
+          <InputField
+            placeholder="agrega un emojis"
+            onChangeText={(text) => setEmojis(text)}
+            maxLength={5}
+          />
+        </Input>
+        <Input className="mb-4">
+          <InputField
+            placeholder="agrega un emojis"
+            onChangeText={(text) => setNombre(text)}
+            maxLength={5}
+          />
+        </Input>
+      </VStack>
+    </Screen>
   );
 }

@@ -148,5 +148,11 @@
   "confirmar-eliminar": "Estas apunto de cerrar una transaccion, ¿desea continuar?",
   "cancelar": "Cancelar",
   "eliminar": "Eliminar",
-  "gastos": "Gastos"
+  "gastos": "Gastos",
+  "selecciona-un-perfil": "Agregar Perfil",
+  "nombre": "Nombre",
+  "prestado-a": "Prestado a:",
+  "delete": "Borrar",
+  "error-al-guardar-la-transaccion": "Error al guardar la transacción",
+  "debe-ingresar-un-nombre": "Debe ingresar un nombre"
 }
