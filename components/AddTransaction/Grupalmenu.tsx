@@ -1,75 +1,137 @@
-import { TiposDeTransacciones } from "@/Types/types";
+import type { MyIconos } from "@/Types/types";
+import { CreateProfileModal } from "@/components/CreateProfileModal";
+import { MyIcon } from "@/components/Icons";
 import {
-  Checkbox,
-  CheckboxIcon,
-  CheckboxIndicator,
-  CheckboxLabel,
-  Select,
-  SelectBackdrop,
-  SelectContent,
-  SelectDragIndicator,
-  SelectDragIndicatorWrapper,
-  SelectIcon,
-  SelectInput,
-  SelectItem,
-  SelectPortal,
-  SelectTrigger,
+  Actionsheet,
+  ActionsheetBackdrop,
+  ActionsheetContent,
+  ActionsheetDragIndicator,
+  ActionsheetDragIndicatorWrapper,
+  ActionsheetFlatList,
+  ActionsheetItem,
+  ActionsheetItemText,
+  Avatar,
+  AvatarImage,
+  Pressable,
   Text,
 } from "@/components/ui";
-import { useTransactionToADDState } from "@/lib/store";
-import { router } from "expo-router";
-import { t } from "i18next";
-import { CheckCircle, FilterIcon } from "lucide-react-native";
+import { Perfil } from "@/lib/domain/entities";
+import { usePerfilesStore, useTransactionToADDState } from "@/lib/store";
 import React from "react";
 import { View } from "react-native";
 
 interface Props {}
 
 export const Grupalmenu: React.FC<Props> = () => {
-  const { categoriSelect, setPrestado, perfilesData, loagin, prestado, fetchPerfilesData } =
-    useTransactionToADDState((state) => state);
+  const { categoriSelect, setPrestado, prestado } = useTransactionToADDState((state) => state);
+  const { fetchPerfiles, perfiles } = usePerfilesStore((state) => state);
 
   React.useEffect(() => {
     const fetchData = async () => {
-      await fetchPerfilesData(); //TODO comprobar que al regresar de agregar se actualizen los perfiles
+      await fetchPerfiles(); //TODO comprobar que al regresar de agregar se actualizen los perfiles
     };
     fetchData();
   }, []);
   return (
-    <View className="h-8 w-full flex-row items-center justify-between">
+    <View className="h-10 w-full flex-row items-center justify-between">
       {categoriSelect?.prestamo && (
         <>
           <Text>Prestando a</Text>
-          <Select
-            onValueChange={(index) => {
-              if (index === "agregar_perfil") {
-                router.push("/add_perfil");
-                return;
-              }
-              setPrestado(index);
-            }}
-            defaultValue={prestado?.name ?? "Selecciona un perfil"}
-            isDisabled={loagin}
-            className="flex-row flex-wrap items-end justify-end gap-2">
-            <SelectTrigger>
-              <SelectIcon as={FilterIcon} className="mr-3" />
-              <SelectInput />
-            </SelectTrigger>
-            <SelectPortal>
-              <SelectBackdrop />
-              <SelectContent>
-                <SelectDragIndicatorWrapper>
-                  <SelectDragIndicator />
-                </SelectDragIndicatorWrapper>
-                {perfilesData.map((perfil) => {
-                  return <SelectItem label={perfil.name} value={perfil.id} key={perfil.id} />;
-                })}
-                <SelectItem label="Agregar Perfil" value="agregar_perfil" />
-              </SelectContent>
-            </SelectPortal>
-          </Select>
+          <MySelector idSelected={setPrestado} selected={prestado} name="Perfil" data={perfiles} />
         </>
       )}
     </View>
   );
 };
+
+interface SelectorProps {
+  name: string;
+  icons?: MyIconos;
+  data?: Perfil[];
+  selected?: Perfil | null;
+  idSelected: (id: string) => void;
+}
+const MySelector = React.memo(function MySelector({
+  name,
+  data,
+  idSelected,
+  selected,
+}: SelectorProps) {
+  const [showActionsheet, setShowActionsheet] = React.useState(false);
+  const handleClose = () => setShowActionsheet(false);
+  const [showModal, setShowModal] = React.useState(false);
+  const ref = React.useRef(null);
+
+  return (
+    <>
+      <CreateProfileModal showModal={showModal} setShowModal={setShowModal} ref={ref} />
+      <Pressable
+        className="flex-row items-center justify-center gap-2 overflow-hidden rounded-lg border-2 border-outline-400 px-3 py-1"
+        onPress={() => setShowActionsheet(true)}>
+        {selected?.avatar_url && (
+          <Avatar size="sm">
+            <AvatarImage source={{ uri: selected?.avatar_url }} />
+          </Avatar>
+        )}
+        <Text className="overflow-hidden">{selected ? selected.name : "Sin seleccionar"}</Text>
+      </Pressable>
+      <Actionsheet isOpen={showActionsheet} onClose={handleClose} snapPoints={[50]}>
+        <ActionsheetBackdrop />
+        <ActionsheetContent>
+          <ActionsheetDragIndicatorWrapper>
+            <ActionsheetDragIndicator />
+          </ActionsheetDragIndicatorWrapper>
+          <ActionsheetItem
+            className="flex-row items-center justify-center gap-2 overflow-hidden pb-1"
+            onPress={() => {
+              handleClose();
+              setShowModal(true);
+            }}>
+            <MyIcon name="Plus" color={"black"} />
+            <ActionsheetItemText>Agregar Perfil</ActionsheetItemText>
+          </ActionsheetItem>
+          <ActionsheetFlatList
+            data={data}
+            initialNumToRender={9}
+            renderItem={({ item }: { item: Perfil | any }) => (
+              <Item
+                title={item}
+                key={item?.id}
+                handleClose={() => {
+                  idSelected(item?.id as string);
+                  handleClose();
+                }}
+              />
+            )}
+            keyExtractor={(item) => (item as any).id as string}
+          />
+        </ActionsheetContent>
+      </Actionsheet>
+    </>
+  );
+});
+
+const Item = React.memo(function Item({
+  title,
+  handleClose,
+  key,
+}: {
+  title: Perfil | any;
+  handleClose: () => void;
+  key: number;
+}) {
+  return (
+    <ActionsheetItem
+      key={key}
+      onPress={() => {
+        handleClose();
+      }}>
+      <ActionsheetItemText>
+        <Avatar size="sm">
+          <AvatarImage source={{ uri: title?.avatar_url }} />
+        </Avatar>
+      </ActionsheetItemText>
+      <ActionsheetItemText>{title.name}</ActionsheetItemText>
+    </ActionsheetItem>
+  );
+});

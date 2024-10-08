@@ -2,6 +2,7 @@ import type { TiposDeTransacciones, TransactionTotal, userOwnerID } from "@/Type
 import {
   LOCAL_DB_CATEGORIAS_NAME,
   LOCAL_DB_CUENTAS_NAME,
+  LOCAL_DB_PROFILES_NAME,
   LOCAL_DB_TRANSACCIONES_NAME,
 } from "@/lib/configs/config";
 import { Categoria, Cuenta, Perfil, Transaccion } from "@/lib/domain/entities";
@@ -80,14 +81,42 @@ export class TransaccionLocalRepository implements TransaccionRepositoryI {
     }
   }
   // PERFILS
-  addProfile(data: Perfil): Promise<void> {
-    throw new Error("Method not implemented.");
+  async addProfile(data: Perfil): Promise<void> {
+    try {
+      const db = await openDatabaseAsync(this.dbNAme);
+      const query = `
+        INSERT INTO ${LOCAL_DB_PROFILES_NAME} (id, name, avatar_url, userOwnerID, userReferredID, uptodataBase)
+        VALUES (?, ?, ?, ?, ?, ?);
+      `;
+      await db.runAsync(query, [
+        data.id,
+        data.name,
+        data.avatar_url,
+        data.userOwnerID,
+        data.userReferredID,
+        data.uptodataBase,
+      ]);
+    } catch (error) {
+      throw SQLiteControlError.getError(error);
+    }
   }
   deleteProfile(id: string): Promise<boolean> {
     throw new Error("Method not implemented.");
   }
-  getAllProfileByUserOwnerID(userOwnerID?: userOwnerID): Promise<Perfil[]> {
-    throw new Error("Method not implemented.");
+  async getAllProfileByUserOwnerID(userOwnerID?: userOwnerID): Promise<Perfil[]> {
+    const db = await openDatabaseAsync(this.dbNAme);
+    try {
+      let query = `SELECT * FROM ${LOCAL_DB_PROFILES_NAME} WHERE userOwnerID = ? OR userOwnerID IS "1"`;
+      const params: any[] = [userOwnerID];
+      const results = await db.getAllAsync<Perfil>(query, params);
+      if (results.length === 0) {
+        return [];
+      }
+      const perfiles = results.map((row) => new Perfil(row));
+      return perfiles;
+    } catch (error) {
+      throw SQLiteControlError.getError(error);
+    }
   }
   getProfileByID(id: string): Promise<Perfil> {
     throw new Error("Method not implemented.");
@@ -138,8 +167,8 @@ export class TransaccionLocalRepository implements TransaccionRepositoryI {
     const db = await openDatabaseAsync(this.dbNAme);
     try {
       const query = `
-        INSERT INTO ${LOCAL_DB_TRANSACCIONES_NAME} (id, balance, type, date, description, categoryID, accountID, userOwnerID, prestadoaID)
-        VALUES (?, ?, ?, ?, ?, ?, ?,  ?, ?);
+        INSERT INTO ${LOCAL_DB_TRANSACCIONES_NAME} (id, balance, type, date, description, categoryID, accountID, userOwnerID, prestadoaID, prestadoaName)
+        VALUES (?, ?, ?, ?, ?, ?, ?,  ?, ?, ?);
       `;
       await db.runAsync(query, [
         transaccion.id,
@@ -151,6 +180,7 @@ export class TransaccionLocalRepository implements TransaccionRepositoryI {
         transaccion.accountID,
         transaccion.userOwnerID,
         transaccion.prestadoaID,
+        transaccion.prestadoaName,
       ]);
     } catch (error) {
       throw SQLiteControlError.getError(error);

@@ -14,7 +14,6 @@ interface ITransaccionSate {
   cuentasData: Cuenta[];
   categoriSelect: Categoria | null;
   cuentaSelect: Cuenta | null;
-  perfilesData: Perfil[];
   type: number;
   description: string;
   amount: number;
@@ -25,13 +24,13 @@ interface ITransaccionSate {
   saveTransaction: () => Promise<void>;
   fetchCuentaData: () => void;
   fetchCategoriasData: () => void;
-  fetchPerfilesData: () => void;
   setCategoriaId: (id: Categoria) => void;
   setCuentaId: (id: Cuenta) => void;
   setType: (type: number) => void;
   setAmount: (amount: number | null) => void;
   setDescription: (description: string) => void;
   setDate: (date: Date) => void;
+  reset: () => void;
 }
 
 export const useTransactionToADDState = create<ITransaccionSate>((set, get) => ({
@@ -48,12 +47,13 @@ export const useTransactionToADDState = create<ITransaccionSate>((set, get) => (
   Error: null,
   perfilesData: [],
   setPrestado: (prestado: string | null) => {
-    const { perfilesData } = get();
+    const perfilesData = usePerfilesStore.getState().perfiles;
+
     if (prestado === null) {
       set({ prestado: null });
       return;
     }
-    const newState = perfilesData.filter((c) => c.id !== prestado);
+    const newState = perfilesData.filter((c) => c.id === prestado);
     set({ prestado: newState[0] });
   },
   setCuentaId: (id: Cuenta) => {
@@ -89,17 +89,6 @@ export const useTransactionToADDState = create<ITransaccionSate>((set, get) => (
     }
     set({ loagin: false });
   },
-  fetchPerfilesData: async () => {
-    set({ loagin: true });
-    try {
-      const perfiles = await usePerfilesStore.getState().fetchPerfiles();
-      set({ perfilesData: perfiles, prestado: perfiles[0] });
-    } catch (error) {
-      console.error("Error al guardar la transacción:", error);
-      set({ Error: error as Error });
-    }
-    set({ loagin: false });
-  },
   fetchCategoriasData: async () => {
     const { type } = get();
     set({ loagin: true });
@@ -112,14 +101,14 @@ export const useTransactionToADDState = create<ITransaccionSate>((set, get) => (
     }
     set({ loagin: false });
   },
-  // reset: () => {
-  //   set({
-  //     type: 1,
-  //     description: "",
-  //     amount: 0,
-  //     date: new Date(),
-  //   });
-  // },
+  reset: () => {
+    set({
+      type: 1,
+      description: "",
+      amount: 0,
+      date: new Date(),
+    });
+  },
   saveTransaction: async () => {
     const {
       amount,
@@ -159,11 +148,10 @@ export const useTransactionToADDState = create<ITransaccionSate>((set, get) => (
         uptodataBase: false,
         prestadoaName: prestado?.name ?? "",
       });
-
       await addTransaccion.execute(transaccion);
-      {
-        await useTransaccionesStore.getState().getAllTransaccion();
-      }
+
+      await useTransaccionesStore.getState().getAllTransaccion();
+
       set({ loagin: false });
     } catch (error: any) {
       console.error("Error al guardar la transacción:", error);

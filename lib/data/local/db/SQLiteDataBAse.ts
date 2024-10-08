@@ -59,8 +59,7 @@ async function migrateDbToVersion0(db: SQLiteDatabase) {
       avatar_url TEXT,
       userReferredID TEXT,
       uptodataBase BOOLEAN DEFAULT 0,
-      userOwnerID TEXT,
-      emojis TEXT
+      userOwnerID TEXT
       );`);
 
   await db.execAsync(`  
@@ -106,7 +105,7 @@ async function migrateDbToVersion0(db: SQLiteDatabase) {
     }
 
     if (DEVELOPMENT) {
-      const InsertPerfiles = `INSERT OR REPLACE INTO ${LOCAL_DB_PROFILES_NAME} (id, name, avatar_url, userOwnerID, userReferredID, uptodataBase, emojis) VALUES (?, ?, ?, ?, ?, ?, ?);`;
+      const InsertPerfiles = `INSERT OR REPLACE INTO ${LOCAL_DB_PROFILES_NAME} (id, name, avatar_url, userOwnerID, userReferredID, uptodataBase) VALUES (?, ?, ?, ?, ?, ?);`;
       for (const perfil of DB_PERFILES) {
         await db.runAsync(InsertPerfiles, [
           perfil.id,
@@ -115,7 +114,6 @@ async function migrateDbToVersion0(db: SQLiteDatabase) {
           perfil.userOwnerID,
           perfil.userReferredID,
           perfil.uptodataBase,
-          perfil.emojis,
         ]);
       }
       const InsertTransacciones = `INSERT OR REPLACE INTO ${LOCAL_DB_TRANSACCIONES_NAME} (id, balance, type, date, description, categoryID, accountID, userOwnerID, prestadoaID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`;

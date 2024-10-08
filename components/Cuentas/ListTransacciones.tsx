@@ -1,3 +1,4 @@
+import { Image } from "../ui";
 import {
   Modal,
   ModalBackdrop,
@@ -15,6 +16,7 @@ import { HStack } from "@/components/ui/hstack";
 import { Text } from "@/components/ui/text";
 import { VStack } from "@/components/ui/vstack";
 import { Transaccion } from "@/lib/domain/entities";
+import { usePerfilesStore } from "@/lib/store";
 import { getMes, useTransaccionesStore } from "@/lib/store/TransaccionesStore";
 import { t } from "i18next";
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react-native";
@@ -39,11 +41,11 @@ export const ListTransacciones: React.FC<Props> = () => {
     <>
       <HStack className="w-full items-center justify-between p-1">
         <Button onPress={() => setCurrentMonth(-1)}>
-          <ButtonIcon as={ArrowLeftIcon} stroke="white" size="xl" />
+          <ButtonIcon as={ArrowLeftIcon} size="xl" />
         </Button>
         <DateHeaderTitle date={currentMonth} />
         <Button onPress={() => setCurrentMonth(+1)}>
-          <ButtonIcon as={ArrowRightIcon} stroke="white" size="xl" />
+          <ButtonIcon as={ArrowRightIcon} size="xl" />
         </Button>
       </HStack>
       <SectionList
@@ -56,7 +58,7 @@ export const ListTransacciones: React.FC<Props> = () => {
   );
 };
 
-const DateHeaderTitle = ({ date }: { date: any }) => {
+const DateHeaderTitle = React.memo(({ date }: { date: any }) => {
   const { i18n } = useTranslation();
   const newDate = getMes(date, i18n);
   return (
@@ -64,14 +66,17 @@ const DateHeaderTitle = ({ date }: { date: any }) => {
       <Heading>{newDate}</Heading>
     </VStack>
   );
-};
+});
 
 interface ItemProps {
   item: Transaccion;
 }
-export const AccordingItem = ({ item }: ItemProps) => {
+export const AccordingItem = React.memo(({ item }: ItemProps) => {
   const { deleteTransaccion, loading } = useTransaccionesStore((state) => state);
   const [showModal, setShowModal] = React.useState(false);
+  const { getProfileByID } = usePerfilesStore((state) => state);
+  const perfil = getProfileByID(item.prestadoaID);
+  console.log(perfil);
   const ref = React.useRef(null);
   const bgColor = () => {
     switch (item.type) {
@@ -129,6 +134,17 @@ export const AccordingItem = ({ item }: ItemProps) => {
         <AvatarFallbackText className="text-white">{item.type}</AvatarFallbackText>
       </Avatar>
       <VStack className="ml-4 flex-1">
+        {perfil && (
+          <HStack className="items-center gap-2">
+            <Text className="text-typography-500">{t("prestado-a") + perfil.name}</Text>
+            <Image
+              source={{ uri: perfil.avatar_url }}
+              className="h-10 w-10 rounded-full"
+              alt={perfil.avatar_url + "iamge"}
+            />
+          </HStack>
+        )}
+        <Heading size="sm">{item.description}</Heading>
         <Heading size="sm">{item.description}</Heading>
         <Text className="text-typography-500">{item.description}</Text>
         <Text className="text-typography-500">
@@ -142,11 +158,11 @@ export const AccordingItem = ({ item }: ItemProps) => {
         value={item.balance}
       />
       <Pressable className="mr-4 p-2" onPress={onDelete}>
-        <Text>Delete</Text>
+        <Text>{t("delete")}</Text>
       </Pressable>
     </Card>
   );
-};
+});
 
 export const DateHeader = ({ date }: { date: any }) => {
   return (
