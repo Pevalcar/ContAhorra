@@ -1,8 +1,7 @@
 import { Screen } from "@/components/Screen";
 import { Input, InputField, VStack } from "@/components/ui";
-import { Perfil } from "@/lib/domain/entities";
 import React from "react";
-import { Text, View } from "react-native";
+import { Text } from "react-native";
 
 export default function Add_perfil() {
   const [emojis, setEmojis] = React.useState<string>("");
