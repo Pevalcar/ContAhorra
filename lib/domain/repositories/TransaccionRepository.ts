@@ -1,5 +1,5 @@
 import type { TiposDeTransacciones, TransactionTotal, userOwnerID } from "@/Types/types";
-import { Categoria, Cuenta, Perfil, Transaccion } from "@/lib/domain/entities";
+import { Categoria, Cuenta, Group, Perfil, Transaccion } from "@/lib/domain/entities";
 
 export default class TransaccionRepositoryI {
   addTransaction(data: Transaccion): Promise<void> {
@@ -84,6 +84,22 @@ export default class TransaccionRepositoryI {
     throw new Error("Method not implemented.");
   }
   getProfileByID(id: string): Promise<Perfil> {
+    throw new Error("Method not implemented.");
+  }
+
+  //Groups
+  addGroup(data: Group): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+  updateGroup(data: Group): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+
+  deleteGroup(id: string): Promise<boolean> {
+    throw new Error("Method not implemented.");
+  }
+
+  getAllGroup(userOwnerID?: userOwnerID): Promise<Group[]> {
     throw new Error("Method not implemented.");
   }
 }

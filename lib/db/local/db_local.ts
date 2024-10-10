@@ -1,4 +1,4 @@
-import { Categoria, Cuenta, Perfil, Transaccion } from "@/lib/domain/entities";
+import { Categoria, Cuenta, Group, Perfil, Transaccion } from "@/lib/domain/entities";
 
 const DB_Transacciones: Transaccion[] = [
   new Transaccion({
@@ -56,7 +56,7 @@ const DB_Transacciones: Transaccion[] = [
     date: 1729468800, // 20 de octubre de 2024
     description: "Pago de préstamo personal",
     categoryID: "6",
-    accountID: "3",
+    accountID: "1",
   }),
   new Transaccion({
     id: "7",
@@ -65,7 +65,7 @@ const DB_Transacciones: Transaccion[] = [
     date: 1729468800, // 20 de octubre de 2024 (repetido)
     description: "Pago inicial de préstamo automotriz",
     categoryID: "6",
-    accountID: "3",
+    accountID: "1",
   }),
   new Transaccion({
     id: "8",
@@ -74,7 +74,7 @@ const DB_Transacciones: Transaccion[] = [
     date: 1729900800, // 25 de octubre de 2024
     description: "Pago mensual de préstamo estudiantil",
     categoryID: "6",
-    accountID: "4",
+    accountID: "2",
   }),
   new Transaccion({
     id: "9",
@@ -83,7 +83,7 @@ const DB_Transacciones: Transaccion[] = [
     date: 1730332800, // 28 de octubre de 2024
     description: "Pago mensual de préstamo hipotecario",
     categoryID: "6",
-    accountID: "4",
+    accountID: "2",
   }),
   new Transaccion({
     id: "10",
@@ -92,16 +92,29 @@ const DB_Transacciones: Transaccion[] = [
     date: 1730332800, // 28 de octubre de 2024 (repetido)
     description: "Pago mensual de préstamo hipotecario",
     categoryID: "6",
-    accountID: "4",
+    accountID: "2",
   }),
   new Transaccion({
     id: "11",
     balance: 12000,
-    type: "Gasto",
+    type: "Transferencia",
+    date: 1728104400, // 28 de octubre de 2024 (repetido)
+    description: "Pago mensual de préstamo hipotecario pago",
+    categoryID: "8",
+    pago: true,
+    accountID: "2",
+  }),
+  new Transaccion({
+    id: "19",
+    balance: 12000,
+    type: "Transferencia",
     date: 1728104400, // 28 de octubre de 2024 (repetido)
     description: "Pago mensual de préstamo hipotecario",
-    categoryID: "6",
-    accountID: "4",
+    categoryID: "8",
+    prestadoaID: "1",
+    prestadoaName: "Andry",
+    pago: true,
+    accountID: "2",
   }),
   new Transaccion({
     id: "12",
@@ -110,7 +123,7 @@ const DB_Transacciones: Transaccion[] = [
     date: 1733374800, // 28 de octubre de 2024 (repetido)
     description: "Pago mensual de préstamo hipotecario",
     categoryID: "6",
-    accountID: "4",
+    accountID: "2",
   }),
   new Transaccion({
     id: "15",
@@ -119,7 +132,7 @@ const DB_Transacciones: Transaccion[] = [
     date: 1728104400, // 28 de octubre de 2024 (repetido)
     description: "Pago mensual de préstamo hipotecario",
     categoryID: "6",
-    accountID: "4",
+    accountID: "2",
   }),
 ];
 
@@ -233,7 +246,7 @@ const DB_Cuentas: Cuenta[] = [
   }),
 ];
 
-export const DB_PERFILES: Perfil[] = [
+const DB_PERFILES: Perfil[] = [
   new Perfil({
     id: "1",
     name: "Andry",
@@ -260,4 +273,43 @@ export const DB_PERFILES: Perfil[] = [
   }),
 ];
 
-export { DB_Transacciones, DB_Categorias, DB_Cuentas };
+const DB_Groups: Group[] = [
+  new Group({
+    id: "1",
+    name: "Grupo 1",
+    icon: "Home",
+    userOwnerID: "1",
+    uptodataBase: false,
+    usersIdInGroup: ["1", "2", "3"],
+    color: "white",
+  }),
+  new Group({
+    id: "2",
+    name: "Grupo 2",
+    icon: "Home",
+    userOwnerID: "1",
+    uptodataBase: false,
+    usersIdInGroup: ["1", "3"],
+    color: "white",
+  }),
+  new Group({
+    id: "3",
+    name: "Grupo 3",
+    icon: "Home",
+    userOwnerID: "1",
+    uptodataBase: false,
+    usersIdInGroup: ["1", "2"],
+    color: "purple",
+  }),
+  new Group({
+    id: "4",
+    name: "Grupo 4",
+    icon: "Home",
+    userOwnerID: "1",
+    uptodataBase: false,
+    usersIdInGroup: ["3"],
+    color: "blue",
+  }),
+];
+
+export { DB_Transacciones, DB_Categorias, DB_Cuentas, DB_PERFILES, DB_Groups };

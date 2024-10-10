@@ -1,4 +1,4 @@
-import User from "../entities/User";
+import { User } from "@/lib/domain/entities";
 
 export default class AuthRepositoryI {
   login(email: string, password: string): Promise<User | null> {
