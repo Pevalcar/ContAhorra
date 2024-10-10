@@ -85,7 +85,7 @@ export default function SummaryChart() {
         strftime('%w', date , 'unixepoch') AS day_of_week, -- convert date to day of week %m 
         SUM(balance) as total -- sum balance by day of week
         FROM ${LOCAL_DB_TRANSACCIONES_NAME}
-        WHERE  date >= ? 
+        WHERE  date  BETWEEN ? AND ? And type = ?
         GROUP BY day_of_week
         ORDER BY day_of_week ASC        
     `;
@@ -103,7 +103,7 @@ export default function SummaryChart() {
         day_of_week: number;
         total: number;
       }>(query, [startDate, endDate, type]);
-      // console.log(" result ", result, "props " + [startDate, endDate, type], result);
+      console.log(" result ", result, "props " + [startDate, endDate, type], result);
 
       // Convert day_of_week (0-6) to match days array index (1-7)
       const formattedResult = result.map((item) => {

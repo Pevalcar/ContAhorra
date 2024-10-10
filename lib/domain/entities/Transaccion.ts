@@ -12,6 +12,7 @@ export class Transaccion {
   prestadoaName: string;
   prestadoaID: string;
   userOwnerID: userOwnerID;
+  pago: boolean;
 
   constructor(params: {
     id: string;
@@ -24,6 +25,7 @@ export class Transaccion {
     userOwnerID?: userOwnerID;
     prestadoaID?: string;
     uptodataBase?: boolean;
+    pago?: boolean;
     prestadoaName?: string;
   }) {
     this.id = params.id;
@@ -36,6 +38,24 @@ export class Transaccion {
     this.userOwnerID = params.userOwnerID ?? "1";
     this.prestadoaID = params.prestadoaID ?? "";
     this.uptodataBase = params.uptodataBase ?? false;
+    this.pago = params.pago ?? false;
     this.prestadoaName = params.prestadoaName ?? "";
+  }
+
+  static FromSQLite(params: any) {
+    return new Transaccion({
+      id: params.id,
+      balance: params.balance,
+      type: params.type,
+      date: params.date,
+      description: params.description,
+      categoryID: params.categoryID,
+      accountID: params.accountID,
+      userOwnerID: params.userOwnerID,
+      prestadoaID: params.prestadoaID,
+      uptodataBase: params.uptodataBase === 1,
+      pago: params.pago === 1,
+      prestadoaName: params.prestadoaName,
+    });
   }
 }

@@ -26,7 +26,7 @@ export default function Index() {
         <ListTransacciones />
         <Button
           size="xl"
-          className="absolute bottom-4 right-4 m-11 h-16 w-16 rounded-full p-3.5"
+          className="absolute bottom-4 right-4 m-4 h-16 w-16 rounded-full p-3.5"
           style={styles.shadow}
           onPress={() => {
             router.push("/add_tansaction");

@@ -3,10 +3,17 @@ import {
   DEVELOPMENT,
   LOCAL_DB_CATEGORIAS_NAME,
   LOCAL_DB_CUENTAS_NAME,
+  LOCAL_DB_GRUPS_NAME,
   LOCAL_DB_PROFILES_NAME,
   LOCAL_DB_TRANSACCIONES_NAME,
 } from "@/lib/configs/config";
-import { DB_Categorias, DB_Cuentas, DB_PERFILES, DB_Transacciones } from "@/lib/db/local/db_local";
+import {
+  DB_Categorias,
+  DB_Cuentas,
+  DB_Groups,
+  DB_PERFILES,
+  DB_Transacciones,
+} from "@/lib/db/local/db_local";
 import { SQLiteControlError } from "@/lib/domain/error/SqlControlError";
 import { SQLiteDatabase } from "expo-sqlite";
 
@@ -40,7 +47,8 @@ async function migrateDbToVersion0(db: SQLiteDatabase) {
       type TEXT NOT NULL CHECK( type IN ('Gasto','Ingreso' ,'Transferencia') ),
       prestamo BOOLEAN DEFAULT 0,
       uptodataBase BOOLEAN DEFAULT 0,
-      userOwnerID TEXT
+      userOwnerID TEXT,
+      color TEXT NULL
       );`);
 
   await db.execAsync(`
@@ -50,7 +58,8 @@ async function migrateDbToVersion0(db: SQLiteDatabase) {
       icon TEXT NOT NULL,
       uptodataBase BOOLEAN DEFAULT 0,
       grupal BOOLEAN DEFAULT 0,
-      userOwnerID TEXT
+      userOwnerID TEXT,
+      color TEXT NULL
       );`);
   await db.execAsync(`
       CREATE TABLE IF NOT EXISTS ${LOCAL_DB_PROFILES_NAME} (
@@ -59,7 +68,19 @@ async function migrateDbToVersion0(db: SQLiteDatabase) {
       avatar_url TEXT,
       userReferredID TEXT,
       uptodataBase BOOLEAN DEFAULT 0,
-      userOwnerID TEXT
+      userOwnerID TEXT,
+      color TEXT NULL
+      );`);
+
+  await db.execAsync(`
+      CREATE TABLE IF NOT EXISTS ${LOCAL_DB_GRUPS_NAME} (
+      id TEXT PRIMARY KEY NOT NULL UNIQUE ,
+      name TEXT NOT NULL,
+      icon TEXT NOT NULL,
+      userOwnerID TEXT,
+      uptodataBase BOOLEAN DEFAULT 0,
+      usersIdInGroup TEXT,
+      color TEXT NULL
       );`);
 
   await db.execAsync(`  
@@ -72,6 +93,7 @@ async function migrateDbToVersion0(db: SQLiteDatabase) {
       categoryID TEXT NOT NULL,
       accountID TEXT NOT NULL,
       uptodataBase BOOLEAN DEFAULT 0,
+      pago BOOLEAN DEFAULT 0,
       prestadoaName TEXT,
       prestadoaID TEXT,
       userOwnerID TEXT,
@@ -79,26 +101,27 @@ async function migrateDbToVersion0(db: SQLiteDatabase) {
       FOREIGN KEY(categoryID) REFERENCES ${LOCAL_DB_CATEGORIAS_NAME}(id) ON DELETE CASCADE,
       FOREIGN KEY(accountID) REFERENCES ${LOCAL_DB_CUENTAS_NAME}(id) ON DELETE CASCADE);`); //    userOwnerID TEXT,
   await db.withTransactionAsync(async () => {
-    const InsertCategories = `INSERT OR REPLACE INTO ${LOCAL_DB_CATEGORIAS_NAME} ( id, name, icon, type, uptodataBase, userOwnerID , prestamo) VALUES (?, ?, ?, ?, ?, ?, ?);`;
+    const InsertCategories = `INSERT OR REPLACE INTO ${LOCAL_DB_CATEGORIAS_NAME} ( id, name, icon, type, uptodataBase, userOwnerID , prestamo, color) VALUES (?, ?, ?, ?, ?, ?, ? , ?);`;
     for (const category of DB_Categorias) {
       await db.runAsync(InsertCategories, [
         category.id,
         category.name,
         category.icon,
         category.type,
-        category.uptodataBase,
+        category.uptodataBase ? 1 : 0,
         category.userOwnerID,
         category.prestamo,
+        category.color,
       ]);
     }
 
-    const InsertAccounts = `INSERT OR REPLACE INTO ${LOCAL_DB_CUENTAS_NAME} (id, name, icon, uptodataBase, userOwnerID, grupal) VALUES (?, ?, ?, ?, ?, ?);`;
+    const InsertAccounts = `INSERT OR REPLACE INTO ${LOCAL_DB_CUENTAS_NAME} (id, name, icon, uptodataBase, userOwnerID, grupal , color) VALUES (?, ?, ?, ?, ?, ?, ?);`;
     for (const account of DB_Cuentas) {
       await db.runAsync(InsertAccounts, [
         account.id,
         account.name,
         account.icon,
-        account.uptodataBase,
+        account.uptodataBase ? 1 : 0,
         account.userOwnerID,
         account.grupal,
       ]);
@@ -113,25 +136,54 @@ async function migrateDbToVersion0(db: SQLiteDatabase) {
           perfil.avatar_url,
           perfil.userOwnerID,
           perfil.userReferredID,
-          perfil.uptodataBase,
+          perfil.uptodataBase ? 1 : 0,
         ]);
       }
-      const InsertTransacciones = `INSERT OR REPLACE INTO ${LOCAL_DB_TRANSACCIONES_NAME} (id, balance, type, date, description, categoryID, accountID, userOwnerID, prestadoaID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`;
+      const InsertTransacciones = `INSERT OR REPLACE INTO ${LOCAL_DB_TRANSACCIONES_NAME} (
+      id,
+      balance,
+      type,
+      date,
+      description,
+      categoryID,
+      accountID,
+      userOwnerID,
+      prestadoaID,
+      prestadoaName,
+      pago,
+      uptodataBase
+
+         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
       await db.withExclusiveTransactionAsync(async () => {
         for (const account of DB_Transacciones) {
           await db.runAsync(InsertTransacciones, [
-            account.id,
-            account.balance,
-            account.type,
-            account.date,
-            account.description,
-            account.categoryID,
-            account.accountID,
-            account.userOwnerID,
-            account.prestadoaID,
+            account.id, // id
+            account.balance, // balance
+            account.type, // type
+            account.date, // date
+            account.description, // description
+            account.categoryID, // categoryID
+            account.accountID, // accountID
+            account.userOwnerID, // userOwnerID
+            account.prestadoaID, // prestadoaID
+            account.prestadoaName, // prestadoaName
+            account.pago ? 1 : 0, // pago
+            account.uptodataBase ? 1 : 0, // uptodataBase
           ]);
         }
       });
+      const InsertGrups = `INSERT OR REPLACE INTO ${LOCAL_DB_GRUPS_NAME} (id, name, icon, userOwnerID, uptodataBase, usersIdInGroup, color) VALUES (?, ?, ?, ?, ?, ?, ?);`;
+      for (const grupo of DB_Groups) {
+        await db.runAsync(InsertGrups, [
+          grupo.id,
+          grupo.name,
+          grupo.icon,
+          grupo.userOwnerID,
+          grupo.uptodataBase,
+          grupo.usersIdInGroup.join(","),
+          grupo.color,
+        ]);
+      }
     }
   });
 

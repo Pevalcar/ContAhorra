@@ -40,12 +40,21 @@ interface ICuentasStore {
   addCuenta: (data: Cuenta) => void;
   deleteCuenta: (id: string) => void;
   updateCuenta: (data: Cuenta) => void;
+  getCuentaByID: (id: string) => Cuenta | null;
 }
 
 export const useCuentasStore = create<ICuentasStore>((set, get) => ({
   cuentas: initialState,
   loagin: false,
   Error: null,
+  getCuentaByID(id) {
+    const { cuentas } = get();
+    const cuenta = cuentas.find((c) => c.id === id);
+    if (cuenta) {
+      return cuenta;
+    }
+    return null;
+  },
   fetchCuentas: async () => {
     set({ loagin: true });
     try {
