@@ -13,6 +13,12 @@ import {
   VerificationUseCase,
 } from "@/lib/domain/usecases/Auth";
 import {
+  AddGoupUseCase,
+  DeleteGoupUseCase,
+  GetAllGoupUseCase,
+  UpdateGoupUseCase,
+} from "@/lib/domain/usecases/Groups";
+import {
   AddAccountUseCase,
   AddCategoryUseCase,
   AddProfileUseCase,
@@ -56,40 +62,52 @@ const fetchUser = new FetchUserUseCase(AuthRepository);
 
 //Container db
 const DBRepositoryLocal = new TransaccionLocalRepository(LOCAL_DB_NAME);
+const DBReposirotyRemote = new TransaccionLocalRepository(LOCAL_DB_NAME);
 
-const addTransaccion = new AddTransaccionUseCase(DBRepositoryLocal, DBRepositoryLocal);
-const deleteTransaccion = new DeleteTransaccionUseCase(DBRepositoryLocal, DBRepositoryLocal);
-const getAllTransaccion = new GetAllUseCase(DBRepositoryLocal, DBRepositoryLocal);
+const addTransaccion = new AddTransaccionUseCase(DBRepositoryLocal, DBReposirotyRemote);
+const deleteTransaccion = new DeleteTransaccionUseCase(DBRepositoryLocal, DBReposirotyRemote);
+const getAllTransaccion = new GetAllUseCase(DBRepositoryLocal, DBReposirotyRemote);
 const getTransactionsByDateRang = new GetTransactionsByDateRangeUseCase(
   DBRepositoryLocal,
-  DBRepositoryLocal,
+  DBReposirotyRemote,
 );
-const updateTransaccion = new UpdateTransaccionsUseCase(DBRepositoryLocal, DBRepositoryLocal);
+const updateTransaccion = new UpdateTransaccionsUseCase(DBRepositoryLocal, DBReposirotyRemote);
 const getTotalTransactionByDateRange = new GetTotalTransactionsByDateRangeUseCase(
   DBRepositoryLocal,
-  DBRepositoryLocal,
+  DBReposirotyRemote,
 );
 
-const getAllCategory = new GetAllCategoryUseCase(DBRepositoryLocal, DBRepositoryLocal);
-const addCategory = new AddCategoryUseCase(DBRepositoryLocal, DBRepositoryLocal);
-const updateCategory = new UpdateCategoryUseCase(DBRepositoryLocal, DBRepositoryLocal);
-const deleteCategory = new DeleteCategoryUseCase(DBRepositoryLocal, DBRepositoryLocal);
+const getAllCategory = new GetAllCategoryUseCase(DBRepositoryLocal, DBReposirotyRemote);
+const addCategory = new AddCategoryUseCase(DBRepositoryLocal, DBReposirotyRemote);
+const updateCategory = new UpdateCategoryUseCase(DBRepositoryLocal, DBReposirotyRemote);
+const deleteCategory = new DeleteCategoryUseCase(DBRepositoryLocal, DBReposirotyRemote);
 
-const getAllAccount = new GetAllAccountUseCase(DBRepositoryLocal, DBRepositoryLocal);
-const addAccount = new AddAccountUseCase(DBRepositoryLocal, DBRepositoryLocal);
-const updateAccount = new UpdateAccountUseCase(DBRepositoryLocal, DBRepositoryLocal);
-const deleteAccount = new DeleteAccountUseCase(DBRepositoryLocal, DBRepositoryLocal);
+const getAllAccount = new GetAllAccountUseCase(DBRepositoryLocal, DBReposirotyRemote);
+const addAccount = new AddAccountUseCase(DBRepositoryLocal, DBReposirotyRemote);
+const updateAccount = new UpdateAccountUseCase(DBRepositoryLocal, DBReposirotyRemote);
+const deleteAccount = new DeleteAccountUseCase(DBRepositoryLocal, DBReposirotyRemote);
 
 const getAllProfileByUserOwnerID = new GetAllProfileByUserOwnerIDUseCase(
   DBRepositoryLocal,
-  DBRepositoryLocal,
+  DBReposirotyRemote,
 );
-const getProfileByID = new GetProfileByIDUseCase(DBRepositoryLocal, DBRepositoryLocal);
-const addProfile = new AddProfileUseCase(DBRepositoryLocal, DBRepositoryLocal);
-const updateProfile = new updateProfileDBUseCase(DBRepositoryLocal, DBRepositoryLocal);
-const deleteProfile = new DeleteProfileUseCase(DBRepositoryLocal, DBRepositoryLocal);
+const getProfileByID = new GetProfileByIDUseCase(DBRepositoryLocal, DBReposirotyRemote);
+const addProfile = new AddProfileUseCase(DBRepositoryLocal, DBReposirotyRemote);
+const updateProfile = new updateProfileDBUseCase(DBRepositoryLocal, DBReposirotyRemote);
+const deleteProfile = new DeleteProfileUseCase(DBRepositoryLocal, DBReposirotyRemote);
+
+//Groups
+
+const getAllGroup = new GetAllGoupUseCase(DBRepositoryLocal, DBReposirotyRemote);
+const addGroup = new AddGoupUseCase(DBRepositoryLocal, DBReposirotyRemote);
+const updateGroup = new UpdateGoupUseCase(DBRepositoryLocal, DBReposirotyRemote);
+const deleteGroup = new DeleteGoupUseCase(DBRepositoryLocal, DBReposirotyRemote);
 
 export {
+  getAllGroup,
+  addGroup,
+  updateGroup,
+  deleteGroup,
   addTransaccion,
   deleteTransaccion,
   fetchUser,
