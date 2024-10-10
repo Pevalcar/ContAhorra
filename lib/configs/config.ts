@@ -9,6 +9,7 @@ export const LOCAL_DB_TRANSACCIONES_NAME = "transacciones";
 export const LOCAL_DB_CUENTAS_NAME = "accounts";
 export const LOCAL_DB_PROFILES_NAME = "profiles";
 export const LOCAL_DB_CATEGORIAS_NAME = "categories";
+export const LOCAL_DB_GRUPS_NAME = "grupos";
 export const DEFAULT_STATE: Transaccion[] = DB_Transacciones;
 export const DEFAULT_STATE_CATEGORIAS: Categoria[] = DB_Categorias;
 export const DEFAULT_STATE_CUENTAS: Cuenta[] = DB_Cuentas;

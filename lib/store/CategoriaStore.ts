@@ -39,12 +39,21 @@ interface ICategoriaStore {
   addCategoria: (data: Categoria) => void;
   deleteCategoria: (id: string) => void;
   updateCategoria: (data: Categoria) => void;
+  getCategoryByID: (id: string) => Categoria | null;
 }
 
 export const useCategoriaStore = create<ICategoriaStore>((set, get) => ({
   categorias: initialState,
   loagin: false,
   Error: null,
+  getCategoryByID(id: string) {
+    const { categorias } = get();
+    const categoriase = categorias.find((c) => c.id === id);
+    if (categoriase) {
+      return categoriase;
+    }
+    return null;
+  },
   fetchCategorias: async (type: TiposDeTransacciones) => {
     set({ loagin: true });
     try {

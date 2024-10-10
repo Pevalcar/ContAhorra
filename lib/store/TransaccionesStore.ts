@@ -5,6 +5,7 @@ import {
   deleteTransaccion,
   getTotalTransactionByDateRange,
   getTransactionsByDateRang,
+  updateTransaccion,
 } from "@/lib/core/di/Container";
 import { Transaccion } from "@/lib/domain/entities";
 import { create } from "zustand";
@@ -38,6 +39,7 @@ interface ITransaccionesStore {
   };
   loading: boolean;
   filter: TiposDeTransacciones | null;
+  updatePago: (id: string) => void;
   setCurrentMonth: (mount: number) => void;
   setFilter: (filter: TiposDeTransacciones | null) => void;
   getTotalTransaction: () => void;
@@ -55,6 +57,21 @@ export const useTransaccionesStore = create<ITransaccionesStore>((set, get) => (
   endDate: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1),
   loading: false,
   filter: null,
+  updatePago: async (id: string) => {
+    const { transacciones, getAllTransaccion } = get();
+    const index = transacciones.filter((transaccion) => transaccion.id === id);
+    index[0].pago = !index[0].pago;
+
+    try {
+      set({ loading: true });
+      await updateTransaccion.execute(index[0]);
+      await getAllTransaccion();
+    } catch (e) {
+      console.error("Error al guardar la transacción:", e);
+      set({ loading: false });
+      throw e;
+    }
+  },
   setFilter: async (filter) => {
     set({ filter: filter, loading: true });
     await get().getAllTransaccion();
@@ -94,7 +111,7 @@ export const useTransaccionesStore = create<ITransaccionesStore>((set, get) => (
       const newState = sortByDate(transacciones);
       set({ transacciones: transacciones, transaccionesByMonth: newState, loading: false });
     } catch (e) {
-      console.error("Error al guardar la transacción:", e);
+      console.error("Error al optener transacciones:", e);
       set({ loading: false });
       throw e;
     }

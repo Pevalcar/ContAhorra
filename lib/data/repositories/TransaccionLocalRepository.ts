@@ -2,10 +2,11 @@ import type { TiposDeTransacciones, TransactionTotal, userOwnerID } from "@/Type
 import {
   LOCAL_DB_CATEGORIAS_NAME,
   LOCAL_DB_CUENTAS_NAME,
+  LOCAL_DB_GRUPS_NAME,
   LOCAL_DB_PROFILES_NAME,
   LOCAL_DB_TRANSACCIONES_NAME,
 } from "@/lib/configs/config";
-import { Categoria, Cuenta, Perfil, Transaccion } from "@/lib/domain/entities";
+import { Categoria, Cuenta, Group, Perfil, Transaccion } from "@/lib/domain/entities";
 import { SQLiteControlError } from "@/lib/domain/error/SqlControlError";
 import TransaccionRepositoryI from "@/lib/domain/repositories/TransaccionRepository";
 import { openDatabaseAsync } from "expo-sqlite";
@@ -15,6 +16,43 @@ export class TransaccionLocalRepository implements TransaccionRepositoryI {
 
   constructor(db: string) {
     this.dbNAme = db;
+  }
+  addGroup(data: Group): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+  updateGroup(data: Group): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+  deleteGroup(id: string): Promise<boolean> {
+    throw new Error("Method not implemented.");
+  }
+  async getAllGroup(userOwnerID?: userOwnerID): Promise<Group[]> {
+    try {
+      const db = await openDatabaseAsync(this.dbNAme);
+
+      let query = `SELECT * FROM ${LOCAL_DB_GRUPS_NAME} WHERE userOwnerID = ? OR userOwnerID IS "1"`;
+      const params: any[] = [userOwnerID];
+      const results = await db.getAllAsync<Group>(query, params);
+      if (results.length === 0) {
+        return [];
+      }
+      const grupos = results.map((row) => {
+        //@ts-ignore
+        const usersIdInGroup = row.usersIdInGroup.split(",");
+        return new Group({
+          id: row.id,
+          name: row.name,
+          icon: row.icon,
+          userOwnerID: row.userOwnerID,
+          uptodataBase: row.uptodataBase,
+          usersIdInGroup: usersIdInGroup,
+          color: row.color,
+        });
+      });
+      return grupos;
+    } catch (error) {
+      throw SQLiteControlError.getError(error);
+    }
   }
   updateProfile(data: Perfil): Promise<void> {
     throw new Error("Method not implemented.");
@@ -157,7 +195,9 @@ export class TransaccionLocalRepository implements TransaccionRepositoryI {
 
       const results = await db.getAllAsync<Transaccion>(query, params);
 
-      return results.map((row) => new Transaccion(row));
+      return results.map((row) => {
+        return Transaccion.FromSQLite(row);
+      });
     } catch (error) {
       throw SQLiteControlError.getError(error);
     }
@@ -167,20 +207,35 @@ export class TransaccionLocalRepository implements TransaccionRepositoryI {
     const db = await openDatabaseAsync(this.dbNAme);
     try {
       const query = `
-        INSERT INTO ${LOCAL_DB_TRANSACCIONES_NAME} (id, balance, type, date, description, categoryID, accountID, userOwnerID, prestadoaID, prestadoaName)
-        VALUES (?, ?, ?, ?, ?, ?, ?,  ?, ?, ?);
+        INSERT INTO ${LOCAL_DB_TRANSACCIONES_NAME} (
+        id,
+        balance,
+        type,
+        date,
+        description,
+        categoryID,
+        accountID,
+        userOwnerID,
+        prestadoaID,
+        prestadoaName,
+        pago,
+        uptodataBase
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?,  ?, ?, ?, ?, ?);
       `;
       await db.runAsync(query, [
-        transaccion.id,
-        transaccion.balance,
-        transaccion.type,
-        transaccion.date,
-        transaccion.description,
-        transaccion.categoryID,
-        transaccion.accountID,
-        transaccion.userOwnerID,
-        transaccion.prestadoaID,
-        transaccion.prestadoaName,
+        transaccion.id, // id
+        transaccion.balance, // balance
+        transaccion.type, // type
+        transaccion.date, // date
+        transaccion.description, // description
+        transaccion.categoryID, // categoryID
+        transaccion.accountID, // accountID
+        transaccion.userOwnerID, // userOwnerID
+        transaccion.prestadoaID, // prestadoaID
+        transaccion.prestadoaName, // prestadoaName
+        transaccion.pago ? 1 : 0, // pago
+        transaccion.uptodataBase ? 1 : 0, // uptodataBase
       ]);
     } catch (error) {
       throw SQLiteControlError.getError(error);
@@ -211,7 +266,17 @@ export class TransaccionLocalRepository implements TransaccionRepositoryI {
     const db = await openDatabaseAsync(this.dbNAme);
     const query = `
       UPDATE ${LOCAL_DB_TRANSACCIONES_NAME}
-      SET  balance = ?, type = ?, date = ?, description = ?, categoryID = ?, accountID = ?, userOwnerID = ?, prestadoaID = ?
+      SET  
+      balance = ?, 
+      type = ?, 
+      date = ?, 
+      description = ?, 
+      categoryID = ?, 
+      accountID = ?, 
+      userOwnerID = ?, 
+      prestadoaID = ?,
+      pago = ?,
+      uptodataBase = ?
       WHERE id = ?
     `;
     try {
@@ -224,6 +289,8 @@ export class TransaccionLocalRepository implements TransaccionRepositoryI {
         transaccion.accountID,
         transaccion.userOwnerID,
         transaccion.prestadoaID,
+        transaccion.pago ? 1 : 0,
+        transaccion.uptodataBase ? 1 : 0,
         transaccion.id,
       ]);
     } catch (error) {

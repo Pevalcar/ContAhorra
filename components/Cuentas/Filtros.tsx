@@ -49,7 +49,6 @@ export const Filtros: React.FC<Props> = () => {
             <SelectItem label="Gasto" value="Gasto" />
             <SelectItem label="Ingreso" value="Ingreso" />
             <SelectItem label="Transferencia" value="Transferencia" />
-            <SelectItem label="Préstamo" value="Préstamo" />
           </SelectContent>
         </SelectPortal>
       </Select>

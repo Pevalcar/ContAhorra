@@ -69,6 +69,7 @@ export function Content() {
   const [transactionsByMonth, setTransactionsByMonth] = React.useState<TransactionTotal>({
     totalExpenses: 0,
     totalIncome: 0,
+    totalTransfer: 0,
   });
 
   async function getData() {
@@ -109,7 +110,6 @@ export function Content() {
     const dateTimestamp = Math.floor(date.getTime() / 1000);
     const transaction = new Transaccion({
       id: UUID,
-      title: "hello",
       balance: 6000,
       type: "Ingreso",
       date: dateTimestamp,
@@ -118,7 +118,6 @@ export function Content() {
       accountID: "2",
     });
     await db.withTransactionAsync(async () => {
-      //TODO sacar esto al zustand
       await addTransaccion(transaction);
       await getData();
     });
@@ -161,7 +160,7 @@ export function Content() {
               <AvatarFallbackText className="text-white">{item.type}</AvatarFallbackText>
             </Avatar>
             <VStack className="ml-4 flex-1">
-              <Heading size="sm">{item.title}</Heading>
+              <Heading size="sm">{item.description}</Heading>
               <Text className="text-typography-500">{item.description}</Text>
               <Text className="text-typography-500">{item.type}</Text>
               <Text className="text-typography-500">

@@ -114,18 +114,17 @@ const MySelector = React.memo(function MySelector({
 const Item = React.memo(function Item({
   title,
   handleClose,
-  key,
+  ...props
 }: {
   title: Perfil | any;
   handleClose: () => void;
-  key: number;
 }) {
   return (
     <ActionsheetItem
-      key={key}
       onPress={() => {
         handleClose();
-      }}>
+      }}
+      {...props}>
       <ActionsheetItemText>
         <Avatar size="sm">
           <AvatarImage source={{ uri: title?.avatar_url }} />

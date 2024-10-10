@@ -7,6 +7,7 @@ export class Categoria {
   type: TiposDeTransacciones;
   prestamo: boolean;
   userOwnerID: userOwnerID;
+  color: string;
   uptodataBase: boolean;
 
   constructor(params: {
@@ -17,6 +18,7 @@ export class Categoria {
     type: TiposDeTransacciones;
     prestamo?: boolean;
     uptodataBase: boolean;
+    color?: string;
   }) {
     this.id = params.id ?? "";
     this.name = params.name;
@@ -25,5 +27,6 @@ export class Categoria {
     this.uptodataBase = params.uptodataBase ?? false;
     this.prestamo = params.prestamo ?? false;
     this.type = params.type ?? "Gasto";
+    this.color = params.color ?? "white";
   }
 }

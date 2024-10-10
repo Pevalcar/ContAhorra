@@ -154,5 +154,14 @@
   "prestado-a": "Prestado a:",
   "delete": "Borrar",
   "error-al-guardar-la-transaccion": "Error al guardar la transacción",
-  "debe-ingresar-un-nombre": "Debe ingresar un nombre"
+  "debe-ingresar-un-nombre": "Debe ingresar un nombre",
+  "info": "Detalles de la Transaccion",
+  "info-modal": "Tipo:",
+  "monto": "Monto:",
+  "descripcion": "Descripcion:",
+  "fecha": "Fecha:",
+  "info-modal-categoria": "Categoria:",
+  "info-modal-prestado": "Prestado a:",
+  "info-modal-cuenta": "Cuenta:",
+  "info-modal-cuenta-a": "Pago:"
 }

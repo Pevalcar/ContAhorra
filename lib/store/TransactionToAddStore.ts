@@ -147,6 +147,7 @@ export const useTransactionToADDState = create<ITransaccionSate>((set, get) => (
         prestadoaID: prestado?.id ?? "",
         uptodataBase: false,
         prestadoaName: prestado?.name ?? "",
+        pago: false,
       });
       await addTransaccion.execute(transaccion);
 

@@ -6,6 +6,5 @@ import React from "react";
 
 export default function Login() {
   const user = useStoreSesion((state) => state.user);
-  //TODO estilizar mas lindo
   return <Screen>{user === null ? <LoginUI /> : <UserInfoUI />}</Screen>;
 }

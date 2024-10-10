@@ -78,15 +78,14 @@ const Avatart = React.memo(function Avatart({
   avatar,
   selected,
   onPress,
-  key,
+  ...props
 }: {
   avatar: string;
   onPress: (avatar: string) => void;
   selected?: boolean;
-  key: number;
 }) {
   return (
-    <Pressable onPress={() => onPress(avatar)} key={key}>
+    <Pressable onPress={() => onPress(avatar)} {...props}>
       <Image source={{ uri: avatar }} style={styles.preAvatar} alt="aslgo" />
       <Image
         source={{ uri: avatar }}
