@@ -1,7 +1,11 @@
+import { MyIcon } from "./Icons";
 import { TextCurrency } from "@/components/TextCurrency";
 import {
   Avatar,
   AvatarFallbackText,
+  Badge,
+  BadgeIcon,
+  BadgeText,
   Button,
   ButtonText,
   Card,
@@ -15,12 +19,12 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  Pressable,
   Switch,
   Text,
   VStack,
 } from "@/components/ui/";
-import { Transaccion } from "@/lib/domain/entities";
+import { formatValue } from "@/lib/Helpers/formaters";
+import { Categoria, Transaccion } from "@/lib/domain/entities";
 import {
   useCategoriaStore,
   useCuentasStore,
@@ -29,7 +33,8 @@ import {
 } from "@/lib/store";
 import { t } from "i18next";
 import { ArrowUp } from "lucide-react-native";
-import React, { Children } from "react";
+import React from "react";
+import { Pressable } from "react-native";
 
 interface Props {
   item: Transaccion;
@@ -46,7 +51,7 @@ export const TransacctionCard = React.memo(function ({ item }: Props) {
   };
 
   return (
-    <Card size="sm" variant="outline" className="mb-4 flex-row items-center justify-between">
+    <Card size="sm" variant="elevated" className="mb-1 border">
       <DeleteModal
         item={item}
         setShowDeleteModal={setShowDeleteModal}
@@ -60,39 +65,44 @@ export const TransacctionCard = React.memo(function ({ item }: Props) {
         setShowIfoModal={setShowIfoModal}
         setShowDeleteModalsetShowDeleteModal={setShowDeleteModalsetShowDeleteModal}
       />
-      <Pressable onPress={() => setShowIfoModal(true)}>
-        <BodyCard item={item} onDelete={onDelete} />
-      </Pressable>
+      <BodyCard item={item} onDelete={onDelete} onPress={() => setShowIfoModal(true)} />
     </Card>
   );
 });
 interface BodyCardProps {
   item: Transaccion;
   onDelete: () => void;
+  onPress: () => void;
 }
 
-const BodyCard: React.FC<BodyCardProps> = ({ item, onDelete }) => {
+const BodyCard: React.FC<BodyCardProps> = ({ item, onDelete, onPress }) => {
   const { getProfileByID } = usePerfilesStore((state) => state);
+  const { getCategoryByID } = useCategoriaStore((state) => state);
   const perfil = getProfileByID(item.prestadoaID);
-
+  const categoria = getCategoryByID(item.categoryID);
   const bgColor = () => {
     switch (item.type) {
       case "Ingreso":
-        return "bg-green-500";
+        return "bg-green-400 text-green-800";
       case "Gasto":
-        return "bg-red-500";
+        return "bg-red-600 text-red-800";
       case "Transferencia":
-        return "bg-yellow-500";
+        return "bg-yellow-400 text-yellow-800";
       default:
-        return "bg-gray-500";
+        return "bg-gray-400 text-gray-800";
     }
   };
   return (
-    <>
-      <Avatar size="md" className={bgColor()}>
+    <Pressable className="mb-4 flex-row items-center justify-between" onPress={onPress}>
+      <Avatar size="sm" className={bgColor()}>
         <AvatarFallbackText className="text-white">{item.type}</AvatarFallbackText>
       </Avatar>
-      <VStack className="ml-4 flex-1">
+      <VStack className="ml-4 flex-1 items-start gap-1">
+        <Heading size="sm" numberOfLines={1}>
+          {item.description}
+        </Heading>
+        <Text>{new Date(item.date * 1000).toLocaleDateString()}</Text>
+        <BadgeCategoria categoria={categoria} />
         {perfil && (
           <HStack className="items-center gap-2">
             <Text>{t("prestado-a") + perfil.name}</Text>
@@ -103,21 +113,14 @@ const BodyCard: React.FC<BodyCardProps> = ({ item, onDelete }) => {
             />
           </HStack>
         )}
-        <Heading size="sm">{item.description}</Heading>
-        <Heading size="sm">{item.description}</Heading>
-        <Text>{item.description}</Text>
-        <Text>{new Date(item.date * 1000).toLocaleDateString()}</Text>
       </VStack>
-      <TextCurrency
-        sign
-        negative={item.type === "Gasto" || item.type === "Transferencia"}
-        size="sm"
-        value={item.balance}
-      />
-      <Pressable className="mr-4 p-2" onPress={onDelete}>
-        <Text>{t("delete")}</Text>
-      </Pressable>
-    </>
+      <Text
+        className="text-sm font-semibold"
+        style={{ color: item.type === "Ingreso" ? "green" : "red" }}>
+        {item.type === "Ingreso" ? "+ " : "- "}
+        {formatValue(item.balance)}
+      </Text>
+    </Pressable>
   );
 };
 
@@ -212,12 +215,12 @@ const InfoModal = ({
               <Text>{item.description}</Text>
             </InfoSection>
             <InfoSection title={t("monto")}>
-              <TextCurrency
-                value={item.balance}
-                size="xl"
-                sign
-                negative={item.type !== "Ingreso"}
-              />
+              <Text
+                className="text-sm font-semibold"
+                style={{ color: item.type === "Ingreso" ? "green" : "red" }}>
+                {item.type === "Ingreso" ? "+ " : "- "}
+                {formatValue(item.balance)}
+              </Text>
             </InfoSection>
             <InfoSection title={t("fecha")}>
               <Text>{new Date(item.date * 1000).toLocaleDateString()}</Text>
@@ -270,5 +273,18 @@ const InfoSection = ({ children, title }: { children: React.ReactNode; title: st
       <Text>{title}</Text>
       <HStack>{children}</HStack>
     </HStack>
+  );
+};
+
+const BadgeCategoria = ({ categoria }: { categoria: Categoria | null }) => {
+  return (
+    <Badge
+      className="gap-1 rounded-xl"
+      size="md"
+      variant="outline"
+      style={{ backgroundColor: categoria?.color }}>
+      <MyIcon name={categoria?.icon ?? "Shoping"} size={18} color={"black"} />
+      <BadgeText className="text-black">{categoria?.name}</BadgeText>
+    </Badge>
   );
 };

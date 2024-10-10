@@ -1,5 +1,14 @@
 import { TransacctionCard } from "../TransacctionCard";
-import { Button, ButtonIcon, HStack, Heading, Text, VStack } from "@/components/ui/";
+import {
+  Badge,
+  BadgeText,
+  Button,
+  ButtonIcon,
+  HStack,
+  Heading,
+  Text,
+  VStack,
+} from "@/components/ui/";
 import { FormatedLocale } from "@/lib/Helpers/formaters";
 import { usePerfilesStore } from "@/lib/store";
 import { getMes, useTransaccionesStore } from "@/lib/store/TransaccionesStore";
@@ -25,7 +34,7 @@ export const ListTransacciones: React.FC<Props> = () => {
   }, []);
 
   return (
-    <>
+    <VStack>
       <HStack className="w-full items-center justify-between p-1">
         <Button onPress={() => setCurrentMonth(-1)}>
           <ButtonIcon as={ArrowLeftIcon} size="xl" />
@@ -41,7 +50,7 @@ export const ListTransacciones: React.FC<Props> = () => {
         renderSectionHeader={({ section: { title } }) => <DateHeader date={title} key={title} />}
         keyExtractor={(item) => item.id}
       />
-    </>
+    </VStack>
   );
 };
 
