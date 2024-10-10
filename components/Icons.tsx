@@ -32,7 +32,7 @@ interface MyIconProps extends Props {
   name: MyIconos;
 }
 
-export function MyIcon({ name, props, color, size = 24 }: MyIconProps) {
+export function MyIcon({ name, color, size = 24, props }: MyIconProps) {
   const Icon = getIcon(name);
   if (color) return <Icon color={color} size={size} {...props} />;
 

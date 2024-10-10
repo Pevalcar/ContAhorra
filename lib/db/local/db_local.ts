@@ -144,6 +144,7 @@ const DB_Categorias: Categoria[] = [
     userOwnerID: "1",
     type: "Gasto",
     uptodataBase: false,
+    color: "#aaffee",
   }),
   new Categoria({
     id: "2",
@@ -152,6 +153,7 @@ const DB_Categorias: Categoria[] = [
     type: "Ingreso",
     userOwnerID: "1",
     uptodataBase: false,
+    color: "#aaff",
   }),
   new Categoria({
     id: "3",
@@ -160,6 +162,7 @@ const DB_Categorias: Categoria[] = [
     type: "Gasto",
     userOwnerID: "1",
     uptodataBase: false,
+    color: "#bbffbb",
   }),
   new Categoria({
     id: "4",
@@ -168,6 +171,7 @@ const DB_Categorias: Categoria[] = [
     userOwnerID: "1",
     type: "Gasto",
     uptodataBase: false,
+    color: "#aaff",
   }),
   new Categoria({
     id: "5",
@@ -176,6 +180,7 @@ const DB_Categorias: Categoria[] = [
     type: "Gasto",
     userOwnerID: "1",
     uptodataBase: false,
+    color: "#aaaa",
   }),
   new Categoria({
     id: "6",
@@ -184,6 +189,7 @@ const DB_Categorias: Categoria[] = [
     userOwnerID: "1",
     type: "Ingreso",
     uptodataBase: false,
+    color: "#aaff",
   }),
   new Categoria({
     id: "7",
@@ -192,6 +198,7 @@ const DB_Categorias: Categoria[] = [
     userOwnerID: "1",
     type: "Gasto",
     uptodataBase: false,
+    color: "#aaeeee",
   }),
   new Categoria({
     id: "8",
@@ -201,6 +208,7 @@ const DB_Categorias: Categoria[] = [
     userOwnerID: "1",
     prestamo: true,
     uptodataBase: false,
+    color: "#cccccc",
   }),
   new Categoria({
     id: "17",
@@ -209,6 +217,7 @@ const DB_Categorias: Categoria[] = [
     type: "Transferencia",
     userOwnerID: "1",
     uptodataBase: false,
+    color: "#ccaacc",
   }),
   new Categoria({
     id: "9",
@@ -217,6 +226,7 @@ const DB_Categorias: Categoria[] = [
     type: "Gasto",
     userOwnerID: "1",
     uptodataBase: false,
+    color: "#aaff",
   }),
   new Categoria({
     id: "10",
@@ -225,6 +235,7 @@ const DB_Categorias: Categoria[] = [
     type: "Gasto",
     userOwnerID: "1",
     uptodataBase: false,
+    color: "#aaff",
   }),
 ];
 const DB_Cuentas: Cuenta[] = [
@@ -235,6 +246,7 @@ const DB_Cuentas: Cuenta[] = [
     userOwnerID: "1",
     uptodataBase: false,
     grupal: false,
+    color: "#aaff",
   }),
   new Cuenta({
     id: "2",
@@ -243,6 +255,7 @@ const DB_Cuentas: Cuenta[] = [
     userOwnerID: "1",
     uptodataBase: false,
     grupal: true,
+    color: "#aaff",
   }),
 ];
 
