@@ -46,6 +46,7 @@ interface ICuentasStore {
 export const useCuentasStore = create<ICuentasStore>((set, get) => ({
   cuentas: initialState,
   loagin: false,
+
   Error: null,
   getCuentaByID(id) {
     const { cuentas } = get();

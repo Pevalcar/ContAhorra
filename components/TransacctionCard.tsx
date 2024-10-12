@@ -1,10 +1,8 @@
 import { MyIcon } from "./Icons";
-import { TextCurrency } from "@/components/TextCurrency";
 import {
   Avatar,
   AvatarFallbackText,
   Badge,
-  BadgeIcon,
   BadgeText,
   Button,
   ButtonText,

@@ -8,6 +8,7 @@ describe("useCalculadora Hook", () => {
     expect(result.current.state.currentValue).toBe("0");
     expect(result.current.state.operator).toBeNull();
     expect(result.current.state.previousValue).toBe("0");
+
   });
 
   it("debería actualizar el valor cuando se ingresan números", () => {
