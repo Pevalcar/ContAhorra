@@ -4,8 +4,8 @@ import React from "react";
 import { Text } from "react-native";
 
 export default function Add_perfil() {
-  const [emojis, setEmojis] = React.useState<string>("");
   const [nombre, setNombre] = React.useState<string>("");
+  const [emojis, setEmojis] = React.useState<string>("");
 
   return (
     <Screen>

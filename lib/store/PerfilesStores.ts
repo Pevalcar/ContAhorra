@@ -1,5 +1,5 @@
-import { addProfile, getAllProfileByUserOwnerID } from "../core/di/Container";
-import { Perfil } from "../domain/entities";
+import { addProfile, getAllProfileByUserOwnerID } from "@/lib/core/di/Container";
+import { Perfil } from "@/lib/domain/entities";
 import { randomUUID } from "expo-crypto";
 import { t } from "i18next";
 import { create } from "zustand";
@@ -11,6 +11,7 @@ interface IPerfilesStore {
   avatar: string;
   name: string;
   error: Error | null;
+  update: boolean;
   getProfileByID: (id: string) => Perfil;
   setAvatar: (avatar: string) => void;
   setName: (name: string) => void;
@@ -27,8 +28,10 @@ export const usePerfilesStore = create<IPerfilesStore>((set, get) => ({
   avatar: "avatar_1",
   name: "",
   error: null,
+  update: false,
   getProfileByID: (id: string) => {
     const { perfiles } = get();
+
     const newState = perfiles.filter((c) => c.id === id);
     return newState[0];
   },
@@ -39,19 +42,22 @@ export const usePerfilesStore = create<IPerfilesStore>((set, get) => ({
     set({ name: name });
   },
   fetchPerfiles: async () => {
+    const { update, perfiles } = get();
     set({ loagin: true });
-    try {
-      const initialPerfiles = await getAllProfileByUserOwnerID.execute();
-      set({ perfiles: initialPerfiles });
-    } catch (error) {
-      console.error("Error al guardar la transacción:", error);
-      set({ Error: error as Error });
+    if (update) {
+      try {
+        const initialPerfiles = await getAllProfileByUserOwnerID.execute();
+        set({ perfiles: initialPerfiles, update: true });
+      } catch (error) {
+        console.error("Error al guardar la transacción:", error);
+        set({ Error: error as Error });
+      }
     }
     set({ loagin: false });
-    return get().perfiles;
+    return perfiles;
   },
   addPerfil: async () => {
-    const { perfiles, name, avatar } = get();
+    const { perfiles, name, avatar, fetchPerfiles } = get();
     set({ loagin: true });
     try {
       const uuid = randomUUID();
@@ -61,13 +67,13 @@ export const usePerfilesStore = create<IPerfilesStore>((set, get) => ({
       }
       const data = new Perfil({ id: uuid, name: name, avatar_url: avatar });
       await addProfile.execute(data);
-      const newState = [...perfiles, data];
       set({
-        perfiles: newState,
         loagin: false,
         name: "",
         avatar: "avatar_1",
+        update: false,
       });
+      await fetchPerfiles();
     } catch (error) {
       console.error("Error al guardar la transacción:", error);
       set({ Error: error as Error, loagin: false });

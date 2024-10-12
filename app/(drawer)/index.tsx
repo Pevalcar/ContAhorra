@@ -17,11 +17,11 @@ export default function Index() {
     };
     fetchAndSetUser();
   }, []);
-
   return (
     <Screen>
       <VStack className="mt-2 flex-1 gap-2">
         <SaldoHeading />
+
         <Filtros />
         <ListTransacciones />
         <Button

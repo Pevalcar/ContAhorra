@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 
 export default function Config() {
   const { t } = useTranslation();
+
   return (
     <VStack space="lg">
       <Text>{t("config")}</Text>
