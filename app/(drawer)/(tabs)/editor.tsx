@@ -30,7 +30,7 @@ export default function editor() {
   }, []);
   return (
     <Screen isLoading={cuentasLoagin || perfilesLoagin || categoriasLoagin}>
-      <VStack space="md">
+      <VStack space="md" className="h-full w-full">
         <SegmentControl
           className="h-auto flex-row rounded-md bg-background-300"
           values={["Categorias", "Perfiles", "Cuentas"]}
