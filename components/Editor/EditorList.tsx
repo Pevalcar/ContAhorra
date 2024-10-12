@@ -1,7 +1,6 @@
 import { ListEditorCategoria } from "./ListEditorCategoria";
 import { ListEditorCuenta } from "./ListEditorCuenta";
 import { ListEditorPerfiles } from "./ListEditorPerfiles";
-import { VStack } from "@/components/ui";
 import React from "react";
 
 interface Props {

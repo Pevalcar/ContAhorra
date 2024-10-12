@@ -1,3 +1,6 @@
+import { TiposDeTransacciones } from "@/Types/types";
+import { ArrowRightCircle, DollarSign, LucideIcon, ShoppingBag } from "lucide-react-native";
+
 export const avatars = [
   "avatar_1",
   "avatar_2",
@@ -13,3 +16,9 @@ export const avatars = [
   "avatar_12",
   "avatar_13",
 ];
+
+export const IconTypes: Record<TiposDeTransacciones, LucideIcon> = {
+  Gasto: ShoppingBag,
+  Ingreso: DollarSign,
+  Transferencia: ArrowRightCircle,
+};
