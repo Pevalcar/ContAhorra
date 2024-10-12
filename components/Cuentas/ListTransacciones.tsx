@@ -34,7 +34,7 @@ export const ListTransacciones: React.FC<Props> = () => {
   }, []);
 
   return (
-    <VStack>
+    <VStack className="flex-1">
       <HStack className="w-full items-center justify-between p-1">
         <Button onPress={() => setCurrentMonth(-1)}>
           <ButtonIcon as={ArrowLeftIcon} size="xl" />

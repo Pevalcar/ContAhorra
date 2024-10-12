@@ -81,7 +81,7 @@
   "name": "Nombre",
   "tell-a-friend": "Cuéntale a un amigo",
   "sign-out": "Desconectar",
-  "cuentas": "Cuentas",
+  "cuentas": "Cuenta",
   "pocket": "Bolsillo",
   "reports": "Reportes",
   "config": "Configuración",
@@ -163,5 +163,8 @@
   "info-modal-categoria": "Categoria:",
   "info-modal-prestado": "Prestado a:",
   "info-modal-cuenta": "Cuenta:",
-  "info-modal-cuenta-a": "Pago:"
+  "info-modal-cuenta-a": "Pago:",
+  "editor": "Editor",
+  "menu.home": "Inicio",
+  "graficos": "Graficos"
 }

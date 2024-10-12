@@ -19,21 +19,20 @@ export default function Index() {
   }, []);
   return (
     <Screen>
-      <VStack className="mt-2 flex-1 gap-2">
+      <VStack className="mt-2 h-full flex-1 gap-2" space="md">
         <SaldoHeading />
-
         <Filtros />
         <ListTransacciones />
-        <Button
-          size="xl"
-          className="absolute bottom-4 right-4 m-4 h-16 w-16 rounded-full p-3.5"
-          style={styles.shadow}
-          onPress={() => {
-            router.push("/add_tansaction");
-          }}>
-          <ButtonIcon as={PlusIcon} size="xl" />
-        </Button>
       </VStack>
+      <Button
+        size="xl"
+        className="absolute bottom-4 right-4 m-4 h-16 w-16 rounded-full p-3.5"
+        style={styles.shadow}
+        onPress={() => {
+          router.push("/add_tansaction");
+        }}>
+        <ButtonIcon as={PlusIcon} size="xl" />
+      </Button>
     </Screen>
   );
 }

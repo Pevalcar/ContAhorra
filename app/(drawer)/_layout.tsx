@@ -19,9 +19,10 @@ export default function RootLayout() {
         drawerContent={(props) => <CustomDrawer props={props} />}
         screenOptions={{ headerTintColor: darkMode ? "white" : "black" }}>
         <Drawer.Screen
-          name="index"
+          name="(tabs)"
           options={{
-            title: t("cuentas"),
+            headerTitle: "",
+            drawerLabel: t("cuentas"),
             drawerIcon: ({ color, size }) => <PiggyBankIcon color={color} size={size} />,
           }}
         />

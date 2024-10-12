@@ -143,7 +143,7 @@ const DB_Categorias: Categoria[] = [
     icon: "Shoping",
     userOwnerID: "1",
     type: "Gasto",
-    uptodataBase: false,
+    uptodataBase: true,
     color: "#aaffee",
   }),
   new Categoria({

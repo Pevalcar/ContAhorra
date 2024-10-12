@@ -44,7 +44,7 @@ export const usePerfilesStore = create<IPerfilesStore>((set, get) => ({
   fetchPerfiles: async () => {
     const { update, perfiles } = get();
     set({ loagin: true });
-    if (update) {
+    if (!update) {
       try {
         const initialPerfiles = await getAllProfileByUserOwnerID.execute();
         set({ perfiles: initialPerfiles, update: true });
