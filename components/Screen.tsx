@@ -17,7 +17,7 @@ export function Screen({ children, isLoading }: Props) {
 
   return (
     <SafeAreaView
-      className="bg-primary ml-4 mr-4 flex-1"
+      className="ml-4 mr-4 flex-1 bg-background-50"
       style={{ paddingTop: top, paddingBottom: 15 }}>
       <StatusBar barStyle={isDark ? "light-content" : "dark-content"} />
       {isLoading ? (

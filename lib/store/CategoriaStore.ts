@@ -35,6 +35,8 @@ interface ICategoriaStore {
   loagin: boolean;
   Error: Error | null;
   categorias: Categoria[];
+  allCategories: Categoria[];
+  initialFetch: () => void;
   fetchCategorias: (type: TiposDeTransacciones) => Promise<Categoria[]>;
   addCategoria: (data: Categoria) => void;
   deleteCategoria: (id: string) => void;
@@ -46,6 +48,17 @@ export const useCategoriaStore = create<ICategoriaStore>((set, get) => ({
   categorias: initialState,
   loagin: false,
   Error: null,
+  allCategories: initialState,
+  initialFetch() {
+    set({ loagin: true });
+    try {
+      set({ categorias: initialState });
+    } catch (error) {
+      console.error("Error al guardar la transacción:", error);
+      set({ Error: error as Error });
+    }
+    set({ loagin: false });
+  },
   getCategoryByID(id: string) {
     const { categorias } = get();
     const categoriase = categorias.find((c) => c.id === id);
@@ -64,7 +77,6 @@ export const useCategoriaStore = create<ICategoriaStore>((set, get) => ({
       set({ Error: error as Error });
     }
     set({ loagin: false });
-
     return get().categorias;
   },
   addCategoria: (data: Categoria) => {
