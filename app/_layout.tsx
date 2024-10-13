@@ -32,8 +32,8 @@ export default function RootLayout() {
   }
 
   return (
-    <GluestackUIProvider mode={darkMode ? "dark" : "light"}>
-      <ThemeProvider value={darkMode ? DarkTheme : DefaultTheme}>
+    <ThemeProvider value={darkMode ? DarkTheme : DefaultTheme}>
+      <GluestackUIProvider mode={darkMode ? "dark" : "light"}>
         <SafeAreaProvider>
           <SQLiteProvider databaseName={LOCAL_DB_NAME} onInit={migrateDbIfNeeded}>
             <Stack>
@@ -51,7 +51,7 @@ export default function RootLayout() {
             </Stack>
           </SQLiteProvider>
         </SafeAreaProvider>
-      </ThemeProvider>
-    </GluestackUIProvider>
+      </GluestackUIProvider>
+    </ThemeProvider>
   );
 }
