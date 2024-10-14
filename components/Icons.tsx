@@ -26,17 +26,24 @@ export interface Props {
   props?: any;
   color?: string | null;
   size?: number;
+  className?: string;
 }
 
 interface MyIconProps extends Props {
   name: MyIconos;
 }
 
-export function MyIcon({ name, color, size = 24, props }: MyIconProps) {
+export function MyIcon({ name, color, size = 24, className, ...props }: MyIconProps) {
   const Icon = getIcon(name);
   if (color) return <Icon color={color} size={size} {...props} />;
 
-  return <Icon className="text-typography-500 dark:text-typography-400" size={size} {...props} />;
+  return (
+    <Icon
+      className={"text-typography-500 dark:text-typography-400 " + className}
+      size={size}
+      {...props}
+    />
+  );
 }
 
 function getIcon(name: MyIconos) {

@@ -1,8 +1,8 @@
-import { DEFAULT_STATE_CATEGORIAS, LOCAL_DB_CATEGORIAS_NAME } from "../configs/config";
-import { Categoria } from "../domain/entities";
 import { TiposDeTransacciones } from "@/Types/types";
 import { Platform } from "react-native";
 import { create } from "zustand";
+import { DEFAULT_STATE_CATEGORIAS, LOCAL_DB_CATEGORIAS_NAME } from "../configs/config";
+import { Categoria } from "../domain/entities";
 
 const initialState = (() => {
   if (Platform.OS === "web") {
@@ -49,7 +49,7 @@ export const useCategoriaStore = create<ICategoriaStore>((set, get) => ({
   loagin: false,
   Error: null,
   allCategories: initialState,
-  initialFetch() {
+  initialFetch: async () => {
     set({ loagin: true });
     try {
       set({ categorias: initialState });

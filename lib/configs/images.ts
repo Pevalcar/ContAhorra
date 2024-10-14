@@ -22,3 +22,23 @@ export const IconTypes: Record<TiposDeTransacciones, LucideIcon> = {
   Ingreso: DollarSign,
   Transferencia: ArrowRightCircle,
 };
+
+export const Iconos = [
+  "Home",
+  "Settings",
+  "Plus",
+  "List",
+  "ClipboardList",
+  "FileEdit",
+  "PiggyBank",
+  "SwitchCamera",
+  "CameraFlip",
+  "Torch",
+  "Disc",
+  "Close",
+  "Shoping",
+  "Wallet",
+  "DarkMode",
+  "Shoping",
+  "Delete",
+] as const;
