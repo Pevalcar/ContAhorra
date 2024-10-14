@@ -4,10 +4,12 @@ import {
   Badge,
   BadgeIcon,
   BadgeText,
+  Box,
   Button,
   ButtonIcon,
   ButtonText,
   Card,
+  CircleIcon,
   HStack,
   Heading,
   Icon,
@@ -20,18 +22,20 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  SegmentControl,
+  Pressable,
+  Switch,
   Text,
   VStack,
 } from "@/components/ui";
-import { TypeColor } from "@/lib/configs/Colors";
-import { IconTypes } from "@/lib/configs/images";
+import { AppColorsCategorias, TypeColor } from "@/lib/configs/Colors";
+import { IconTypes, Iconos } from "@/lib/configs/images";
 import { Categoria } from "@/lib/domain/entities";
 import { useCategoriaStore } from "@/lib/store";
-import Drawer from "expo-router/drawer";
+import SegmentedControl from "@react-native-segmented-control/segmented-control";
 import { CloudIcon, CloudOffIcon, PencilIcon, TrashIcon, Wallet } from "lucide-react-native";
 import React from "react";
 import { FlatList, View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 
 export const ListEditorCategoria = () => {
   const { categorias } = useCategoriaStore((state) => state);
@@ -39,14 +43,12 @@ export const ListEditorCategoria = () => {
   const [itemtoEdit, setItemtoEdit] = React.useState<Categoria | null>(null);
   const [itemtoDelete, setItemtoDelete] = React.useState<Categoria | null>(null);
 
-  const ref = React.useRef(null);
-
   const deleteItem = (item: Categoria | null) => {
     setItemtoDelete(null);
   };
 
   return (
-    <>
+    <VStack className="my-2 px-4">
       <EditModal item={itemtoEdit} onClose={() => setItemtoEdit(null)} show={itemtoEdit !== null} />
       <DeleteModal
         item={itemtoDelete}
@@ -61,7 +63,7 @@ export const ListEditorCategoria = () => {
         )}
         keyExtractor={(item) => item.id}
       />
-    </>
+    </VStack>
   );
 };
 
@@ -95,8 +97,8 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ item, onClose, show, onDelete
           <Button onPress={onClose}>
             <ButtonText>Cancelar</ButtonText>
           </Button>
-          <Button className="bg-red-500" onPress={() => onDelete(item)}>
-            <ButtonText className="text-white">Eliminar</ButtonText>
+          <Button action="negative" onPress={() => onDelete(item)}>
+            <ButtonText>Eliminar</ButtonText>
           </Button>
         </ModalFooter>
       </ModalContent>
@@ -110,10 +112,12 @@ interface ModalProps {
   onClose: () => void;
 }
 const EditModal: React.FC<ModalProps> = ({ item, onClose, show }) => {
-  const [name, setName] = React.useState(item?.name ?? "");
-  const [type, setType] = React.useState<TiposDeTransacciones>(item?.type ?? "Gasto");
-  const [icon, setIcon] = React.useState(item?.icon ?? "");
-  const [color, setColor] = React.useState(item?.color ?? "");
+  const [itemI, setItemI] = React.useState<Categoria>(new Categoria({}));
+  const [showIconSelector, setShowIconSelector] = React.useState(false);
+
+  React.useEffect(() => {
+    setItemI(item ?? new Categoria({}));
+  }, [item]);
 
   const onSave = async () => {
     if (item) {
@@ -122,7 +126,21 @@ const EditModal: React.FC<ModalProps> = ({ item, onClose, show }) => {
   };
 
   const setTypes = (index: number) => {
-    setType(index === 0 ? "Gasto" : index === 1 ? "Ingreso" : "Transferencia");
+    setItemI(
+      () =>
+        new Categoria({
+          ...itemI,
+          type: index === 0 ? "Gasto" : index === 1 ? "Ingreso" : "Transferencia",
+        }),
+    );
+  };
+
+  const setName = (name: string) => {
+    setItemI(() => new Categoria({ ...itemI, name }));
+  };
+
+  const setPrestamo = (prestamo: boolean) => {
+    setItemI(() => new Categoria({ ...itemI, prestamo }));
   };
 
   return (
@@ -137,28 +155,58 @@ const EditModal: React.FC<ModalProps> = ({ item, onClose, show }) => {
           <VStack space="md">
             <Text>Nombre</Text>
             <Input>
-              <InputField placeholder="Nombre" value={name} onChangeText={setName} />
+              <InputField placeholder="Nombre" value={itemI.name} onChangeText={setName} />
             </Input>
             <Text>Tipo</Text>
-            <SegmentControl
-              values={["Gasto", "Ingreso", "Transferencia"]}
-              selectedIndex={item?.type === "Gasto" ? 0 : item?.type === "Ingreso" ? 1 : 2}
-              onChange={(e) => setTypes(e)}
+            <SegmentedControl
+              values={["Gasto", "Ingreso", "Transf."]}
+              selectedIndex={itemI.type === "Gasto" ? 0 : itemI.type === "Ingreso" ? 1 : 2}
+              onChange={(e) => setTypes(e.nativeEvent.selectedSegmentIndex)}
             />
             <Text>Icono</Text>
 
+            <Pressable onPress={() => setShowIconSelector(true)}>
+              <Box className="h-auto w-12 rounded-md border-2 border-green-400 bg-background-100 p-2">
+                <MyIcon name={itemI.icon} color={itemI.color} />
+              </Box>
+            </Pressable>
             <Text>Color</Text>
+            <HStack className="flex-row flex-wrap items-center gap-2 rounded-sm bg-background-100 p-2">
+              {AppColorsCategorias.map((color, index) => (
+                <Pressable
+                  key={index}
+                  onPress={() => setItemI(() => new Categoria({ ...itemI, color }))}>
+                  <Box
+                    className={itemI.color === color ? "border-4 border-green-600" : ""}
+                    style={{
+                      backgroundColor: color,
+                      width: 30,
+                      height: 30,
+                      borderRadius: 100,
+                    }}
+                  />
+                </Pressable>
+              ))}
+            </HStack>
+            <HStack space="xs" className="flex-row items-center justify-between gap-2">
+              <Badge action={itemI.prestamo ? "success" : "error"} className="gap-2">
+                <BadgeText>Prestamos</BadgeText>
+                <BadgeIcon as={Wallet} size="sm" />
+              </Badge>
+              <Switch value={itemI.prestamo} onValueChange={setPrestamo} />
+            </HStack>
           </VStack>
         </ModalBody>
         <ModalFooter>
           <Button onPress={onClose}>
             <ButtonText>Cancelar</ButtonText>
           </Button>
-          <Button variant="outline" onPress={() => onSave()}>
-            <ButtonText className="text-white">Guardar</ButtonText>
+          <Button action="positive" onPress={() => onSave()}>
+            <ButtonText>Guardar</ButtonText>
           </Button>
         </ModalFooter>
       </ModalContent>
+      <IconModal item={item} onClose={() => setShowIconSelector(false)} show={showIconSelector} />
     </Modal>
   );
 };
@@ -219,3 +267,45 @@ const CategoriItem = React.memo(({ item, itemToEdit, itemToDelete }: Item) => {
     </Card>
   );
 });
+
+interface IconModalProps extends ModalProps {}
+
+const IconModal: React.FC<ModalProps> = ({ item, onClose, show }) => {
+  const onSave = async () => {
+    if (item) {
+      onClose();
+    }
+  };
+  return (
+    <Modal isOpen={show} onClose={onClose}>
+      <ModalBackdrop />
+      <ModalContent>
+        <ModalBody>
+          <Heading>Seleccione un icono</Heading>
+          <View className="flex-row flex-wrap gap-2">
+            {Iconos.map((icono, index) => (
+              <Pressable
+                key={index}
+                onPress={() => onSave()}
+                className={
+                  item?.icon === icono
+                    ? "rounded-md border-2 border-green-400 bg-background-200 p-1"
+                    : ""
+                }>
+                <MyIcon size={30} name={icono} color={item?.icon === icono ? "green" : ""} />
+              </Pressable>
+            ))}
+          </View>
+        </ModalBody>
+        <ModalFooter>
+          <Button onPress={onClose}>
+            <ButtonText>Cancelar</ButtonText>
+          </Button>
+          <Button action="positive" onPress={() => onSave()}>
+            <ButtonText>Guardar</ButtonText>
+          </Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  );
+};
