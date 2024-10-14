@@ -28,6 +28,7 @@ import { TypeColor } from "@/lib/configs/Colors";
 import { IconTypes } from "@/lib/configs/images";
 import { Categoria } from "@/lib/domain/entities";
 import { useCategoriaStore } from "@/lib/store";
+import Drawer from "expo-router/drawer";
 import { CloudIcon, CloudOffIcon, PencilIcon, TrashIcon, Wallet } from "lucide-react-native";
 import React from "react";
 import { FlatList, View } from "react-native";
