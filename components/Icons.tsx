@@ -13,6 +13,7 @@ import {
   PiggyBank,
   Plus,
   Pocket,
+  Rabbit,
   Settings,
   ShoppingCart,
   Sun,
@@ -58,8 +59,8 @@ function getIcon(name: MyIconos) {
       return FileEditIcon;
     case "PiggyBank":
       return PiggyBankIcon;
-    case "CameraFlip":
-      return CameraFlipIcon;
+    case "Rabbit":
+      return RabbitIcon;
     case "Torch":
       return TorchIcon;
     case "Disc":
@@ -76,57 +77,72 @@ function getIcon(name: MyIconos) {
       return PlusIcon;
     case "Delete":
       return DeleteICon;
+    case "Settings":
+      return SettingsIcon;
+    case "SwitchCamera":
+      return CameraFlipIcon;
+    case "LightMode":
+      return LightModeIcon;
     default:
       return HomeIcon;
   }
 }
 
-export const HomeIcon = ({ props, color, size = 24 }: Props) => {
+const LightModeIcon = ({ props, color, size }: Props) => {
+  if (color) return <Sun color={color} size={size} {...props} />;
+  return <Icon as={Sun} className={classColor} size={size} {...props} />;
+};
+const RabbitIcon = ({ props, color, size = 24 }: Props) => {
+  if (color) return <Rabbit color={color} size={size} {...props} />;
+  return <Icon as={Rabbit} className={classColor} size={size} {...props} />;
+};
+
+const HomeIcon = ({ props, color, size = 24 }: Props) => {
   if (color) return <Home color={color} size={size} {...props} />;
 
   return <Icon as={Home} className={classColor} size={size} {...props} />;
 };
 
-export const SettingsIcon = ({ props, color, size = 24 }: Props) => {
+const SettingsIcon = ({ props, color, size = 24 }: Props) => {
   if (color) return <Settings color={color} size={size} {...props} />;
   return <Icon as={Settings} className={classColor} size={size} {...props} />;
 };
 
-export const PlusIcon = ({ props, color, size = 24 }: Props) => {
+const PlusIcon = ({ props, color, size = 24 }: Props) => {
   if (color) return <Plus color={color} size={size} {...props} />;
 
   return <Icon as={Plus} className={classColor} size={size} {...props} />;
 };
 
-export const ListIcon = ({ props, color, size = 24 }: Props) => {
+const ListIcon = ({ props, color, size = 24 }: Props) => {
   if (color) return <List color={color} size={size} {...props} />;
   return <Icon as={List} className={classColor} size={size} {...props} />;
 };
 
-export const ClipboardListICon = ({ props, color, size = 24 }: Props) => {
+const ClipboardListICon = ({ props, color, size = 24 }: Props) => {
   if (color) return <ClipboardList color={color} size={size} {...props} />;
 
   return <Icon as={ClipboardList} className={classColor} size={size} {...props} />;
 };
 
-export const FileEditIcon = ({ props, color, size = 24 }: Props) => {
+const FileEditIcon = ({ props, color, size = 24 }: Props) => {
   if (color) return <FileEdit color={color} size={size} {...props} />;
 
   return <Icon as={FileEdit} className={classColor} size={size} {...props} />;
 };
-export const PiggyBankIcon = ({ props, color, size = 24 }: Props) => {
+const PiggyBankIcon = ({ props, color, size = 24 }: Props) => {
   if (color) return <PiggyBank color={color} size={size} {...props} />;
 
   return <Icon as={PiggyBank} className={classColor} size={size} {...props} />;
 };
 
-export const CameraFlipIcon = ({ props, color, size = 24 }: Props) => {
+const CameraFlipIcon = ({ props, color, size = 24 }: Props) => {
   if (color) return <SwitchCamera color={color} size={size} {...props} />;
 
   return <Icon as={SwitchCamera} className={classColor} size={size} {...props} />;
 };
 
-export const TorchIcon = ({ variant, props, color, size = 24 }: Props) => {
+const TorchIcon = ({ variant, props, color, size = 24 }: Props) => {
   if (color) {
     if (variant) {
       return <Flashlight color={color} size={size} {...props} />;
@@ -140,29 +156,29 @@ export const TorchIcon = ({ variant, props, color, size = 24 }: Props) => {
   return <Icon as={FlashlightOff} className={classColor} size={size} {...props} />;
 };
 
-export const DiscIcon = ({ props, color, size = 24 }: Props) => {
+const DiscIcon = ({ props, color, size = 24 }: Props) => {
   if (color) return <Disc2 color={color} size={size} {...props} />;
 
   return <Icon as={Disc2} className={classColor} size={size} {...props} />;
 };
 
-export const CloseIcon = ({ props, color, size = 24 }: Props) => {
+const CloseIcon = ({ props, color, size = 24 }: Props) => {
   if (color) return <X color={color} size={size} {...props} />;
   return <Icon as={X} className={classColor} size={size} {...props} />;
 };
 
-export const ShopingIcon = ({ props, color, size = 24 }: Props) => {
+const ShopingIcon = ({ props, color, size = 24 }: Props) => {
   if (color) return <ShoppingCart color={color} size={size} {...props} />;
 
   return <Icon as={ShoppingCart} className={classColor} size={size} {...props} />;
 };
-export const WalletIcon = ({ props, color, size = 24 }: Props) => {
+const WalletIcon = ({ props, color, size = 24 }: Props) => {
   if (color) return <Pocket color={color} size={size} {...props} />;
 
   return <Icon as={Pocket} className={classColor} size={size} {...props} />;
 };
 
-export const DarkModeIcon = ({ variant, props, color, size = 24 }: Props) => {
+const DarkModeIcon = ({ variant, props, color, size = 24 }: Props) => {
   if (color) {
     if (variant) {
       return <Sun color={color} size={size} {...props} />;

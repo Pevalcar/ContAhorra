@@ -1,5 +1,5 @@
 import CustomDrawer from "@/components/CustomDrawer";
-import { ListIcon, PiggyBankIcon, SettingsIcon, WalletIcon } from "@/components/Icons";
+import { MyIcon } from "@/components/Icons";
 import { useDarkModeStore } from "@/lib/store/ThemeDarkMode";
 import { useSegments } from "expo-router";
 import { Drawer } from "expo-router/drawer";
@@ -37,28 +37,28 @@ export default function RootLayout({}) {
           options={{
             headerTitle: segment(),
             drawerLabel: t("cuentas"),
-            drawerIcon: ({ color, size }) => <PiggyBankIcon color={color} size={size} />,
+            drawerIcon: ({ color, size }) => <MyIcon name="PiggyBank" color={color} size={size} />,
           }}
         />
         <Drawer.Screen
           name="bolsillo"
           options={{
             title: t("pocket"),
-            drawerIcon: ({ color, size }) => <WalletIcon color={color} size={size} />,
+            drawerIcon: ({ color, size }) => <MyIcon name="Wallet" color={color} size={size} />,
           }}
         />
         <Drawer.Screen
           name="reports"
           options={{
             title: t("reports"),
-            drawerIcon: ({ color, size }) => <ListIcon color={color} size={size} />,
+            drawerIcon: ({ color, size }) => <MyIcon name="List" color={color} size={size} />,
           }}
         />
         <Drawer.Screen
           name="config"
           options={{
             title: t("config"),
-            drawerIcon: ({ color, size }) => <SettingsIcon color={color} size={size} />,
+            drawerIcon: ({ color, size }) => <MyIcon name="Settings" color={color} size={size} />,
           }}
         />
       </Drawer>
