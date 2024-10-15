@@ -1,8 +1,9 @@
-import { TiposDeTransacciones } from "@/Types/types";
-import { Platform } from "react-native";
-import { create } from "zustand";
 import { DEFAULT_STATE_CATEGORIAS, LOCAL_DB_CATEGORIAS_NAME } from "../configs/config";
 import { Categoria } from "../domain/entities";
+import { TiposDeTransacciones } from "@/Types/types";
+import { FA5Style } from "@expo/vector-icons/build/FontAwesome5";
+import { Platform } from "react-native";
+import { create } from "zustand";
 
 const initialState = (() => {
   if (Platform.OS === "web") {
@@ -36,12 +37,14 @@ interface ICategoriaStore {
   Error: Error | null;
   categorias: Categoria[];
   allCategories: Categoria[];
+  orderCategoris: Categoria[];
   initialFetch: () => void;
   fetchCategorias: (type: TiposDeTransacciones) => Promise<Categoria[]>;
   addCategoria: (data: Categoria) => void;
   deleteCategoria: (id: string) => void;
   updateCategoria: (data: Categoria) => void;
   getCategoryByID: (id: string) => Categoria | null;
+  sortCateforys: () => Categoria[];
 }
 
 export const useCategoriaStore = create<ICategoriaStore>((set, get) => ({
@@ -49,8 +52,15 @@ export const useCategoriaStore = create<ICategoriaStore>((set, get) => ({
   loagin: false,
   Error: null,
   allCategories: initialState,
+  orderCategoris: initialState,
+  sortCateforys: () => {
+    const { categorias } = get();
+    const orderedCategorias = categorias.sort((a, b) => a.type.localeCompare(b.type));
+    set({ orderCategoris: orderedCategorias });
+    return orderedCategorias;
+  },
   initialFetch: async () => {
-    set({ loagin: true });
+    set({ loagin: true, Error: null });
     try {
       set({ categorias: initialState });
     } catch (error) {
@@ -68,7 +78,7 @@ export const useCategoriaStore = create<ICategoriaStore>((set, get) => ({
     return null;
   },
   fetchCategorias: async (type: TiposDeTransacciones) => {
-    set({ loagin: true });
+    set({ loagin: true, Error: null });
     try {
       const initialCategoria = initialState.filter((c: Categoria) => c.type === type);
       set({ categorias: initialCategoria });
@@ -88,12 +98,14 @@ export const useCategoriaStore = create<ICategoriaStore>((set, get) => ({
   },
   deleteCategoria: (id: string) => {
     const { categorias } = get();
+    set({ loagin: true, Error: null });
     const newState = categorias.filter((c) => c.id !== id);
-    set({ categorias: newState });
+    set({ categorias: newState, loagin: false });
   },
   updateCategoria: (data: Categoria) => {
     const { categorias } = get();
+    set({ loagin: true, Error: null });
     const newState = categorias.map((c) => (c.id === data.id ? data : c));
-    set({ categorias: newState });
+    set({ categorias: newState, loagin: false });
   },
 }));

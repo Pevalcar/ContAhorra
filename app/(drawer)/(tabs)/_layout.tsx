@@ -1,6 +1,5 @@
-import { HomeIcon, MyIcon } from "@/components/Icons";
+import { MyIcon } from "@/components/Icons";
 import { Tabs } from "expo-router";
-import { t } from "i18next";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
@@ -13,7 +12,7 @@ export default function TabLayout() {
         options={{
           title: t("menu.home"),
           headerShown: false,
-          tabBarIcon: ({ color, size }) => <HomeIcon color={color} size={size} />,
+          tabBarIcon: ({ color, size }) => <MyIcon name="Home" color={color} size={size} />,
         }}></Tabs.Screen>
       <Tabs.Screen
         name="grafics"
