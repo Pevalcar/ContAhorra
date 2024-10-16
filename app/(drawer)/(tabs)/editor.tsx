@@ -1,6 +1,6 @@
+import EditorList from "@/components/Editor/EditorList";
 import { useCategoriaStore, useCuentasStore, usePerfilesStore } from "@/lib/store";
 import React from "react";
-import { View } from "react-native";
 
 export default function editor() {
   const { fetchCuentas } = useCuentasStore((state) => state);
@@ -15,5 +15,5 @@ export default function editor() {
     };
     fetchData();
   }, []);
-  return <View />;
+  return <EditorList />;
 }
