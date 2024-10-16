@@ -42,6 +42,7 @@ interface Item {
 }
 
 export const CategoriItem = React.memo(({ item, itemToEdit, itemToDelete }: Item) => {
+  console.log("render");
   return (
     <Card
       variant="outline"
