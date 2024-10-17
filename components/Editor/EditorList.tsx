@@ -1,9 +1,9 @@
-import { useDarkModeStore } from "@/lib/store";
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import React from "react";
 import { ListEditorCategoria } from "./ListEditorCategoria";
 import { ListEditorCuenta } from "./ListEditorCuenta";
 import { ListEditorPerfiles } from "./ListEditorPerfiles";
+import { useDarkModeStore } from "@/lib/store";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import React from "react";
 
 const Tab = createMaterialTopTabNavigator();
 interface Props {}
