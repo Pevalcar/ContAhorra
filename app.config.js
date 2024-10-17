@@ -16,6 +16,7 @@ export default {
     },
     ios: {
       supportsTablet: true,
+      bundleIdentifier: "com.pevalcar.contahorra",
     },
     android: {
       adaptiveIcon: {
