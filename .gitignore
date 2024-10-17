@@ -18,14 +18,14 @@ expo-env.d.ts
 
 # env
 .env
+/android
+/ios
 
 ui-debug.log
 firebase-debug.log
 google-services.json
 credentials.json
 contahorra-firebase-adminsdk-y8tv4-4a08f5bacd.json
-android/
 coverage/
-ios/
 %ProgramData%/Microsoft/Windows/UUS/State/_active.uusver
-ios/contahorra.xcodeproj/project.pbxproj
+
