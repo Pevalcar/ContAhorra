@@ -3,7 +3,7 @@ import {
   DeleteModal,
   EditModal,
 } from "@/components/Editor/ListEditorCategoria/CategoriaItemCard";
-import { Text, VStack } from "@/components/ui";
+import { VStack } from "@/components/ui";
 import { useEditorCategoria } from "@/lib/Hooks/Editor/useEditorCategoria";
 import React from "react";
 import { FlatList } from "react-native";
