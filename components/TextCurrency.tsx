@@ -24,7 +24,7 @@ export const TextCurrency = ({
       : "text-green-500";
 
   return (
-    <Text size={size} className={"text-error-500" + " text-" + size + " font-semibold"}>
+    <Text size={size} className="font-semibold text-error-500">
       {sign && (negative ? "-" : "+")}
       {formatValue(value)}
     </Text>
