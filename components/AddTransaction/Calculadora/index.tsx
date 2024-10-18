@@ -82,7 +82,7 @@ const Pantalla = React.memo(pantalla);
 
 function pantalla({ className, children, onDeletePress = () => {}, ...props }: PantallaProps) {
   return (
-    <View className={"flex h-16 w-full flex-row rounded-lg border " + className} {...props}>
+    <View className="flex h-16 w-full flex-row rounded-lg border" {...props}>
       <Heading className="mr-5 h-full flex-1 text-right align-middle text-3xl">{children}</Heading>
     </View>
   );

@@ -42,7 +42,7 @@ export default function Add() {
         </Button>
       </HStack>
       <ScrollView className="pb-5">
-        <VStack className={"mx-2 h-full items-center gap-2"}>
+        <VStack className="mx-2 h-full items-center gap-2">
           <SelectorDeTipos />
           <SelectorGroup />
           {categoriSelect?.prestamo ? <Grupalmenu /> : null}
