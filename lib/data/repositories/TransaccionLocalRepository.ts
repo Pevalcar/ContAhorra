@@ -17,6 +17,7 @@ export class TransaccionLocalRepository implements TransaccionRepositoryI {
   constructor(db: string) {
     this.dbNAme = db;
   }
+
   addGroup(data: Group): Promise<void> {
     throw new Error("Method not implemented.");
   }
@@ -59,13 +60,52 @@ export class TransaccionLocalRepository implements TransaccionRepositoryI {
   }
   // CATEGORIAS
 
-  addCategory(data: Categoria): Promise<void> {
-    throw new Error("Method not implemented.");
+  async addCategory(data: Categoria): Promise<void> {
+    const db = await openDatabaseAsync(this.dbNAme);
+    try {
+      const query = `
+        INSERT INTO ${LOCAL_DB_CATEGORIAS_NAME} (
+        id,
+        name,
+        icon,
+        userOwnerID,
+        uptodataBase,
+        type,
+        color,
+        prestamo
+        )
+        VALUES (?, ?, ?, ?, ?,?,?,?);
+      `;
+      await db.runAsync(query, [
+        data.id,
+        data.name,
+        data.icon,
+        data.userOwnerID,
+        data.uptodataBase ? 1 : 0,
+        data.type,
+        data.color,
+        data.prestamo ? 1 : 0,
+      ]);
+    } catch (error) {
+      throw SQLiteControlError.getError(error);
+    }
   }
   updateCategory(data: Categoria): Promise<void> {
     throw new Error("Method not implemented.");
   }
-  deleteCategory(id: string): Promise<boolean> {
+  async deleteCategory(id: string): Promise<boolean> {
+    const db = await openDatabaseAsync(this.dbNAme);
+    try {
+      const DeleteQuerry = `
+       DELETE FROM ${LOCAL_DB_CATEGORIAS_NAME} WHERE id = ?;
+      `;
+      await db.runAsync(DeleteQuerry, [id]);
+      return true;
+    } catch (error) {
+      throw SQLiteControlError.getError(error);
+    }
+  }
+  async getCatgoryByID(id: string): Promise<Categoria | null> {
     throw new Error("Method not implemented.");
   }
   async getAllCategory({
@@ -83,11 +123,15 @@ export class TransaccionLocalRepository implements TransaccionRepositoryI {
         query += ` AND type = ?`;
         params.push(type);
       }
+      // Agregar la cláusula ORDER BY para ordenar por type en orden descendente
+      query += ` ORDER BY type DESC`;
       const results = await db.getAllAsync<Categoria>(query, params);
       if (results.length === 0) {
         return [];
       }
-      const categorías = results.map((row) => new Categoria(row));
+      const categorías = results.map((row) => {
+        return Categoria.FromSQLite(row);
+      });
       return categorías;
     } catch (error) {
       throw SQLiteControlError.getError(error);

@@ -94,6 +94,8 @@ export const useTransactionToADDState = create<ITransaccionSate>((set, get) => (
     set({ loagin: true });
     try {
       const categorias = await useCategoriaStore.getState().fetchCategorias(newFilters(type));
+      console.log("types cargador ", categorias);
+
       set({ categoriasData: categorias, categoriSelect: categorias[0] });
     } catch (error) {
       console.error("Error al guardar la transacción:", error);

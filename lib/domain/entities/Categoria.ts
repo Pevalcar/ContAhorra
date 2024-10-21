@@ -1,4 +1,9 @@
-import type { MyIconos, TiposDeTransacciones, userOwnerID } from "@/Types/types";
+import type {
+  MyColorsCategories,
+  MyIconos,
+  TiposDeTransacciones,
+  userOwnerID,
+} from "@/Types/types";
 
 export class Categoria {
   readonly id: string;
@@ -7,7 +12,7 @@ export class Categoria {
   type: TiposDeTransacciones;
   prestamo: boolean;
   userOwnerID: userOwnerID;
-  color: string;
+  color: MyColorsCategories;
   uptodataBase: boolean;
 
   constructor(params: {
@@ -27,6 +32,19 @@ export class Categoria {
     this.uptodataBase = params.uptodataBase ?? false;
     this.prestamo = params.prestamo ?? false;
     this.type = params.type ?? "Gasto";
-    this.color = params.color ?? "white";
+    this.color = params.color ?? "#26A69A";
+  }
+
+  static FromSQLite(params: any) {
+    return new Categoria({
+      id: params.id,
+      name: params.name,
+      icon: params.icon,
+      userOwnerID: params.userOwnerID,
+      uptodataBase: params.uptodataBase === 1,
+      prestamo: params.prestamo === 1,
+      type: params.type,
+      color: params.color,
+    });
   }
 }

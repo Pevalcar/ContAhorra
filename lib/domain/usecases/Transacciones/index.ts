@@ -10,6 +10,7 @@ export * from './getAllAccount';
 export * from './getAllCategory';
 export * from './getAllProfileBtUserOwnerID';
 export * from './getAllUseCase';
+export * from './getCategoryById';
 export * from './getProfileByID';
 export * from './getTotalTransactionByDAteRangeUseCase';
 export * from './getTransactionsByDateRangeUseCase';

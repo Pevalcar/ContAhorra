@@ -39,7 +39,7 @@ export const AppColorsCategorias = [
   "#26C6DA", // light cyan
   "#42A5F5", // sky blue
   "#90A4AE", // muted gray
-];
+] as const;
 
 // export const AppColorsCategorias = [
 //   "#6B5B95", // muted purple

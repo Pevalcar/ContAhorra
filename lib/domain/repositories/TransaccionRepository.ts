@@ -76,6 +76,10 @@ export default class TransaccionRepositoryI {
     throw new Error("Method not implemented.");
   }
 
+  getCatgoryByID(id: string): Promise<Categoria | null> {
+    throw new Error("Method not implemented.");
+  }
+
   getAllAccount({ userOwnerID }: { userOwnerID?: userOwnerID }): Promise<Cuenta[]> {
     throw new Error("Method not implemented.");
   }

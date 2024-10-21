@@ -103,6 +103,8 @@ export const useTransaccionesStore = create<ITransaccionesStore>((set, get) => (
         currentMonth,
         endDate,
       );
+      console.log("cargando transacciones");
+
       const transacciones = await getTransactionsByDateRang.execute({
         endDate: endOfMonthTimestamp,
         startDate: startOfMonthTimestamp,

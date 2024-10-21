@@ -1,6 +1,14 @@
-import { DEFAULT_STATE_CATEGORIAS, LOCAL_DB_CATEGORIAS_NAME } from "../configs/config";
-import { Categoria } from "../domain/entities";
+import { useTransaccionesStore } from "./TransaccionesStore";
 import { TiposDeTransacciones } from "@/Types/types";
+import { DEFAULT_STATE_CATEGORIAS, LOCAL_DB_CATEGORIAS_NAME } from "@/lib/configs/config";
+import {
+  addCategory,
+  deleteCategory,
+  getAllCategory,
+  getCategoryById,
+  updateCategory,
+} from "@/lib/core/di/Container";
+import { Categoria } from "@/lib/domain/entities";
 import { FA5Style } from "@expo/vector-icons/build/FontAwesome5";
 import { Platform } from "react-native";
 import { create } from "zustand";
@@ -54,6 +62,7 @@ export const useCategoriaStore = create<ICategoriaStore>((set, get) => ({
   allCategories: initialState,
   orderCategoris: initialState,
   sortCateforys: () => {
+    //TODO esto esta para cuando encesite paginarlos o agregarlos con header iugual a las fechas de las transacciones
     const { categorias } = get();
     const orderedCategorias = categorias.sort((a, b) => a.type.localeCompare(b.type));
     set({ orderCategoris: orderedCategorias });
@@ -62,14 +71,14 @@ export const useCategoriaStore = create<ICategoriaStore>((set, get) => ({
   initialFetch: async () => {
     set({ loagin: true, Error: null });
     try {
-      set({ categorias: initialState });
+      const initialCategorias = await getAllCategory.execute();
+      if (initialCategorias) set({ categorias: initialCategorias, loagin: false });
     } catch (error) {
       console.error("Error al guardar la transacción:", error);
-      set({ Error: error as Error });
+      set({ Error: error as Error, loagin: false });
     }
-    set({ loagin: false });
   },
-  getCategoryByID(id: string) {
+  getCategoryByID: (id: string) => {
     const { categorias } = get();
     const categoriase = categorias.find((c) => c.id === id);
     if (categoriase) {
@@ -78,34 +87,67 @@ export const useCategoriaStore = create<ICategoriaStore>((set, get) => ({
     return null;
   },
   fetchCategorias: async (type: TiposDeTransacciones) => {
+    //TODO revisar porq ue creo que no es ni necesario
+    set({ loagin: true, Error: null });
+    const { categorias } = get();
+    try {
+      const initialCategoria = categorias.filter(
+        (c: Categoria) => c.type.localeCompare(type) === 0,
+      );
+      set({ orderCategoris: initialCategoria });
+      return initialCategoria;
+    } catch (error) {
+      console.error("Error al guardar la transacción:", error);
+      set({ Error: error as Error, loagin: false });
+      return [];
+    }
+  },
+  addCategoria: async (data: Categoria) => {
+    const { categorias } = get();
     set({ loagin: true, Error: null });
     try {
-      const initialCategoria = initialState.filter((c: Categoria) => c.type === type);
-      set({ categorias: initialCategoria });
+      await addCategory.execute(data);
+      const newState = sortCategorias([...categorias, data]);
+
+      set({
+        categorias: newState,
+        loagin: false,
+      });
+    } catch (error) {
+      console.error("Error al guardar la transacción:", error);
+      set({ Error: error as Error, loagin: false });
+    }
+  },
+  deleteCategoria: async (id: string) => {
+    const { categorias } = get();
+    set({ loagin: true, Error: null });
+    try {
+      await deleteCategory.execute(id);
+      const newState = categorias.filter((c) => c.id !== id);
+      set({ categorias: newState, loagin: false });
+      useTransaccionesStore.getState().getAllTransaccion();
     } catch (error) {
       console.error("Error al guardar la transacción:", error);
       set({ Error: error as Error });
     }
-    set({ loagin: false });
-    return get().categorias;
   },
-  addCategoria: (data: Categoria) => {
-    const { categorias } = get();
-    const newState = [...categorias, data];
-    set({
-      categorias: newState,
-    });
-  },
-  deleteCategoria: (id: string) => {
+  updateCategoria: async (data: Categoria) => {
     const { categorias } = get();
     set({ loagin: true, Error: null });
-    const newState = categorias.filter((c) => c.id !== id);
-    set({ categorias: newState, loagin: false });
-  },
-  updateCategoria: (data: Categoria) => {
-    const { categorias } = get();
-    set({ loagin: true, Error: null });
-    const newState = categorias.map((c) => (c.id === data.id ? data : c));
-    set({ categorias: newState, loagin: false });
+    try {
+      //TODO por terminar esto
+      await updateCategory.execute(data);
+      const newState = categorias.map((c) => (c.id === data.id ? data : c));
+
+      set({ categorias: newState, loagin: false });
+    } catch (E) {
+      console.log("Error actualizando categoria ", E);
+      set({ Error: E as Error, loagin: false });
+    }
   },
 }));
+
+function sortCategorias(categorias: Categoria[]) {
+  const orderedCategorias = categorias.sort((a, b) => a.type.localeCompare(b.type));
+  return orderedCategorias;
+}
