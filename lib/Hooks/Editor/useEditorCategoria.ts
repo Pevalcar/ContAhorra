@@ -4,15 +4,9 @@ import { useCategoriaStore } from "@/lib/store";
 import React from "react";
 
 export const useEditorCategoria = () => {
-  const {
-    categorias,
-    updateCategoria,
-    deleteCategoria,
-    addCategoria,
-    sortCateforys,
-    Error,
-    orderCategoris,
-  } = useCategoriaStore((state) => state);
+  const { updateCategoria, deleteCategoria, addCategoria, Error } = useCategoriaStore(
+    (state) => state,
+  );
   const [itemtoEdit, setItemtoEdit] = React.useState<Categoria | null>(null);
   const [itemtoDelete, setItemtoDelete] = React.useState<Categoria | null>(null);
   const [itemtoAdd, setITemtoAdd] = React.useState<Categoria | null>(null);
@@ -24,27 +18,21 @@ export const useEditorCategoria = () => {
     }
   }, [Error]);
 
-  React.useEffect(() => {
-    console.log("categorias sortend");
-
-    sortCateforys();
-  }, [categorias]);
-
   const deleteItem = React.useCallback(async (item: Categoria | null) => {
     if (item) {
-      await deleteCategoria(item.id);
       setItemtoDelete(null);
+      await deleteCategoria(item.id);
     }
   }, []);
 
   const setItemtoEditS = React.useCallback((item: Categoria | null) => {
-    setItemtoEdit(item);
     setItemtoDelete(null);
+    setItemtoEdit(item);
   }, []);
 
   const setItemtoDeleteS = React.useCallback((item: Categoria | null) => {
-    setItemtoDelete(item);
     setItemtoEdit(null);
+    setItemtoDelete(item);
   }, []);
 
   const editItem = React.useCallback(async (item: Categoria | null) => {
@@ -56,8 +44,9 @@ export const useEditorCategoria = () => {
 
   const addITem = React.useCallback(async (item: Categoria) => {
     if (item) {
-      await addCategoria(item);
+      //TODO agregar verificación
       setITemtoAdd(null);
+      await addCategoria(item);
     }
   }, []);
 
@@ -70,7 +59,6 @@ export const useEditorCategoria = () => {
   }, []);
 
   return {
-    orderedCategorias: orderCategoris,
     itemtoEdit,
     itemtoDelete,
     itemtoAdd,

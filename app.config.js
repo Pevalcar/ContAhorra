@@ -71,7 +71,7 @@ export default {
         projectId: "6e591dda-d45c-428f-b0df-e05941f564f4",
       },
       google: {
-        webClientId: process.env.GOOGLE_WEB_CLIENT_ID,
+        webClientId: process.env.EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID,
       },
     },
     runtimeVersion: {

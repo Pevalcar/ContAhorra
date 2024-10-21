@@ -64,13 +64,7 @@ interface SelectorProps {
   idSelected: (id: any) => void;
   children?: React.ReactNode;
 }
-const MySelector = React.memo(function MySelector({
-  name,
-  data,
-  idSelected,
-  selected,
-  children,
-}: SelectorProps) {
+const MySelector = ({ name, data, idSelected, selected, children }: SelectorProps) => {
   const [showActionsheet, setShowActionsheet] = React.useState(false);
   const handleClose = () => setShowActionsheet(false);
 
@@ -87,7 +81,7 @@ const MySelector = React.memo(function MySelector({
       </ActionsheetItem>
     ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [handleClose],
+    [],
   );
   return (
     <>
@@ -118,4 +112,4 @@ const MySelector = React.memo(function MySelector({
       </Actionsheet>
     </>
   );
-});
+};

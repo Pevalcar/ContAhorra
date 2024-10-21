@@ -1,23 +1,32 @@
 import { Icon } from "./ui/icon";
 import type { MyIconos } from "@/Types/types";
 import {
+  Baby,
+  Briefcase,
+  Car,
+  Carrot,
   ClipboardList,
   Delete,
   Disc2,
   FileEdit,
   Flashlight,
   FlashlightOff,
+  HandCoins,
   Home,
   List,
+  Minus,
   Moon,
+  PawPrint,
   PiggyBank,
   Plus,
   Pocket,
   Rabbit,
   Settings,
+  ShoppingBasket,
   ShoppingCart,
   Sun,
   SwitchCamera,
+  Syringe,
   X,
 } from "lucide-react-native";
 
@@ -77,10 +86,74 @@ function getIcon(name: MyIconos) {
       return CameraFlipIcon;
     case "LightMode":
       return LightModeIcon;
+    case "Paw_Print":
+      return Paw_PrintIcon;
+    case "Car":
+      return CarIcon;
+    case "Shopping_Basket":
+      return Shopping_BasketIcon;
+    case "Minus":
+      return MinusIcon;
+    case "Carrot":
+      return CarrotIcon;
+    case "Briefcase":
+      return BriefcaseIcon;
+    case "Baby":
+      return BabyIcon;
+    case "Hand_Coins":
+      return Hand_CoinsIcon;
+
+    case "Syringe":
+      return SyringeIcon;
     default:
       return HomeIcon;
   }
 }
+
+const SyringeIcon = ({ props, color, size = 24 }: Props) => {
+  if (color) return <Syringe color={color} size={size} {...props} />;
+  return <Icon as={Syringe} className={classColor} size={size} {...props} />;
+};
+
+const Hand_CoinsIcon = ({ props, color, size = 24 }: Props) => {
+  if (color) return <HandCoins color={color} size={size} {...props} />;
+  return <Icon as={HandCoins} className={classColor} size={size} {...props} />;
+};
+
+const BabyIcon = ({ props, color, size = 24 }: Props) => {
+  if (color) return <Baby color={color} size={size} {...props} />;
+  return <Icon as={Baby} className={classColor} size={size} {...props} />;
+};
+
+const BriefcaseIcon = ({ props, color, size = 24 }: Props) => {
+  if (color) return <Briefcase color={color} size={size} {...props} />;
+  return <Icon as={Briefcase} className={classColor} size={size} {...props} />;
+};
+
+const CarrotIcon = ({ props, color, size = 24 }: Props) => {
+  if (color) return <Carrot color={color} size={size} {...props} />;
+  return <Icon as={Carrot} className={classColor} size={size} {...props} />;
+};
+
+const MinusIcon = ({ props, color, size = 24 }: Props) => {
+  if (color) return <Minus color={color} size={size} {...props} />;
+  return <Icon as={Minus} className={classColor} size={size} {...props} />;
+};
+
+const Shopping_BasketIcon = ({ props, color, size = 24 }: Props) => {
+  if (color) return <ShoppingBasket color={color} size={size} {...props} />;
+  return <Icon as={ShoppingBasket} className={classColor} size={size} {...props} />;
+};
+
+const CarIcon = ({ props, color, size = 24 }: Props) => {
+  if (color) return <Car color={color} size={size} {...props} />;
+  return <Icon as={Car} className={classColor} size={size} {...props} />;
+};
+
+const Paw_PrintIcon = ({ props, color, size = 24 }: Props) => {
+  if (color) return <PawPrint color={color} size={size} {...props} />;
+  return <Icon as={PawPrint} className={classColor} size={size} {...props} />;
+};
 
 const LightModeIcon = ({ props, color, size }: Props) => {
   if (color) return <Sun color={color} size={size} {...props} />;

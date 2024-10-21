@@ -31,6 +31,7 @@ import {
   GetAllCategoryUseCase,
   GetAllProfileByUserOwnerIDUseCase,
   GetAllUseCase,
+  GetCategoryById,
   GetProfileByIDUseCase,
   GetTotalTransactionsByDateRangeUseCase,
   GetTransactionsByDateRangeUseCase,
@@ -76,12 +77,14 @@ const getTotalTransactionByDateRange = new GetTotalTransactionsByDateRangeUseCas
   DBRepositoryLocal,
   DBReposirotyRemote,
 );
-
+//Categorias
 const getAllCategory = new GetAllCategoryUseCase(DBRepositoryLocal, DBReposirotyRemote);
 const addCategory = new AddCategoryUseCase(DBRepositoryLocal, DBReposirotyRemote);
 const updateCategory = new UpdateCategoryUseCase(DBRepositoryLocal, DBReposirotyRemote);
 const deleteCategory = new DeleteCategoryUseCase(DBRepositoryLocal, DBReposirotyRemote);
+const getCategoryById = new GetCategoryById(DBRepositoryLocal, DBReposirotyRemote);
 
+//Cuentas
 const getAllAccount = new GetAllAccountUseCase(DBRepositoryLocal, DBReposirotyRemote);
 const addAccount = new AddAccountUseCase(DBRepositoryLocal, DBReposirotyRemote);
 const updateAccount = new UpdateAccountUseCase(DBRepositoryLocal, DBReposirotyRemote);
@@ -127,6 +130,7 @@ export {
   addCategory,
   updateCategory,
   deleteCategory,
+  getCategoryById,
   getAllAccount,
   addAccount,
   updateAccount,

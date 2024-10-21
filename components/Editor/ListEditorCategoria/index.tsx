@@ -1,58 +1,40 @@
-import {
-  CategoriItem,
-  DeleteModal,
-  EditModal,
-} from "@/components/Editor/ListEditorCategoria/CategoriaItemCard";
-import { VStack } from "@/components/ui";
+import { CategoriItem, EditModal } from "@/components/Editor/ListEditorCategoria/CategoriaItemCard";
+import { Button, ButtonSpinner, ButtonText, VStack } from "@/components/ui";
 import { useEditorCategoria } from "@/lib/Hooks/Editor/useEditorCategoria";
+import { useCategoriaStore } from "@/lib/store";
 import React from "react";
-import { FlatList } from "react-native";
+import { FlatList, View } from "react-native";
 
 export const ListEditorCategoria = () => {
-  const {
-    deleteItem,
-    editItem,
-    setItemtoDeleteS,
-    setItemtoEditS,
-    addITem,
-    closeItemToAdd,
-    opeItemToAdd,
-    itemtoDelete,
-    itemtoEdit,
-    orderedCategorias,
-    itemtoAdd,
-  } = useEditorCategoria();
+  const { categorias, loagin } = useCategoriaStore((state) => state);
+  const { addITem, closeItemToAdd, opeItemToAdd, itemtoAdd } = useEditorCategoria();
+
+  // React.useEffect(() => {
+  //   sortCateforys();
+  // }, [categorias]);
   return (
-    <VStack className="my-2 px-4">
-      <EditModal
-        item={itemtoEdit}
-        onClose={() => setItemtoEditS(null)}
-        show={itemtoEdit !== null}
-        onEditTap={editItem}
-        edit={true}
-      />
+    <VStack className="my-2 flex-auto gap-2 px-4">
+      {/* //TODO hay que implementar un loading mode */}
+      {loagin ? (
+        <View className="absolute bottom-0 left-0 right-0 top-0 z-20 flex h-full items-center justify-center bg-background-200/20">
+          <ButtonSpinner size="large" />
+        </View>
+      ) : null}
+      <Button onPress={opeItemToAdd}>
+        <ButtonText>Agregar Categoria</ButtonText>
+      </Button>
       <EditModal
         item={itemtoAdd}
         onClose={closeItemToAdd}
         show={itemtoAdd !== null}
         onEditTap={addITem}
         edit={false}
-      />
-      <DeleteModal
-        item={itemtoDelete}
-        onClose={() => setItemtoDeleteS(null)}
-        show={itemtoDelete !== null}
-        onDelete={deleteItem}
+        loading={loagin}
       />
       <FlatList
-        data={orderedCategorias}
-        renderItem={({ item }) => (
-          <CategoriItem
-            item={item}
-            itemToEdit={() => setItemtoEditS(item)}
-            itemToDelete={() => setItemtoDeleteS(item)}
-          />
-        )}
+        className="flex h-full"
+        data={categorias}
+        renderItem={({ item }) => <CategoriItem item={item} />}
         keyExtractor={(item) => item.id}
       />
     </VStack>

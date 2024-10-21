@@ -1,3 +1,4 @@
+import { AppColorsCategorias } from "@/lib/configs/Colors";
 import { Iconos } from "@/lib/configs/images";
 
 export interface TransactionTotal {
@@ -11,3 +12,5 @@ export type userOwnerID = string;
 export type TiposDeTransacciones = "Ingreso" | "Gasto" | "Transferencia";
 
 export type MyIconos = (typeof Iconos)[number];
+
+export type MyColorsCategories = (typeof AppColorsCategorias)[number] | string;

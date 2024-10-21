@@ -1,4 +1,4 @@
-import { TiposDeTransacciones } from "@/Types/types";
+import { MyIconos, TiposDeTransacciones } from "@/Types/types";
 import { ArrowRightCircle, DollarSign, LucideIcon, ShoppingBag } from "lucide-react-native";
 
 export const avatars = [
@@ -40,6 +40,36 @@ export const Iconos = [
   "Wallet",
   "DarkMode",
   "LightMode",
-  "Shoping",
   "Delete",
+  "Paw_Print",
+  "Car",
+  "Shopping_Basket",
+  "Minus",
+  "Carrot",
+  "Briefcase",
+  "Baby",
+  "Hand_Coins",
+  "Syringe",
 ] as const;
+
+export const IconsCategories: MyIconos[] = [
+  "Home",
+  "Briefcase",
+  "Baby",
+  "Carrot",
+  "Settings",
+  "Syringe",
+  "Plus",
+  "Minus",
+  "Car",
+  "Shopping_Basket",
+  "ClipboardList",
+  "PiggyBank",
+  "Hand_Coins",
+  "Rabbit",
+  "Shoping",
+  "Wallet",
+  "Paw_Print",
+  "DarkMode",
+  "LightMode",
+];
