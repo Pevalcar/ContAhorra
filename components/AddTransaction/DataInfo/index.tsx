@@ -1,6 +1,4 @@
-import { Divider } from "@/components/ui/divider";
-import { HStack } from "@/components/ui/hstack";
-import { Text } from "@/components/ui/text";
+import { Divider, HStack, Text } from "@/components/ui/";
 import { useDate } from "@/lib/Hooks/useDateInfo";
 import React from "react";
 import { Pressable } from "react-native";

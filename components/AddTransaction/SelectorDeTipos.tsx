@@ -1,55 +1,26 @@
-import { Heading } from "../ui/heading";
-import { Pressable } from "../ui/pressable";
-import { Text } from "../ui/text";
+import { SegmentControl } from "../ui";
 import type { TiposDeTransacciones } from "@/Types/types";
-import { useTransactionToAdd } from "@/lib/Hooks/useTransactionToAdd";
+import { useTransactionToADDState } from "@/lib/store";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
 
 interface Props {}
 
 export const SelectorDeTipos: React.FC<Props> = () => {
-  const { type, onTypeChange } = useTransactionToAdd();
+  const { type, setType } = useTransactionToADDState((state) => state);
   const { t } = useTranslation();
-  return (
-    <View className="mb-8 w-full flex-row justify-between rounded-md bg-gray-300 p-2 px-5 sm:w-[400px]">
-      <MyButton title="Ingreso" selection={type} onPress={onTypeChange}>
-        {t("HOME.FILTRO.INGRESO")}
-      </MyButton>
-      <MyButton title="Gasto" selection={type} onPress={onTypeChange}>
-        {t("HOME.FILTRO.GASTO")}
-      </MyButton>
-      <MyButton title="Transferencia" selection={type} onPress={onTypeChange}>
-        {t("HOME.FILTRO.TRANSFERENCIA")}
-      </MyButton>
-      <MyButton title="Préstamo" selection={type} onPress={onTypeChange}>
-        {t("HOME.FILTRO.PRESTAMO")}
-      </MyButton>
-    </View>
-  );
-};
+  const types: TiposDeTransacciones[] = [
+    t("HOME.FILTRO.INGRESO"),
+    t("HOME.FILTRO.GASTO"),
+    t("HOME.FILTRO.TRANSFERENCIA"),
+  ] as TiposDeTransacciones[];
 
-interface MyButonProps {
-  title: TiposDeTransacciones;
-  selection?: TiposDeTransacciones;
-  onPress?: (value: TiposDeTransacciones) => void;
-  children?: React.ReactNode;
-}
-
-const MyButton = ({ title, selection = "Gasto", onPress = () => {}, children }: MyButonProps) => {
-  if (selection === title) {
-    return (
-      <Pressable className="rounded-md bg-secondary-0 p-2 drop-shadow-md" onPress={() => onPress}>
-        <Heading size="sm" bold>
-          {children}
-        </Heading>
-      </Pressable>
-    );
-  }
   return (
-    <Pressable className={"rounded-md p-2"} onPress={() => onPress(title)}>
-      <Text className="text-typography-600">{children}</Text>
-    </Pressable>
+    <SegmentControl
+      className="w-full flex-row justify-between rounded-md bg-gray-300 p-2 sm:w-[400px]"
+      values={types}
+      selectedIndex={type}
+      onChange={setType}
+    />
   );
 };

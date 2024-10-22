@@ -1,4 +1,6 @@
 import { Button, ButtonText } from "./ui/button";
+import { AVATAR_API_URL, DEVELOPMENT } from "@/lib/configs/config";
+import { useStoreSesion } from "@/lib/store";
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { DrawerContentScrollView, DrawerItemList } from "@react-navigation/drawer";
@@ -14,6 +16,7 @@ interface Props {
 
 const CustomDrawer = ({ props }: Props) => {
   const { i18n, t } = useTranslation();
+  const { user } = useStoreSesion((state) => state);
 
   useEffect(() => {
     const loadLanguage = async () => {
@@ -42,10 +45,12 @@ const CustomDrawer = ({ props }: Props) => {
           marginTop: -50,
           zIndex: 10,
         }}>
-        <ImageBackground source={{ uri: "https://i.pravatar.cc" }} style={{ padding: 20 }}>
+        <ImageBackground
+          source={{ uri: (user?.photoURL ?? DEVELOPMENT) ? AVATAR_API_URL : "" }}
+          style={{ padding: 20 }}>
           <Image
             alt="Not find"
-            source={{ uri: "https://i.pravatar.cc" }}
+            source={{ uri: (user?.photoURL ?? DEVELOPMENT) ? AVATAR_API_URL : "" }}
             style={styles.userAvatar}
           />
           <Text

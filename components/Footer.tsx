@@ -1,5 +1,5 @@
 import { Text } from "./ui/text";
-import useDebuger from "@/lib/Hooks/useDebuger";
+import { useDebuger } from "@/lib/Hooks/useDebuger";
 import React from "react";
 import { View } from "react-native";
 

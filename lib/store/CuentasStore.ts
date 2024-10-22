@@ -1,5 +1,5 @@
-import { DEFAULT_STATE_CUENTAS } from "../config";
-import { type Cuenta } from "@/Types/types";
+import { DEFAULT_STATE_CUENTAS } from "../configs/config";
+import { Cuenta } from "../domain/entities";
 import { Platform } from "react-native";
 import { create } from "zustand";
 
@@ -33,14 +33,41 @@ const initialState = (() => {
 })();
 
 interface ICuentasStore {
+  loagin: boolean;
+  Error: Error | null;
   cuentas: Cuenta[];
+  fetchCuentas: () => Promise<Cuenta[]>;
   addCuenta: (data: Cuenta) => void;
   deleteCuenta: (id: string) => void;
   updateCuenta: (data: Cuenta) => void;
+  getCuentaByID: (id: string) => Cuenta | null;
 }
 
 export const useCuentasStore = create<ICuentasStore>((set, get) => ({
   cuentas: initialState,
+  loagin: false,
+
+  Error: null,
+  getCuentaByID(id) {
+    const { cuentas } = get();
+    const cuenta = cuentas.find((c) => c.id === id);
+    if (cuenta) {
+      return cuenta;
+    }
+    return null;
+  },
+  fetchCuentas: async () => {
+    set({ loagin: true });
+    try {
+      const initialCuenta = initialState;
+      set({ cuentas: initialCuenta });
+    } catch (error) {
+      console.error("Error al guardar la transacción:", error);
+      set({ Error: error as Error });
+    }
+    set({ loagin: false });
+    return get().cuentas;
+  },
   addCuenta: (data: Cuenta) => {
     const { cuentas } = get();
     const newState = [...cuentas, data];

@@ -1,0 +1,75 @@
+import { MyIconos, TiposDeTransacciones } from "@/Types/types";
+import { ArrowRightCircle, DollarSign, LucideIcon, ShoppingBag } from "lucide-react-native";
+
+export const avatars = [
+  "avatar_1",
+  "avatar_2",
+  "avatar_3",
+  "avatar_4",
+  "avatar_5",
+  "avatar_6",
+  "avatar_7",
+  "avatar_8",
+  "avatar_9",
+  "avatar_10",
+  "avatar_11",
+  "avatar_12",
+  "avatar_13",
+];
+
+export const IconTypes: Record<TiposDeTransacciones, LucideIcon> = {
+  Gasto: ShoppingBag,
+  Ingreso: DollarSign,
+  Transferencia: ArrowRightCircle,
+};
+
+export const Iconos = [
+  "Home",
+  "Settings",
+  "Plus",
+  "List",
+  "ClipboardList",
+  "FileEdit",
+  "PiggyBank",
+  "SwitchCamera",
+  "Rabbit",
+  "Torch",
+  "Disc",
+  "Close",
+  "Shoping",
+  "Wallet",
+  "DarkMode",
+  "LightMode",
+  "Delete",
+  "Paw_Print",
+  "Car",
+  "Shopping_Basket",
+  "Minus",
+  "Carrot",
+  "Briefcase",
+  "Baby",
+  "Hand_Coins",
+  "Syringe",
+] as const;
+
+export const IconsCategories: MyIconos[] = [
+  "Home",
+  "Briefcase",
+  "Baby",
+  "Carrot",
+  "Settings",
+  "Syringe",
+  "Plus",
+  "Minus",
+  "Car",
+  "Shopping_Basket",
+  "ClipboardList",
+  "PiggyBank",
+  "Hand_Coins",
+  "Rabbit",
+  "Shoping",
+  "Wallet",
+  "Paw_Print",
+  "DarkMode",
+  "LightMode",
+];

@@ -1,4 +1,5 @@
 import { Heading } from "./ui/heading";
+import { Text } from "@/components/ui/";
 import { formatValue } from "@/lib/Helpers/formaters";
 
 interface Props {
@@ -23,9 +24,9 @@ export const TextCurrency = ({
       : "text-green-500";
 
   return (
-    <Heading size={size} className={`text-${size} font-bold ${textColor} `}>
+    <Text size={size} className="font-semibold text-error-500">
       {sign && (negative ? "-" : "+")}
       {formatValue(value)}
-    </Heading>
+    </Text>
   );
 };
