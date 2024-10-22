@@ -7,8 +7,6 @@ import {
   FormControlError,
   FormControlErrorIcon,
   FormControlErrorText,
-  FormControlHelper,
-  FormControlHelperText,
   FormControlLabel,
   FormControlLabelText,
   HStack,
@@ -26,7 +24,6 @@ import {
 } from "@/components/ui";
 import { AppColorsCategorias } from "@/lib/configs/Colors";
 import { avatars } from "@/lib/configs/images";
-import { Perfil } from "@/lib/domain";
 import { usePerfilesStore } from "@/lib/store";
 import { PervilValidationSquema } from "@/lib/validations/perfilValidation";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -43,18 +40,34 @@ interface Props {
 
 const createProfileModal: React.FC<Props> = ({ showModal, setShowModal }) => {
   const { t } = useTranslation();
-  const { addPerfil, avatar, setAvatar, setName } = usePerfilesStore((state) => state);
+  const ref = React.useRef<any>(null);
+  const {
+    addPerfil,
+    avatar,
+    setAvatar,
+    setName,
+    name: perfilname,
+    color: selectColor,
+    setColor,
+  } = usePerfilesStore((state) => state);
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
+    defaultValues: {
+      name: perfilname,
+    },
     resolver: yupResolver(PervilValidationSquema),
   });
 
   const onSave = React.useCallback(({ name }: any) => {
     setName(name);
     addPerfil();
+    reset({
+      name: perfilname,
+    });
     setShowModal(false);
   }, []);
 
@@ -80,7 +93,13 @@ const createProfileModal: React.FC<Props> = ({ showModal, setShowModal }) => {
                       <FormControlLabelText>{t("nombre")}</FormControlLabelText>
                     </FormControlLabel>
                     <Input className="mb-4">
-                      <InputField value={value} onBlur={onBlur} onChangeText={onChange} />
+                      <InputField
+                        value={value}
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        ref={ref}
+                        autoFocus
+                      />
                     </Input>
                     <FormControlError>
                       <FormControlErrorIcon as={AlertCircleIcon} />
@@ -98,17 +117,16 @@ const createProfileModal: React.FC<Props> = ({ showModal, setShowModal }) => {
               })}
             </VStack>
             <Heading>Color</Heading>
-            <HStack className="flex flex-wrap">
+            <HStack className="flex flex-wrap justify-between gap-1 rounded-md border border-background-500 bg-background-300 p-2">
               {AppColorsCategorias.map((color, i) => {
                 return (
-                  <Pressable key={i}>
-                    {/* {// onPress={() => setItemI(() => new Categoria({ ...itemI, color }))}>} */}
-                    {/* // className={itemI.color === color ? "border-4 border-green-600" : ""} */}
+                  <Pressable onPress={() => setColor(color)} key={i}>
                     <Box
+                      className={selectColor === color ? "border-4 border-green-600" : ""}
                       style={{
                         backgroundColor: color,
-                        width: 35,
-                        height: 35,
+                        width: 30,
+                        height: 30,
                         borderRadius: 100,
                       }}
                     />
@@ -119,7 +137,7 @@ const createProfileModal: React.FC<Props> = ({ showModal, setShowModal }) => {
           </ModalBody>
 
           <ModalFooter>
-            <Button variant="outline" onPress={handleSubmit(onSave)}>
+            <Button action="positive" onPress={handleSubmit(onSave)}>
               <ButtonText>{t("save")}</ButtonText>
             </Button>
           </ModalFooter>
