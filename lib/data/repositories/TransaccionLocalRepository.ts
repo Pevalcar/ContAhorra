@@ -90,8 +90,34 @@ export class TransaccionLocalRepository implements TransaccionRepositoryI {
       throw SQLiteControlError.getError(error);
     }
   }
-  updateCategory(data: Categoria): Promise<void> {
-    throw new Error("Method not implemented.");
+  async updateCategory(data: Categoria): Promise<void> {
+    const db = await openDatabaseAsync(this.dbNAme);
+    try {
+      const query = `
+        UPDATE ${LOCAL_DB_CATEGORIAS_NAME}
+        SET 
+        name = ?, 
+        icon = ?, 
+        userOwnerID = ?, 
+        uptodataBase = ?,
+        type = ?,
+        color = ?,
+        prestamo = ?
+        WHERE id = ?
+      `;
+      await db.runAsync(query, [
+        data.name,
+        data.icon,
+        data.userOwnerID,
+        data.uptodataBase ? 1 : 0,
+        data.type,
+        data.color,
+        data.prestamo ? 1 : 0,
+        data.id,
+      ]);
+    } catch (error) {
+      throw SQLiteControlError.getError(error);
+    }
   }
   async deleteCategory(id: string): Promise<boolean> {
     const db = await openDatabaseAsync(this.dbNAme);
@@ -106,6 +132,7 @@ export class TransaccionLocalRepository implements TransaccionRepositoryI {
     }
   }
   async getCatgoryByID(id: string): Promise<Categoria | null> {
+    //TODO contemplar eliminar
     throw new Error("Method not implemented.");
   }
   async getAllCategory({

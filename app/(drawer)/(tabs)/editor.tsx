@@ -1,20 +1,35 @@
-import EditorList from "@/components/Editor/EditorList";
-import { useCategoriaStore, useCuentasStore, usePerfilesStore } from "@/lib/store";
+import { ListEditorCategoria } from "@/components/Editor/ListEditorCategoria";
+import { ListEditorCuenta } from "@/components/Editor/ListEditorCuenta";
+import { ListEditorPerfiles } from "@/components/Editor/ListEditorPerfiles";
+import { useDarkModeStore } from "@/lib/store";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import React from "react";
-import { View } from "react-native";
+
+const Tab = createMaterialTopTabNavigator();
 
 export default function editor() {
-  const { fetchCuentas } = useCuentasStore((state) => state);
-  const { fetchPerfiles } = usePerfilesStore((state) => state);
-  const { initialFetch } = useCategoriaStore((state) => state);
-
-  React.useEffect(() => {
-    const fetchData = async () => {
-      await fetchCuentas();
-      await initialFetch();
-      await fetchPerfiles();
-    };
-    fetchData();
-  }, []);
-  return <EditorList />;
+  const { darkMode } = useDarkModeStore((state) => state);
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        lazy: true,
+        tabBarPressOpacity: 1,
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: "800",
+        },
+        tabBarIndicatorStyle: {
+          backgroundColor: darkMode ? "white" : "black",
+        },
+        tabBarContentContainerStyle: {
+          alignItems: "center",
+          justifyContent: "space-between",
+          paddingHorizontal: 10,
+        },
+      }}>
+      <Tab.Screen name="Categorias" component={ListEditorCategoria} />
+      <Tab.Screen name="Perfiles" component={ListEditorPerfiles} />
+      <Tab.Screen name="Cuentas" component={ListEditorCuenta} />
+    </Tab.Navigator>
+  );
 }

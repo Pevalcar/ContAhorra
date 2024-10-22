@@ -6,12 +6,15 @@ import React from "react";
 import { FlatList, View } from "react-native";
 
 export const ListEditorCategoria = () => {
-  const { categorias, loagin } = useCategoriaStore((state) => state);
+  const { categorias, loagin, initialFetch } = useCategoriaStore((state) => state);
   const { addITem, closeItemToAdd, opeItemToAdd, itemtoAdd } = useEditorCategoria();
 
-  // React.useEffect(() => {
-  //   sortCateforys();
-  // }, [categorias]);
+  React.useEffect(() => {
+    const fetchData = async () => {
+      await initialFetch();
+    };
+    fetchData();
+  }, []);
   return (
     <VStack className="my-2 flex-auto gap-2 px-4">
       {/* //TODO hay que implementar un loading mode */}

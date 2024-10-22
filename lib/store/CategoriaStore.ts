@@ -138,7 +138,6 @@ export const useCategoriaStore = create<ICategoriaStore>((set, get) => ({
       //TODO por terminar esto
       await updateCategory.execute(data);
       const newState = categorias.map((c) => (c.id === data.id ? data : c));
-
       set({ categorias: newState, loagin: false });
     } catch (E) {
       console.log("Error actualizando categoria ", E);
@@ -148,6 +147,6 @@ export const useCategoriaStore = create<ICategoriaStore>((set, get) => ({
 }));
 
 function sortCategorias(categorias: Categoria[]) {
-  const orderedCategorias = categorias.sort((a, b) => a.type.localeCompare(b.type));
+  const orderedCategorias = categorias.sort((a, b) => b.type.localeCompare(a.type));
   return orderedCategorias;
 }
