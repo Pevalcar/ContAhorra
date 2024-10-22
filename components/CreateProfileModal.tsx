@@ -1,6 +1,17 @@
 import {
+  AlertCircleIcon,
+  Box,
   Button,
   ButtonText,
+  FormControl,
+  FormControlError,
+  FormControlErrorIcon,
+  FormControlErrorText,
+  FormControlHelper,
+  FormControlHelperText,
+  FormControlLabel,
+  FormControlLabelText,
+  HStack,
   Heading,
   Input,
   InputField,
@@ -13,10 +24,15 @@ import {
   ModalHeader,
   VStack,
 } from "@/components/ui";
+import { AppColorsCategorias } from "@/lib/configs/Colors";
 import { avatars } from "@/lib/configs/images";
+import { Perfil } from "@/lib/domain";
 import { usePerfilesStore } from "@/lib/store";
-import { t } from "i18next";
+import { PervilValidationSquema } from "@/lib/validations/perfilValidation";
+import { yupResolver } from "@hookform/resolvers/yup";
 import React from "react";
+import { Controller, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { Image, Pressable, StyleSheet, View } from "react-native";
 
 interface Props {
@@ -25,17 +41,26 @@ interface Props {
   ref: React.RefObject<any>;
 }
 
-const createProfileModal: React.FC<Props> = ({ showModal, setShowModal, ref }) => {
-  const { addPerfil, name, avatar, setAvatar, setName } = usePerfilesStore((state) => state);
+const createProfileModal: React.FC<Props> = ({ showModal, setShowModal }) => {
+  const { t } = useTranslation();
+  const { addPerfil, avatar, setAvatar, setName } = usePerfilesStore((state) => state);
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(PervilValidationSquema),
+  });
 
-  const onSave = React.useCallback(() => {
+  const onSave = React.useCallback(({ name }: any) => {
+    setName(name);
     addPerfil();
     setShowModal(false);
-  }, [name, avatar]);
+  }, []);
 
   return (
     <View>
-      <Modal isOpen={showModal} onClose={() => setShowModal(false)} finalFocusRef={ref} size="md">
+      <Modal isOpen={showModal} onClose={() => setShowModal(false)} size="md">
         <ModalBackdrop />
         <ModalContent>
           <ModalHeader>
@@ -45,6 +70,26 @@ const createProfileModal: React.FC<Props> = ({ showModal, setShowModal, ref }) =
             <ModalCloseButton />
           </ModalHeader>
           <ModalBody>
+            <VStack>
+              <Controller
+                control={control}
+                name="name"
+                render={({ field: { onBlur, onChange, value } }) => (
+                  <FormControl isRequired isInvalid={errors.name?.message !== undefined}>
+                    <FormControlLabel>
+                      <FormControlLabelText>{t("nombre")}</FormControlLabelText>
+                    </FormControlLabel>
+                    <Input className="mb-4">
+                      <InputField value={value} onBlur={onBlur} onChangeText={onChange} />
+                    </Input>
+                    <FormControlError>
+                      <FormControlErrorIcon as={AlertCircleIcon} />
+                      <FormControlErrorText>{t(errors.name?.message)}</FormControlErrorText>
+                    </FormControlError>
+                  </FormControl>
+                )}
+              />
+            </VStack>
             <VStack className="w-full flex-row flex-wrap items-center justify-center gap-2">
               {avatars.map((ava, index) => {
                 return (
@@ -52,17 +97,29 @@ const createProfileModal: React.FC<Props> = ({ showModal, setShowModal, ref }) =
                 );
               })}
             </VStack>
-            <VStack>
-              <Heading size="sm" className="text-typography-950">
-                {t("nombre")}
-              </Heading>
-              <Input className="mb-4">
-                <InputField placeholder="Nombre" value={name} onChangeText={setName} />
-              </Input>
-            </VStack>
+            <Heading>Color</Heading>
+            <HStack className="flex flex-wrap">
+              {AppColorsCategorias.map((color, i) => {
+                return (
+                  <Pressable key={i}>
+                    {/* {// onPress={() => setItemI(() => new Categoria({ ...itemI, color }))}>} */}
+                    {/* // className={itemI.color === color ? "border-4 border-green-600" : ""} */}
+                    <Box
+                      style={{
+                        backgroundColor: color,
+                        width: 35,
+                        height: 35,
+                        borderRadius: 100,
+                      }}
+                    />
+                  </Pressable>
+                );
+              })}
+            </HStack>
           </ModalBody>
+
           <ModalFooter>
-            <Button variant="outline" onPress={onSave}>
+            <Button variant="outline" onPress={handleSubmit(onSave)}>
               <ButtonText>{t("save")}</ButtonText>
             </Button>
           </ModalFooter>

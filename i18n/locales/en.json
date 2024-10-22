@@ -137,5 +137,11 @@
   "terms.subtitle": "Terms",
   "terms.title": "Terms",
   "verificado": "Verified",
-  "ya-iniciaste-sesion": "You are already logged in"
+  "ya-iniciaste-sesion": "You are already logged in",
+  "colore_required": "Color is Required",
+  "colore_min": "Color Must have at least 2 characters",
+  "colore_max": "Color must have a maximum of 7 characters",
+  "name_required": "",
+  "name_min": "Minimum size 5",
+  "name_max": "Maximum size 50"
 }
