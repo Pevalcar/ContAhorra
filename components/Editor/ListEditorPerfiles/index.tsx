@@ -6,19 +6,15 @@ import {
   HStack,
   Heading,
   Image,
-  Input,
-  InputField,
   Text,
+  VStack,
   View,
 } from "@/components/ui";
 import { Perfil } from "@/lib/domain/entities";
 import { usePerfilesStore } from "@/lib/store";
-import { PervilValidationSquema } from "@/lib/validations/perfilValidation";
-import { yupResolver } from "@hookform/resolvers/yup";
 import React from "react";
-import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { FlatList, TextInput } from "react-native";
+import { FlatList } from "react-native";
 
 export const ListEditorPerfiles = () => {
   const { t } = useTranslation();
@@ -33,18 +29,19 @@ export const ListEditorPerfiles = () => {
   }, []);
 
   return (
-    <View>
+    <VStack space="md" className="my-2 flex-auto gap-2 px-4">
       <CreateProfileModal showModal={showModal} setShowModal={setShowModal} ref={null} />
       <Button onPress={() => setShowModal(true)}>
         <ButtonText>agregar perfil</ButtonText>
       </Button>
       {loagin ? <Text>Cargando perfiles</Text> : null}
       <FlatList
+        className="flex h-full"
         data={perfiles}
         renderItem={({ item }) => <PerfilCard perfil={item} />}
         keyExtractor={(item) => item.id}
       />
-    </View>
+    </VStack>
   );
 };
 
@@ -54,10 +51,11 @@ interface PerfilCardProps {
 
 const PerfilCard: React.FC<PerfilCardProps> = ({ perfil }) => {
   return (
-    <Card>
+    <Card style={{ backgroundColor: perfil.color }} className="mb-4">
       <HStack>
         <Heading>{perfil.name}</Heading>
         <Image source={{ uri: perfil.avatar_url }} alt="aslgo" />
+        <Text>{JSON.stringify(perfil)}</Text>
       </HStack>
     </Card>
   );

@@ -55,9 +55,7 @@ export class TransaccionLocalRepository implements TransaccionRepositoryI {
       throw SQLiteControlError.getError(error);
     }
   }
-  updateProfile(data: Perfil): Promise<void> {
-    throw new Error("Method not implemented.");
-  }
+
   // CATEGORIAS
 
   async addCategory(data: Categoria): Promise<void> {
@@ -165,9 +163,7 @@ export class TransaccionLocalRepository implements TransaccionRepositoryI {
     }
   }
   // CUENTAS
-  addAccount(data: Cuenta): Promise<void> {
-    throw new Error("Method not implemented.");
-  }
+  async addAccount(data: Cuenta): Promise<void> {}
   updateAccount(data: Cuenta): Promise<void> {
     throw new Error("Method not implemented.");
   }
@@ -190,12 +186,39 @@ export class TransaccionLocalRepository implements TransaccionRepositoryI {
     }
   }
   // PERFILS
+  async updateProfile(data: Perfil): Promise<void> {
+    const db = await openDatabaseAsync(this.dbNAme);
+    try {
+      const query = `
+     UPDATE ${LOCAL_DB_PROFILES_NAME}
+     SET 
+     name = ?, 
+     avatar_url = ?, 
+     userOwnerID = ?, 
+     userReferredID = ?,
+     uptodataBase = ?,
+     color = ?
+     WHERE id = ?
+   `;
+      await db.runAsync(query, [
+        data.name,
+        data.avatar_url,
+        data.userOwnerID,
+        data.userReferredID,
+        data.uptodataBase ? 1 : 0,
+        data.color,
+        data.id,
+      ]);
+    } catch (error) {
+      throw SQLiteControlError.getError(error);
+    }
+  }
   async addProfile(data: Perfil): Promise<void> {
     try {
       const db = await openDatabaseAsync(this.dbNAme);
       const query = `
-        INSERT INTO ${LOCAL_DB_PROFILES_NAME} (id, name, avatar_url, userOwnerID, userReferredID, uptodataBase)
-        VALUES (?, ?, ?, ?, ?, ?);
+        INSERT INTO ${LOCAL_DB_PROFILES_NAME} (id, name, avatar_url, userOwnerID, userReferredID, uptodataBase, color)
+        VALUES (?, ?, ?, ?, ?, ?, ?);
       `;
       await db.runAsync(query, [
         data.id,
@@ -204,13 +227,21 @@ export class TransaccionLocalRepository implements TransaccionRepositoryI {
         data.userOwnerID,
         data.userReferredID,
         data.uptodataBase,
+        data.color,
       ]);
     } catch (error) {
       throw SQLiteControlError.getError(error);
     }
   }
-  deleteProfile(id: string): Promise<boolean> {
-    throw new Error("Method not implemented.");
+  async deleteProfile(id: string): Promise<boolean> {
+    const db = await openDatabaseAsync(this.dbNAme);
+    try {
+      const query = `DELETE FROM ${LOCAL_DB_PROFILES_NAME} WHERE id = ?`;
+      await db.runAsync(query, [id]);
+      return true;
+    } catch (error) {
+      throw SQLiteControlError.getError(error);
+    }
   }
   async getAllProfileByUserOwnerID(userOwnerID?: userOwnerID): Promise<Perfil[]> {
     const db = await openDatabaseAsync(this.dbNAme);
@@ -221,14 +252,24 @@ export class TransaccionLocalRepository implements TransaccionRepositoryI {
       if (results.length === 0) {
         return [];
       }
-      const perfiles = results.map((row) => new Perfil(row));
+      const perfiles = results.map((row) => Perfil.FromSQLite(row));
       return perfiles;
     } catch (error) {
       throw SQLiteControlError.getError(error);
     }
   }
-  getProfileByID(id: string): Promise<Perfil> {
-    throw new Error("Method not implemented.");
+  async getProfileByID(id: string): Promise<Perfil> {
+    const db = await openDatabaseAsync(this.dbNAme);
+    try {
+      const query = `SELECT * FROM ${LOCAL_DB_PROFILES_NAME} WHERE id = ?`;
+      const results = await db.getAllAsync<Perfil>(query, [id]);
+      if (results.length === 0) {
+        return null;
+      }
+      return Perfil.FromSQLite(results[0]);
+    } catch (error) {
+      throw SQLiteControlError.getError(error);
+    }
   }
   // tRANSACCIONES
   async getTrasaccionByDateRange(

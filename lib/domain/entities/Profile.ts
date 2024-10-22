@@ -26,4 +26,16 @@ export class Perfil {
     this.uptodataBase = params.uptodataBase ?? false;
     this.color = params.color ?? "white";
   }
+
+  static FromSQLite(row: any): Perfil {
+    return new Perfil({
+      id: row.id,
+      name: row.name,
+      avatar_url: row.avatar_url,
+      userOwnerID: row.userOwnerID,
+      userReferredID: row.userReferredID,
+      uptodataBase: row.uptodataBase,
+      color: row.color,
+    });
+  }
 }
