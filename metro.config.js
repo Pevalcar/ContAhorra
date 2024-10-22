@@ -4,7 +4,6 @@ const { withNativeWind } = require("nativewind/metro");
 
 /** @type {import('expo/metro-config').MetroConfig} */
 // eslint-disable-next-line no-undef
-const defaultConfig = getDefaultConfig(__dirname, { isCSSEnabled: true });
-defaultConfig.resolver.sourceExts.push("cjs");
+const config = getDefaultConfig(__dirname, { isCSSEnabled: true });
 
-module.exports = withNativeWind(defaultConfig, { input: "./global.css" });
+module.exports = withNativeWind(config, { input: "./global.css" });

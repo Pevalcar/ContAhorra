@@ -1,12 +1,14 @@
 {
   "cli": {
     "version": ">= 12.4.1",
-    "appVersionSource": "remote"
+    "appVersionSource": "remote",
+    "requireCommit": true
   },
   "build": {
     "development": {
       "developmentClient": true,
       "distribution": "internal",
+      "credentialsSource": "local",
       "channel": "development"
     },
     "preview": {
