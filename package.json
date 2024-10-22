@@ -49,6 +49,7 @@
     "@gluestack-ui/toast": "^1.0.7",
     "@gluestack-ui/tooltip": "^0.1.32",
     "@gorhom/bottom-sheet": "^4.6.4",
+    "@hookform/resolvers": "^3.9.0",
     "@legendapp/motion": "^2.4.0",
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-native-community/datetimepicker": "8.0.1",
@@ -82,6 +83,7 @@
     "nativewind": "4.0.36",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.53.1",
     "react-i18next": "^15.0.1",
     "react-native": "0.74.5",
     "react-native-gesture-handler": "~2.16.1",
@@ -96,6 +98,7 @@
     "react-native-web": "~0.19.10",
     "shortid": "^2.2.16",
     "ts-node": "^10.9.2",
+    "yup": "^1.4.0",
     "zustand": "^4.5.4"
   },
   "devDependencies": {

@@ -166,5 +166,11 @@
   "info-modal-cuenta-a": "Pago:",
   "editor": "Editor",
   "menu.home": "Inicio",
-  "graficos": "Graficos"
+  "graficos": "Graficos",
+  "colore_required": "Color es Requerido",
+  "colore_min": "Color Debe tener minimo 2 caracteres",
+  "colore_max": "Color debe tener maximo 7 caracteres",
+  "name_required": "Nombre es requerido",
+  "name_min": "Tamaño minimo 5",
+  "name_max": "Tamaño maximo 50"
 }
