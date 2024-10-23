@@ -104,7 +104,7 @@ const createProfileModal: React.FC<Props> = ({
         name: "",
       });
     }
-  }, [ifEdit, currentProfile]);
+  }, [ifEdit]);
 
   return (
     <View>

@@ -88,17 +88,9 @@ export const useCategoriaStore = create<ICategoriaStore>((set, get) => ({
   },
   fetchCategorias: async (type: TiposDeTransacciones) => {
     //TODO revisar porq ue creo que no es ni necesario
-    set({ loagin: true, Error: null });
     const { categorias } = get();
-    try {
-      const initialCategoria = await categorias.filter(
-        (c: Categoria) => c.type.localeCompare(type) === 0,
-      );
-      set({ orderCategoris: initialCategoria });
-    } catch (error) {
-      console.error("Error al guardar la transacción:", error);
-      set({ Error: error as Error, loagin: false });
-    }
+    const initialCategoria = categorias.filter((c: Categoria) => c.type.localeCompare(type) === 0);
+    set({ orderCategoris: initialCategoria });
   },
   addCategoria: async (data: Categoria) => {
     const { categorias } = get();

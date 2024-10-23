@@ -3,14 +3,18 @@ import { ListEditorCuenta } from "@/components/Editor/ListEditorCuenta";
 import { ListEditorPerfiles } from "@/components/Editor/ListEditorPerfiles";
 import { useDarkModeStore } from "@/lib/store";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { useLocalSearchParams } from "expo-router";
 import React from "react";
 
 const Tab = createMaterialTopTabNavigator();
 
 export default function editor() {
   const { darkMode } = useDarkModeStore((state) => state);
+  const { type } = useLocalSearchParams<{ type?: string }>();
+
   return (
     <Tab.Navigator
+      initialRouteName={type ?? "Categorias"}
       screenOptions={{
         lazy: true,
         tabBarPressOpacity: 1,
