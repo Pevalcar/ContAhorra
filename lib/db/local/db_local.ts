@@ -250,6 +250,7 @@ const DB_PERFILES: Perfil[] = [
     userOwnerID: "1",
     userReferredID: "1",
     uptodataBase: false,
+    color: "#4CAF50",
   }),
   new Perfil({
     id: "2",
@@ -258,6 +259,7 @@ const DB_PERFILES: Perfil[] = [
     userOwnerID: "1",
     userReferredID: "1",
     uptodataBase: false,
+    color: "#4CAF50",
   }),
   new Perfil({
     id: "3",
@@ -266,6 +268,7 @@ const DB_PERFILES: Perfil[] = [
     userOwnerID: "1",
     userReferredID: "1",
     uptodataBase: false,
+    color: "#4CAF50",
   }),
 ];
 

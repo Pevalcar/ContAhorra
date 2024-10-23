@@ -10,8 +10,6 @@ import { create } from "zustand";
 
 interface ITransaccionSate {
   loagin: boolean;
-  categoriasData: Categoria[];
-  cuentasData: Cuenta[];
   categoriSelect: Categoria | null;
   cuentaSelect: Cuenta | null;
   type: number;
@@ -22,8 +20,6 @@ interface ITransaccionSate {
   Error: Error | null;
   setPrestado: (prestado: string | null) => void;
   saveTransaction: () => Promise<void>;
-  fetchCuentaData: () => void;
-  fetchCategoriasData: () => void;
   setCategoriaId: (id: Categoria) => void;
   setCuentaId: (id: Cuenta) => void;
   setType: (type: number) => void;
@@ -37,8 +33,6 @@ export const useTransactionToADDState = create<ITransaccionSate>((set, get) => (
   loagin: false,
   categoriSelect: null,
   cuentaSelect: null,
-  categoriasData: [],
-  cuentasData: [],
   type: 1,
   description: "",
   amount: 0,
@@ -77,31 +71,6 @@ export const useTransactionToADDState = create<ITransaccionSate>((set, get) => (
   },
   setDate: (date: Date) => {
     set({ date: date });
-  },
-  fetchCuentaData: async () => {
-    set({ loagin: true });
-    try {
-      const cuentas = await useCuentasStore.getState().fetchCuentas();
-      set({ cuentasData: cuentas, cuentaSelect: cuentas[0] });
-    } catch (error) {
-      console.error("Error al guardar la transacción:", error);
-      set({ Error: error as Error });
-    }
-    set({ loagin: false });
-  },
-  fetchCategoriasData: async () => {
-    const { type } = get();
-    set({ loagin: true });
-    try {
-      const categorias = await useCategoriaStore.getState().fetchCategorias(newFilters(type));
-      console.log("types cargador ", categorias);
-
-      set({ categoriasData: categorias, categoriSelect: categorias[0] });
-    } catch (error) {
-      console.error("Error al guardar la transacción:", error);
-      set({ Error: error as Error });
-    }
-    set({ loagin: false });
   },
   reset: () => {
     set({
@@ -164,7 +133,7 @@ export const useTransactionToADDState = create<ITransaccionSate>((set, get) => (
   },
 }));
 
-function newFilters(filter: number) {
+export function newFilters(filter: number) {
   const posibleFilter: TiposDeTransacciones[] = ["Ingreso", "Gasto", "Transferencia"];
   const newFilter = posibleFilter[filter] as TiposDeTransacciones;
   return newFilter;

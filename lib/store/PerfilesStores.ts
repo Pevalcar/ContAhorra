@@ -17,32 +17,34 @@ interface IPerfilesStore {
   loagin: boolean;
   Error: Error | null;
   perfiles: Perfil[];
-  avatar: string;
-  name: string;
-  color: MyColorsCategories;
   error: Error | null;
   update: boolean;
+  currentProfile: Perfil | null;
+  setCurrentPerfil: (perfil: Perfil) => void;
   setColor: (color: string) => void;
   getProfileByID: (id: string) => Perfil;
   setAvatar: (avatar: string) => void;
   setName: (name: string) => void;
-  fetchPerfiles: () => Promise<Perfil[]>;
+  fetchPerfiles: () => Promise<void>;
   addPerfil: () => Promise<void>;
   deletePerfil: (id: string) => void;
-  updatePerfil: (data: Perfil) => void;
+  updatePerfil: () => void;
 }
 
 export const usePerfilesStore = create<IPerfilesStore>((set, get) => ({
   perfiles: [],
   loagin: false,
   Error: null,
-  avatar: "avatar_1",
-  name: "",
-  color: "#7E57C2",
+  currentProfile: new Perfil({
+    name: "",
+    avatar_url: "avatar_1",
+  }),
   error: null,
   update: false,
   setColor: (color: MyColorsCategories) => {
-    set({ color: color });
+    const { currentProfile } = get();
+    currentProfile.color = color;
+    set({ currentProfile: currentProfile });
   },
   getProfileByID: (id: string) => {
     const { perfiles } = get();
@@ -50,10 +52,14 @@ export const usePerfilesStore = create<IPerfilesStore>((set, get) => ({
     return newState[0];
   },
   setAvatar: (avatar: string) => {
-    set({ avatar: avatar });
+    const { currentProfile } = get();
+    currentProfile.avatar_url = avatar;
+    set({ currentProfile: currentProfile });
   },
   setName: (name: string) => {
-    set({ name: name });
+    const { currentProfile } = get();
+    currentProfile.name = name;
+    set({ currentProfile: currentProfile });
   },
   fetchPerfiles: async () => {
     const { update, perfiles } = get();
@@ -61,17 +67,15 @@ export const usePerfilesStore = create<IPerfilesStore>((set, get) => ({
     if (!update) {
       try {
         const initialPerfiles = await getAllProfileByUserOwnerID.execute();
-        set({ perfiles: initialPerfiles, update: true });
+        set({ perfiles: initialPerfiles, update: false, loagin: false });
       } catch (error) {
         console.error("Error al guardar la transacción:", error);
-        set({ Error: error as Error });
+        set({ Error: error as Error, loagin: false });
       }
     }
-    set({ loagin: false });
-    return perfiles;
   },
   addPerfil: async () => {
-    const { perfiles, name, avatar, color } = get();
+    const { perfiles, currentProfile } = get();
     const user = useStoreSesion.getState().user;
 
     set({ loagin: true });
@@ -80,16 +84,16 @@ export const usePerfilesStore = create<IPerfilesStore>((set, get) => ({
       const uuid = randomUUID();
       const data = new Perfil({
         id: uuid,
-        name: name,
-        avatar_url: avatar,
-        color,
-        userOwnerID: user?.id,
+        name: currentProfile.name,
+        avatar_url: currentProfile.avatar_url,
+        color: currentProfile.color,
+        userOwnerID: user.id,
       });
+      console.log("data", data);
+
       await addProfile.execute(data);
       set({
         loagin: false,
-        name: "",
-        avatar: "avatar_1",
         update: false,
         perfiles: [...perfiles, data],
       });
@@ -112,12 +116,15 @@ export const usePerfilesStore = create<IPerfilesStore>((set, get) => ({
       throw error;
     }
   },
-  updatePerfil: async (data: Perfil) => {
-    const { perfiles } = get();
+  setCurrentPerfil: (perfil: Perfil) => {
+    set({ currentProfile: perfil });
+  },
+  updatePerfil: async () => {
+    const { perfiles, currentProfile } = get();
     set({ loagin: true });
     try {
-      await updateProfile.execute(data);
-      const newState = perfiles.map((c) => (c.id === data.id ? data : c));
+      await updateProfile.execute(currentProfile);
+      const newState = perfiles.map((c) => (c.id === currentProfile.id ? currentProfile : c));
       set({ perfiles: newState, loagin: false });
     } catch (error) {
       console.error("Error al guardar la transacción:", error);

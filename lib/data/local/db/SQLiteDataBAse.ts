@@ -134,7 +134,7 @@ async function migrateDbToVersion0(db: SQLiteDatabase) {
 
     if (DEVELOPMENT) {
       DEbug && console.log("iunsentando datos perfiles");
-      const InsertPerfiles = `INSERT OR REPLACE INTO ${LOCAL_DB_PROFILES_NAME} (id, name, avatar_url, userOwnerID, userReferredID, uptodataBase) VALUES (?, ?, ?, ?, ?, ?);`;
+      const InsertPerfiles = `INSERT OR REPLACE INTO ${LOCAL_DB_PROFILES_NAME} (id, name, avatar_url, userOwnerID, userReferredID, uptodataBase, color) VALUES (?, ?, ?, ?, ?, ?, ?);`;
       for (const perfil of DB_PERFILES) {
         await db.runAsync(InsertPerfiles, [
           perfil.id,
@@ -143,6 +143,7 @@ async function migrateDbToVersion0(db: SQLiteDatabase) {
           perfil.userOwnerID,
           perfil.userReferredID,
           perfil.uptodataBase ? 1 : 0,
+          perfil.color,
         ]);
       }
       DEbug && console.log("iunsentando datos transacciones");

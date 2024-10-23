@@ -1,12 +1,14 @@
 import { CategoriItem, EditModal } from "@/components/Editor/ListEditorCategoria/CategoriaItemCard";
-import { Button, ButtonSpinner, ButtonText, VStack } from "@/components/ui";
+import { Button, ButtonText, HStack, Heading, Spinner, VStack } from "@/components/ui";
 import { useEditorCategoria } from "@/lib/Hooks/Editor/useEditorCategoria";
 import { useCategoriaStore } from "@/lib/store";
 import React from "react";
-import { FlatList, View } from "react-native";
+import { useTranslation } from "react-i18next";
+import { FlatList } from "react-native";
 
 export const ListEditorCategoria = () => {
   const { categorias, loagin, initialFetch } = useCategoriaStore((state) => state);
+  const { t } = useTranslation();
   const { addITem, closeItemToAdd, opeItemToAdd, itemtoAdd } = useEditorCategoria();
 
   React.useEffect(() => {
@@ -18,11 +20,6 @@ export const ListEditorCategoria = () => {
   return (
     <VStack className="my-2 flex-auto gap-2 px-4">
       {/* //TODO hay que implementar un loading mode */}
-      {loagin ? (
-        <View className="absolute bottom-0 left-0 right-0 top-0 z-20 flex h-full items-center justify-center bg-background-200/20">
-          <ButtonSpinner size="large" />
-        </View>
-      ) : null}
       <Button onPress={opeItemToAdd}>
         <ButtonText>Agregar Categoria</ButtonText>
       </Button>
@@ -34,6 +31,12 @@ export const ListEditorCategoria = () => {
         edit={false}
         loading={loagin}
       />
+      {loagin ? (
+        <HStack className="items-center justify-center gap-1">
+          <Spinner size={"large"} />
+          <Heading>{t("cargando-perfiles")}</Heading>
+        </HStack>
+      ) : null}
       <FlatList
         className="flex h-full"
         data={categorias}

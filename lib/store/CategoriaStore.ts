@@ -47,7 +47,7 @@ interface ICategoriaStore {
   allCategories: Categoria[];
   orderCategoris: Categoria[];
   initialFetch: () => void;
-  fetchCategorias: (type: TiposDeTransacciones) => Promise<Categoria[]>;
+  fetchCategorias: (type: TiposDeTransacciones) => Promise<void>;
   addCategoria: (data: Categoria) => void;
   deleteCategoria: (id: string) => void;
   updateCategoria: (data: Categoria) => void;
@@ -91,15 +91,13 @@ export const useCategoriaStore = create<ICategoriaStore>((set, get) => ({
     set({ loagin: true, Error: null });
     const { categorias } = get();
     try {
-      const initialCategoria = categorias.filter(
+      const initialCategoria = await categorias.filter(
         (c: Categoria) => c.type.localeCompare(type) === 0,
       );
       set({ orderCategoris: initialCategoria });
-      return initialCategoria;
     } catch (error) {
       console.error("Error al guardar la transacción:", error);
       set({ Error: error as Error, loagin: false });
-      return [];
     }
   },
   addCategoria: async (data: Categoria) => {
