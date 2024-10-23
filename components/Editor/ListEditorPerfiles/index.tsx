@@ -28,6 +28,7 @@ import { FlatList } from "react-native";
 export const ListEditorPerfiles = () => {
   const { t } = useTranslation();
   const { perfiles, loagin, fetchPerfiles } = usePerfilesStore((state) => state);
+  //TODO verificar por que esta fallando tanto la ela gregar dos perfiles neuvo consecutivos
   const [showModal, setShowModal] = React.useState(false);
 
   React.useEffect(() => {

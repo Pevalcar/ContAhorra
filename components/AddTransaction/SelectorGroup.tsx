@@ -45,13 +45,8 @@ export const SelectorGroup: React.FC<Props> = () => {
     fetchData();
   }, []);
   React.useEffect(() => {
-    const fetchCategoriasaa = async () => {
-      await fetchCategorias(newFilters(type));
-    };
-
-    fetchCategoriasaa();
+    fetchCategorias(newFilters(type));
   }, [type]);
-
   React.useEffect(() => {
     onCategoriaChange(orderCategoris[0]);
   }, [orderCategoris]);

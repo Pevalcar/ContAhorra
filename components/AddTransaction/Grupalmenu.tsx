@@ -17,6 +17,7 @@ import {
 } from "@/components/ui";
 import { Perfil } from "@/lib/domain/entities";
 import { usePerfilesStore, useTransactionToADDState } from "@/lib/store";
+import { router } from "expo-router";
 import React from "react";
 import { View } from "react-native";
 
@@ -48,11 +49,9 @@ interface SelectorProps {
 const MySelector = ({ name, data, idSelected, selected }: SelectorProps) => {
   const [showActionsheet, setShowActionsheet] = React.useState(false);
   const handleClose = () => setShowActionsheet(false);
-  const [showModal, setShowModal] = React.useState(false);
 
   return (
     <>
-      <CreateProfileModal showModal={showModal} setShowModal={setShowModal} />
       <Pressable
         className="flex-row items-center justify-center gap-2 overflow-hidden rounded-lg border-2 border-outline-400 px-3 py-1"
         onPress={() => setShowActionsheet(true)}>
@@ -73,7 +72,7 @@ const MySelector = ({ name, data, idSelected, selected }: SelectorProps) => {
             className="flex-row items-center justify-center gap-2 overflow-hidden pb-1"
             onPress={() => {
               handleClose();
-              setShowModal(true);
+              router.replace({ pathname: "/(drawer)/(tabs)/editor", params: { type: "Perfiles" } });
             }}>
             <MyIcon name="Plus" color={"black"} />
             <ActionsheetItemText>Agregar Perfil</ActionsheetItemText>
