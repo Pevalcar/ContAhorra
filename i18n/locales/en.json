@@ -143,5 +143,8 @@
   "colore_max": "Color must have a maximum of 7 characters",
   "name_required": "",
   "name_min": "Minimum size 5",
-  "name_max": "Maximum size 50"
+  "name_max": "Maximum size 50",
+  "cargando-perfiles": "Loading profiles",
+  "confirmar-eliminacion-perfil-title": "Deleting Profile",
+  "confirmar-eliminacion-perfil": "You are about to delete a profile.\n\n\nDo you want to continue?"
 }

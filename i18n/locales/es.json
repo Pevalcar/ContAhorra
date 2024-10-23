@@ -172,5 +172,8 @@
   "colore_max": "Color debe tener maximo 7 caracteres",
   "name_required": "Nombre es requerido",
   "name_min": "Tamaño minimo 5",
-  "name_max": "Tamaño maximo 50"
+  "name_max": "Tamaño maximo 50",
+  "cargando-perfiles": "Cargando perfiles",
+  "confirmar-eliminacion-perfil-title": "Eliminando Perfil",
+  "confirmar-eliminacion-perfil": "Estas apunto de borrar un perfil.\n\n¿Quieres contirnuar?"
 }

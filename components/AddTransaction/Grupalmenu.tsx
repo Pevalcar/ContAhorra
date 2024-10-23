@@ -24,14 +24,8 @@ interface Props {}
 
 export const Grupalmenu: React.FC<Props> = () => {
   const { categoriSelect, setPrestado, prestado } = useTransactionToADDState((state) => state);
-  const { fetchPerfiles, perfiles } = usePerfilesStore((state) => state);
+  const { perfiles } = usePerfilesStore((state) => state);
 
-  React.useEffect(() => {
-    const fetchData = async () => {
-      await fetchPerfiles(); //TODO comprobar que al regresar de agregar se actualizen los perfiles
-    };
-    fetchData();
-  }, []);
   return (
     <View className="h-10 w-full flex-row items-center justify-between">
       {categoriSelect?.prestamo && (
@@ -51,20 +45,14 @@ interface SelectorProps {
   selected?: Perfil | null;
   idSelected: (id: string) => void;
 }
-const MySelector = React.memo(function MySelector({
-  name,
-  data,
-  idSelected,
-  selected,
-}: SelectorProps) {
+const MySelector = ({ name, data, idSelected, selected }: SelectorProps) => {
   const [showActionsheet, setShowActionsheet] = React.useState(false);
   const handleClose = () => setShowActionsheet(false);
   const [showModal, setShowModal] = React.useState(false);
-  const ref = React.useRef(null);
 
   return (
     <>
-      <CreateProfileModal showModal={showModal} setShowModal={setShowModal} ref={ref} />
+      <CreateProfileModal showModal={showModal} setShowModal={setShowModal} />
       <Pressable
         className="flex-row items-center justify-center gap-2 overflow-hidden rounded-lg border-2 border-outline-400 px-3 py-1"
         onPress={() => setShowActionsheet(true)}>
@@ -109,16 +97,16 @@ const MySelector = React.memo(function MySelector({
       </Actionsheet>
     </>
   );
-});
+};
 
-const Item = React.memo(function Item({
+const Item = ({
   title,
   handleClose,
   ...props
 }: {
   title: Perfil | any;
   handleClose: () => void;
-}) {
+}) => {
   return (
     <ActionsheetItem
       onPress={() => {
@@ -133,4 +121,4 @@ const Item = React.memo(function Item({
       <ActionsheetItemText>{title.name}</ActionsheetItemText>
     </ActionsheetItem>
   );
-});
+};

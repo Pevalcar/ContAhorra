@@ -24,6 +24,7 @@ import {
 } from "@/components/ui";
 import { AppColorsCategorias } from "@/lib/configs/Colors";
 import { avatars } from "@/lib/configs/images";
+import { Perfil } from "@/lib/domain";
 import { usePerfilesStore } from "@/lib/store";
 import { PervilValidationSquema } from "@/lib/validations/perfilValidation";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -35,41 +36,75 @@ import { Image, Pressable, StyleSheet, View } from "react-native";
 interface Props {
   showModal: boolean;
   setShowModal: (showModal: boolean) => void;
-  ref: React.RefObject<any>;
+  ref?: React.RefObject<any>;
+  ifEdit?: boolean;
+  profileToEdit?: Perfil;
 }
 
-const createProfileModal: React.FC<Props> = ({ showModal, setShowModal }) => {
+const createProfileModal: React.FC<Props> = ({
+  showModal,
+  setShowModal,
+  ifEdit = false,
+  profileToEdit,
+}) => {
   const { t } = useTranslation();
   const ref = React.useRef<any>(null);
   const {
     addPerfil,
-    avatar,
+    updatePerfil,
     setAvatar,
     setName,
-    name: perfilname,
-    color: selectColor,
     setColor,
+    setCurrentPerfil,
+    currentProfile,
   } = usePerfilesStore((state) => state);
+
   const {
     control,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm({
-    defaultValues: {
-      name: perfilname,
-    },
     resolver: yupResolver(PervilValidationSquema),
   });
 
   const onSave = React.useCallback(({ name }: any) => {
     setName(name);
-    addPerfil();
+    if (ifEdit) {
+      updatePerfil();
+    } else {
+      addPerfil();
+      setCurrentPerfil(
+        new Perfil({
+          name: "",
+          avatar_url: "avatar_1",
+        }),
+      );
+    }
     reset({
-      name: perfilname,
+      name: "",
     });
     setShowModal(false);
   }, []);
+
+  React.useEffect(() => {
+    if (ifEdit) {
+      setCurrentPerfil(profileToEdit);
+      reset({
+        name: profileToEdit.name,
+      });
+    } else {
+      setCurrentPerfil(
+        new Perfil({
+          name: "",
+          avatar_url: "avatar_1",
+        }),
+      );
+      reset({
+        name: "",
+      });
+    }
+  }, [ifEdit, currentProfile]);
 
   return (
     <View>
@@ -98,7 +133,7 @@ const createProfileModal: React.FC<Props> = ({ showModal, setShowModal }) => {
                         onBlur={onBlur}
                         onChangeText={onChange}
                         ref={ref}
-                        autoFocus
+                        autoFocus={ifEdit ? false : true}
                       />
                     </Input>
                     <FormControlError>
@@ -112,7 +147,14 @@ const createProfileModal: React.FC<Props> = ({ showModal, setShowModal }) => {
             <VStack className="w-full flex-row flex-wrap items-center justify-center gap-2">
               {avatars.map((ava, index) => {
                 return (
-                  <Avatart key={index} avatar={ava} selected={ava === avatar} onPress={setAvatar} />
+                  <Avatart
+                    key={index}
+                    avatar={ava}
+                    selected={
+                      ava === (ifEdit ? profileToEdit.avatar_url : currentProfile.avatar_url)
+                    }
+                    onPress={setAvatar}
+                  />
                 );
               })}
             </VStack>
@@ -122,7 +164,7 @@ const createProfileModal: React.FC<Props> = ({ showModal, setShowModal }) => {
                 return (
                   <Pressable onPress={() => setColor(color)} key={i}>
                     <Box
-                      className={selectColor === color ? "border-4 border-green-600" : ""}
+                      className={currentProfile.color === color ? "border-4 border-green-600" : ""}
                       style={{
                         backgroundColor: color,
                         width: 30,

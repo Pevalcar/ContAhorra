@@ -13,7 +13,13 @@ import {
   ActionsheetItem,
   ActionsheetItemText,
 } from "@/components/ui/actionsheet";
-import { useTransactionToADDState } from "@/lib/store";
+import {
+  newFilters,
+  useCategoriaStore,
+  useCuentasStore,
+  usePerfilesStore,
+  useTransactionToADDState,
+} from "@/lib/store";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
@@ -23,22 +29,32 @@ export const SelectorGroup: React.FC<Props> = () => {
   const {
     categoriSelect,
     cuentaSelect,
-    cuentasData: cuentas,
-    categoriasData: categorias,
     setCategoriaId: onCategoriaChange,
     setCuentaId: onCuentaChange,
-    fetchCategoriasData,
-    fetchCuentaData,
     type,
   } = useTransactionToADDState((state) => state);
-
+  const { fetchPerfiles } = usePerfilesStore((state) => state);
+  const { fetchCuentas, cuentas } = useCuentasStore((state) => state);
+  const { fetchCategorias, orderCategoris } = useCategoriaStore((state) => state);
   React.useEffect(() => {
     const fetchData = async () => {
-      await fetchCuentaData();
-      await fetchCategoriasData();
+      await fetchCuentas();
+      await fetchPerfiles();
+      onCuentaChange(cuentas[0]);
     };
     fetchData();
+  }, []);
+  React.useEffect(() => {
+    const fetchCategoriasaa = async () => {
+      await fetchCategorias(newFilters(type));
+    };
+
+    fetchCategoriasaa();
   }, [type]);
+
+  React.useEffect(() => {
+    onCategoriaChange(orderCategoris[0]);
+  }, [orderCategoris]);
 
   return (
     <HStack space="sm" className="w-full justify-center">
@@ -48,7 +64,7 @@ export const SelectorGroup: React.FC<Props> = () => {
       <MySelector
         selected={categoriSelect}
         name="Categoria"
-        data={categorias}
+        data={orderCategoris}
         idSelected={onCategoriaChange}>
         {t("categoria")}
       </MySelector>

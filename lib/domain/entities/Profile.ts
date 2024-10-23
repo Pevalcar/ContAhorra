@@ -1,7 +1,7 @@
 import type { userOwnerID } from "@/Types/types";
 
 export class Perfil {
-  readonly id: string;
+  id: string;
   name: string;
   avatar_url: string;
   userOwnerID: userOwnerID;
@@ -24,7 +24,7 @@ export class Perfil {
     this.userOwnerID = params.userOwnerID ?? "1";
     this.userReferredID = params.userReferredID ?? "";
     this.uptodataBase = params.uptodataBase ?? false;
-    this.color = params.color ?? "white";
+    this.color = params.color ?? "#7E57C2";
   }
 
   static FromSQLite(row: any): Perfil {
