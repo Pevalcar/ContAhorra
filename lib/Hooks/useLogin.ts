@@ -1,4 +1,3 @@
-import { DEVELOPMENT } from "../configs/config";
 import { useMyToast } from "./useToast";
 import { useStoreSesion } from "@/lib/store";
 import React from "react";
@@ -78,7 +77,6 @@ export const useLogin = () => {
   }, [error]);
 
   function handleSubmit() {
-    DEVELOPMENT && console.log("enviando a " + email + " con contraseña " + password);
     signIn(email, password);
   }
   function setRegisters() {
@@ -100,32 +98,6 @@ export const useLogin = () => {
   }
   function setRecoverPasswords() {
     setRecoverPassword(!recorePassword);
-  }
-  function crearUsuarioTest() {
-    registrar("perroaa94@gmail.com", "123456");
-  }
-  function iniciarSesionTest() {
-    signIn("perroaa94@gmail.com", "123456");
-  }
-
-  if (DEVELOPMENT) {
-    return {
-      loagin: isLoading,
-      setEmail,
-      setPassword,
-      handleSubmit,
-      error: myError,
-      register: registerUi,
-      recorePassword,
-      setRegister: setRegisters,
-      handleRegister,
-      setConfirmPassword,
-      crearUsuarioTest,
-      setRecoverPasswords,
-      iniciarSesionTest,
-      handleRecoverPassword,
-      getGoogleCredential,
-    };
   }
 
   return {
