@@ -2,133 +2,178 @@
 tasks:
   - [ ] 1. Leer skill:frontend-ui-engineering y skill:expo-design-system antes de empezar
   - [ ] 2. Crear backup del estado actual (git checkout -b refactor/ui-layer)
-  - [ ] 3. Reescribir Button con tv() de NativeWind v4
-  - [ ] 4. Reescribir HStack y VStack con flexbox directo
-  - [ ] 5. Reescribir Text y Heading con Tailwind utilities
-  - [ ] 6. Reescribir Input e InputField
-  - [ ] 7. Reescribir Toast (implementación ligera con Animated)
-  - [ ] 8. Reescribir Image wrapper para expo-image
-  - [ ] 9. Quitar GluestackUIProvider de _layout.tsx
-  - [ ] 10. Verificar todos los screens importan correctamente de @/components/ui/
-  - [ ] 11. Remover 29 dependencias @gluestack-ui/* de package.json
-  - [ ] 12. Ejecutar bun install
-  - [ ] 13. npm run lint — corregir errores
-  - [ ] 14. npm run ios — probar en simulador
-  - [ ] 15. npm run android — probar en simulador/emulador
-  - [ ] 16. Instalar Impeccable: npx impeccable install --scope project
-  - [ ] 17. Configurar PRODUCT.md con Platform: adaptive
-  - [ ] 18. Usar /impeccable shape en las pantallas principales
-  - [ ] 19. Usar /impeccable polish en los fluxos críticos (login, agregar transacción)
-  - [ ] 20. Commit final con mensaje descriptivo
-  - [ ] 21. Agregar referencia a Impeccable en AGENTS.md
+  - [ ] 3. Migrar theme tokens de config.ts a global.css (vars light + vars dark como data-theme)
+  - [ ] 4. Actualizar tailwind.config.js: remover gluestackPlugin, verificar colores
+  - [ ] 5. Reescribir Text (sin props gluestack innecesarias, solo size mapping)
+  - [ ] 6. Reescribir HStack y VStack (copiar lógica, cambiar import tva → tv)
+  - [ ] 7. Reescribir Button + ButtonText + ButtonIcon (~40 líneas, Pressable directo)
+  - [ ] 8. Reescribir Heading (sin @expo/html-elements, usar Text con size mapping)
+  - [ ] 9. Reescribir Image (wrapper mínimo de RN Image)
+  - [ ] 10. Reescribir Input + InputField (~60 líneas, sin icon slot ni helper state)
+  - [ ] 11. Crear nuevo sistema de Toast con Animated (showToast API simple)
+  - [ ] 12. Reescribir useMyToast para nueva API showToast(message, type)
+  - [ ] 13. Quitar GluestackUIProvider de _layout.tsx (no más provider necesario)
+  - [ ] 14. Verificar que ningún archivo importe @gluestack-ui/*
+  - [ ] 15. Remover 29 dependencias @gluestack-ui/* de package.json
+  - [ ] 16. Ejecutar bun install
+  - [ ] 17. npm run lint — corregir errores
+  - [ ] 18. npm run ios — probar en simulador
+  - [ ] 19. npm run android — probar en emulador
+  - [ ] 20. Instalar Impeccable: npx impeccable install --scope project
+  - [ ] 21. Configurar PRODUCT.md (Platform: adaptive, Target Audience: MiPymes CO)
+  - [ ] 22. /impeccable polish en pantallas principales (index, add_tansaction)
+  - [ ] 23. Commit final + openspec sync + archive
 ---
 
 # Tasks: UI Layer Replacement
 
 ## Fase 1 — Preparación
 
-- [ ] **T1.** Instalar Impeccable localmente: `npx impeccable install --scope project`
-- [ ] **T2.** Configurar `PRODUCT.md`:
-  ```markdown
-  ## Platform
-  adaptive
-  ## Target Audience
-  small business owners in Colombia (MiPymes)
-  ## Brand
-  clean, trustworthy, simple — green and white primary palette
-  ```
-- [ ] **T3.** Crear rama de trabajo: `git checkout -b refactor/ui-layer-gluestack`
+- [ ] **T1.** Leer skills `frontend-ui-engineering` y `expo-design-system` antes de codificar
+- [ ] **T2.** Crear rama: `git checkout -b refactor/ui-layer-gluestack`
+- [ ] **T3.** Mover theme tokens a global.css (extraer ~300 vars de `config.ts`)
+  - Light mode como valores por defecto en `:root`
+  - Dark mode como `[data-theme="dark"]` override
+- [ ] **T4.** Actualizar `tailwind.config.js`:
+  - Remover línea `const gluestackPlugin = require(...)`  
+  - Remover `plugins: [gluestackPlugin]`
+  - Los colores ya están definidos manualmente; solo limpiar el plugin
 
-## Fase 2 — Componentes nuevos (sin gluestack)
+## Fase 2 — Componentes (orden de complejidad creciente)
 
-### T4. Button (reemplaza `@/components/ui/button`)
-- Importar desde NativeWind `tv` directamente
-- Slots: root, content, icon
-- Variantes: solid, ghost, outline
-- Sizes: sm (py-2), md (py-3), lg (py-4)
-- Validar con screen que usa Button (index.tsx, add_transaction.tsx)
+### T5. Text (más simple primero)
+- Crear `components/ui/text/index.tsx` nuevo (~20 líneas)
+- Props: `size`, `bold`, `italic`, `underline`, `className`, children
+- Quitar props que no se usan: `isTruncated`, `sub`, `highlight`, `strikeThrough`
+- Usar `tv()` de `nativewind` directamente
 
-### T5. HStack / VStack
-- Flexbox directo: flexDirection row/column
-- Gap basado en Tailwind spacing
-- Soporte props estándar de RN View
+### T6. HStack / VStack
+- Copiar implementación actual (24 + 23 líneas) exactamente
+- Cambiar solo imports: `import { tv } from 'nativewind'` (no desde gluestack-utils)
+- Eliminar variantes dead: `reversed` (no usado en la app)
 
-### T6. Text / Heading
-- Text: usar `text-*` utilities de NativeWind
-- Heading: pesos tipográficos (font-bold, font-semibold)
-- Mantener tamaños actuales para preservar look & feel
+### T7. Button + ButtonText + ButtonIcon
+- Crear `components/ui/button/index.tsx` nuevo (~40 líneas)
+- `Button`: `<Pressable>` con className base + variants (solid/ghost/outline)
+- `ButtonText`: `<Text>` con color blanco por defecto
+- `ButtonIcon`: `<View>` wrapper simple para íconos
+- Nota: en toda la app solo se usa como FAB flotante (button xl, rounded-full)
 
-### T7. Input / InputField
-- Wrapper de `TextInput` de React Native
-- Estilos basados en Tailwind classes
-- Estado manejado por el caller (no dentro del componente)
-
-### T8. Toast (el más complejo)
-- Usar `Animated` de RN para slide-up animation
-- Mount en root del stack (debajo de provider)
-- Props: title, description, type ('success' | 'error' | 'info')
-- Auto-dismiss tras 3s
-- No depender de ningún paquete externo
+### T8. Heading
+- Crear `components/ui/heading/index.tsx` (~20 líneas)
+- Mapeo directo: `size="xl"` → `text-2xl font-bold`, etc.
+- No usar `@expo/html-elements` (H1-H6); usar `<Text>` de RN
 
 ### T9. Image
-- Wrapper de `Image` de RN con manejo de loading state
-- Opcional: usar `expo-image` si está disponible
+- Crear `components/ui/image/index.tsx` (~10 líneas)
+- Wrapper mínimo de `Image` de React Native
+- Soportar prop `size` mapeada a Tailwind w/h classes
 
-## Fase 3 — Limpieza
+### T10. Input + InputField
+- Crear `components/ui/input/index.tsx` (~60 líneas)
+- `<Input>` envuelve `<TextInput>` con borde, padding, radius Tailwind
+- `<InputField>` es solo un `<TextInput>` con styles adicionales
+- Quitar: icon slot, helper text, error state manager interno
+- Estado lo maneja cada screen individualmente
 
-### T10. Limpiar _layout.tsx
-- Remover import de `GluestackUIProvider`
-- Remover el wrapping component
-- Asegurar que Toast provider (nuevo) esté en su lugar si se necesita
+### T11. Toast (el más complejo)
+- Crear `components/ui/toast/use-toast.ts` nuevo con API simplificada
+```tsx
+// Nueva API:
+export function showToast(message: string, type: 'success' | 'error' | 'info')
+export function useToast() { return { showToast }; }
+```
+- Animación: `Animated.timing` con fadeIn/fadeOut + translateY
+- Posición: bottom sheet, márgen top basado en safe area insets
+- Sin `legendapp/motion`, sin `render` prop, sin `nativeID`
 
-### T11. Verificar imports
-- Confirmar que NO queda ningún import de `@gluestack-ui/*` en el código fuente
-- Confirmar que los imports de `@/components/ui/*` apuntan a las nuevas implementaciones
+### T12. Reescribir useMyToast
+- Archivo: `lib/Hooks/useToast.tsx`
+- Antes: usaba `toast.show({ id, render, placement, containerStyle })`
+- Después:
+```tsx
+export const useMyToast = () => {
+  const { showToast } = useToast();
+  const handleToast = useCallback((title, message, type = 'warning') => {
+    showToast(`${title}: ${message}`, type);
+  }, []);
+  return { handleToast };
+};
+```
+- Todos los call sites (14 lugares) funcionan sin cambios en la llamada
 
-### T12. Remover dependencias de package.json
-- Eliminar los 29 entries `@gluestack-ui/*`
-- Verificar que `nativewind` se mantiene (versión 4.x)
+## Fase 3 — Layout
 
-## Fase 4 — Testing
+### T13. Limpiar _layout.tsx
+- Remover import y uso de `GluestackUIProvider`
+- La estructura queda:
+```tsx
+return (
+  <ThemeProvider value={darkMode ? DarkTheme : DefaultTheme}>
+    <SafeAreaProvider>
+      <SQLiteProvider databaseName={LOCAL_DB_NAME} onInit={migrateDbIfNeeded}>
+        <Stack>...</Stack>
+      </SQLiteProvider>
+    </SafeAreaProvider>
+  </ThemeProvider>
+);
+```
+- El theme CSS vars ya están en `global.css` (estáticos), no necesitan provider
 
-### T13. Lint
-- `npm run lint` — debe pasar sin errores
+## Fase 4 — Limpieza y verificación
 
-### T14. Web dev
-- `npm run dev` — verificar que web funciona
+### T14. Confirmar cero imports de gluestack
+```bash
+grep -rn "@gluestack\|legendapp/motion" app/ lib/ components/ --include="*.tsx" --include="*.ts"
+```
+Debe retornar 0 resultados.
 
-### T15. iOS simulator
-- `npm run ios` — probar todas las pantallas
+### T15. Remover dependencias de package.json
+Eliminar los 29 entries `@gluestack-ui/*`. Mantener `react-native-svg` (lucide la requiere).
 
-### T16. Android emulator
-- `npm run android` — probar todas las pantallas
+### T16. Instalar
+```bash
+bun install
+```
 
-## Fase 5 — Diseño con Impeccable
+### T17. Lint
+```bash
+npm run lint
+```
+Corregir cualquier error de TypeScript o import broken.
 
-### T17. Shape landing/main screen
-- Correr `/impeccable shape the main dashboard`
-- Aplicar sugerencias de layout y spacing
+### T18. iOS
+```bash
+npm run ios
+```
+Probar todas las pantallas: home, añadir transacción, perfil, config, reportes.
 
-### T18. Polish transaction flow
-- Correr `/impeccable polish the add transaction form`
-- Refinar inputs, spacing, feedback visual
+### T19. Android
+```bash
+npm run android
+```
+Mismas pantallas en emulador Android.
 
-### T19. Run design audit
-- `/impeccable critique the onboarding flow`
-- Documentar hallazgos en `openspec/changes/eliminar-gluestack-impeccable/design-findings.md`
+## Fase 5 — Impeccable
 
-## Fase 6 — Documentación y cierre
+### T20. Instalar localmente
+```bash
+npx impeccable install --scope project
+```
 
-### T20. Commit
-- Mensaje: `refactor: remove gluestack, adopt native wind ui + impeccable`
-- Incluir diff limpio de cambios
+### T21. Configurar PRODUCT.md
+Crear `.impeccable/config.json` manual:
+```json
+{ "platform": "adaptive", "audience": "colombian small business owners" }
+```
 
-### T21. Sincronizar specs
+### T22. Pulir pantallas críticas
+- `/impeccable polish the main dashboard`
+- `/impeccable polish the add transaction form`
+- Registrar hallazgos en `design-findings.md`
+
+### T23. Cierre
+- Commit descriptivo
 - `openspec sync eliminar-gluestack-impeccable`
-
-### T22. Archivar
 - `openspec archive eliminar-gluestack-impeccable`
-
-### T23. Agregar nota en AGENTS.md
-- Registrar que los componentes UI ahora usan NativeWind puro
-- Registrar que se usa Impeccable como guía de diseño mobile
+- Agregar nota sobre nuevo sistema UI en `AGENTS.md`
