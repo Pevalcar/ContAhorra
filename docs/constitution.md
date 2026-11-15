@@ -1,6 +1,6 @@
 # Constitution — ContAhorra
 
-Principios vinculantes. Si una propuesta los viola, se refactoriza antes de continuar.
+Principios que toda modificación debe respetar. Si una propuesta los viola, se refactoriza antes de continuar.
 
 ---
 
@@ -46,7 +46,7 @@ Rutas definidas exclusivamente por ubicación de archivos bajo `app/`. Grupos en
 
 ## C6 — Internacionalización desde el Inicio
 
-Todo texto visible para el usuario pasa por `useTranslation()` de `react-i18next`. Las keys viven en `i18n/locales/en.json` y `es.json`. Al agregar string nuevo, agregar a AMBOS archivos. Default: `es-CO`, fallback: `en-US`.
+Todo texto visible para el usuario pasa por `useTranslation()` de `react-i18next`. Las keys viven en `i18n/locales/en.json` y `es.json`. Al agregar string nuevo, agregar a AMBOS archivos. Default: `es-CO`, fallback: `en-US`. La UI está dirigida a MiPymes colombianas, por lo que el español es el idioma principal y debe ser natural y claro.
 
 **Regla:** cero strings hardcodeados en español o inglés dentro de componentes.
 
@@ -68,6 +68,30 @@ Agregar un paquete npm requiere justificación: (1) no se puede resolver con dep
 
 ---
 
-## Nombres en Inglés
+## C9 — Sincronización Determinista
+
+Cada entidad debe tener timestamps claros: `createdAt` y `updatedAt` en ISO 8601. La cola de sincronización usa estos timestamps para ordenar operaciones y detectar conflictos. La estrategia de resolución de conflictos es última escritura gana (last-write-wins), salvo excepciones documentadas. El sync ocurre en silencio al recuperar conectividad; el usuario no debe interactuar con él.
+
+**Regla:** ningún registro entra a SQLite sin timestamp; ningún sync ocurre sin verificar integridad del registro.
+
+---
+
+## C10 — Seguridad por Defecto (OWASP Mobile Top 10)
+
+Todas las comunicaciones externas usan HTTPS con TLS 1.2+. Las contraseñas se almacenan hashed con bcrypt o scrypt con salt, NUNCA en texto plano. Toda entrada de usuario se valida y sanitiza antes de procesarse. Los logs de auditoría no contienen contraseñas, tokens, datos personales ni secrets. Las credenciales y API keys viven exclusivamente en variables de entorno, nunca en código fuente ni comentarios.
+
+**Regla:** si un cambio introduce comunicación HTTP sin TLS, datos sensibles en logs, o credenciales hardcodeadas, se rechaza inmediatamente.
+
+---
+
+## C11 — Protección de Datos (Ley 1581 de 2012 — Habeas Data)
+
+Toda solución que trate datos personales debe cumplir: principio de minimización (solo datos estrictamente necesarios), finalidad determinada e informada, autorización previa cuando sea exigible, política de tratamiento accesible, y ejercicio efectivo de derechos ARCO (acceso, rectificación, cancelación, oposición). La App incluye aviso de privacidad y consentimiento informado. Se evalúa necesidad de inscripción en el RNBD de la SIC.
+
+**Regla:** ninguna pantalla nueva que recolecte datos personales se considera completa sin su correspondiente aviso de privacidad y política de tratamiento actualizada.
+
+---
+
+## C12 — Nombres en Inglés
 
 Toda entidad, variable, función, clase e interfaz nueva debe nombrarse en inglés. Nombres existentes en español (`Transaccion`, `Categoria`, `Cuentas`, `Perfiles`, `add_tansaction`) son deuda técnica que se corregirá en el primer refactor dedicado. Hasta entonces, las reglas de nomenclatura aplican a TODO código NUEVO.
