@@ -1,6 +1,6 @@
 # Constitution — ContAhorra
 
-Principios que toda modificación debe respetar. Si una propuesta los viola, se refactoriza antes de continuar.
+Principios vinculantes. Si una propuesta los viola, se refactoriza antes de continuar.
 
 ---
 
@@ -30,15 +30,15 @@ Zustand stores en `lib/store/` manejan solo estado de UI (loading, filtros, tabs
 
 ## C4 — Componentes con Contrato Explícito
 
-Cada componente declara sus props como `interface Props { ... }` nombrada. Sin tipos inline. Los componentes reciben datos por props o hooks; nunca acceden a stores directamente. La lógica de negocio vive en `lib/Hooks/`.
+Cada componente declara sus props como `interface Props { ... }` nombrada. Sin tipos inline. Los componentes reciben datos por props o hooks; nunca acceden a stores directamente. La lógica de negocio vive en `lib/hooks/`.
 
-**Regla:** `useTransaccionesStore()` dentro de un component de pantalla está prohibido — usar hook de `lib/Hooks/` en su lugar.
+**Regla:** `useTransaccionesStore()` dentro de un componente de pantalla está prohibido — usar hook de `lib/hooks/` en su lugar.
 
 ---
 
 ## C5 — Navegación por Convención de Archivos
 
-Rutas definidas exclusivamente por ubicación de archivos bajo `app/`. Grupos entre paréntesis `(drawer)` y `(tabs)` se resuelven automáticamente por Expo Router. Crear una pantalla nueva = un archivo `.tsx`; sin configuración adicional.
+Rutas definidas exclusivamente por ubicación de archivos bajo `app/`. Grupos entre paréntesis `(drawer)` y `(tabs)` se resuelven automáticamente por Expo Router. Crear una pantalla nueva = un archivo `.tsx`; sin configuración de router.
 
 **Regla:** nuevas pantallas → `app/`. Nuevos items de drawer/tab → `CustomDrawer.tsx` + layout group correspondiente.
 
@@ -54,7 +54,7 @@ Todo texto visible para el usuario pasa por `useTranslation()` de `react-i18next
 
 ## C7 — IA Augmenta, Nunca Decide
 
-Los módulos de IA (OpenAI/Ollama) proveen sugerencias — categorización, insights, alertas. Jamás escriben datos solos, jamás sobrescriben categorías sin confirmación explícita del usuario, jamás toman decisiones financieras. Los resultados AI se muestran siempre con etiqueta "Suggested".
+Los módulos de IA proveen sugerencias — categorización, insights, alertas. Jamás escriben datos solos, jamás sobrescriben categorías sin confirmación explícita del usuario, jamás toman decisiones financieras. Los resultados AI se muestran siempre con etiqueta "Suggested".
 
 **Regla:** no existe ningún path de escritura impulsado por IA.
 
@@ -65,3 +65,9 @@ Los módulos de IA (OpenAI/Ollama) proveen sugerencias — categorización, insi
 Agregar un paquete npm requiere justificación: (1) no se puede resolver con deps existentes, (2) menos de 5KB gzipped, (3) tree-shakeable o bundle pequeño. Preferir APIs nativas de React Native, módulos de expo o paquetes ya instalados.
 
 **Regla:** PRs que agregan dependencias deben incluir justificación en comentario dentro de `package.json`.
+
+---
+
+## Nombres en Inglés
+
+Toda entidad, variable, función, clase e interfaz nueva debe nombrarse en inglés. Nombres existentes en español (`Transaccion`, `Categoria`, `Cuentas`, `Perfiles`, `add_tansaction`) son deuda técnica que se corregirá en el primer refactor dedicado. Hasta entonces, las reglas de nomenclatura aplican a TODO código NUEVO.
