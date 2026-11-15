@@ -142,17 +142,14 @@ npm run lint
 ```
 Corregir cualquier error de TypeScript o import broken.
 
-### T18. iOS
-```bash
-npm run ios
-```
-Probar todas las pantallas: home, añadir transacción, perfil, config, reportes.
-
-### T19. Android
+### T18. Android (único dispositivo de prueba disponible)
 ```bash
 npm run android
 ```
-Mismas pantallas en emulador Android.
+**Nota:** Solo probamos en Android por ahora. No hay entorno iOS disponible para compilar o probar.
+- Probar todas las pantallas: home, añadir transacción, perfil, config, reportes.
+- Verificar especialmente: inputs (teclado no tape contenido), toasts (posición bottom), tema dark mode.
+- Cuando se disponga de iOS/se necesite testeallarlo avisar ANTES de compilar para coordinar conexión.
 
 ## Fase 5 — Impeccable
 
