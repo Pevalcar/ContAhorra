@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "contahorra-financial": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "."],
+      "description": "ContAhorra Financial Data Access - read and analyze transaction data",
+      "env": {
+        "ALLOWED_DIRS": "${PI_PROJECT_PATH}"
+      }
+    }
+  }
+}

@@ -25,6 +25,7 @@ dist/
 .env.local
 .env.production.local
 .env.development.local
+.env.ai
 
 # Debug logs
 firebase-debug.log
