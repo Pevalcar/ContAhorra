@@ -46,3 +46,4 @@ coverage/
 
 # OS junk
 Thumbs.db
+package-lock.json
